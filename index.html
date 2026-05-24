@@ -152,7 +152,7 @@
         .tab-item i { width: 22px; height: 22px; transition: var(--transition-smooth); }
         .tab-item.active-tab i { transform: scale(1.15) translateY(-2px); }
 
-        /* TOASTS GIGANTES, MODERNOS Y VISTOSOS */
+        /* TOASTS GIGANTES */
         #toast-container { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 2200; width: calc(100% - 32px); max-width: 460px; pointer-events: none; display: flex; flex-direction: column; gap: 12px; }
         .toast-card { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #ffffff; border-left: 6px solid var(--telegram-blue); padding: 20px 24px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5), var(--shadow-neon); display: flex; align-items: center; gap: 16px; font-size: 1.05rem; font-weight: 700; pointer-events: auto; border: 1px solid rgba(255,255,255,0.1); animation: toastBounceIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .toast-card i { width: 26px; height: 26px; flex-shrink: 0; }
@@ -240,7 +240,6 @@
 
         .shop-layout { display: flex; flex-direction: column; gap: 20px; }
         
-        /* CONTENEDOR AVATAR API IA */
         .avatar-canvas-area { background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(15,23,42,1) 100%); border: 2px solid var(--mystic-purple); border-radius: 24px; padding: 30px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow-neon); }
         .ia-avatar-frame { width: 120px; height: 120px; margin: 0 auto 15px auto; border-radius: 50%; border: 4px solid var(--vip-gold); box-shadow: var(--shadow-gold); background: #1e293b; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .ia-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
@@ -256,7 +255,6 @@
         .btn-shop-buy.state-insufficient { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }
         .btn-shop-buy.state-ready { background: var(--vip-gold-gradient); color: #000; font-weight: 800; }
 
-        /* CONFETTI GLOBAL MEJORADO */
         .confetti-particle { position: fixed; width: 10px; height: 10px; border-radius: 30%; pointer-events: none; animation: explodeConfetti 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999; }
         @keyframes explodeConfetti {
             0% { transform: translate(0, 0) scale(1.5) rotate(0deg); opacity: 1; }
@@ -348,9 +346,6 @@
         <div class="admin-only" style="margin-bottom: 12px;">
             <button class="drawer-btn" style="border-color: var(--telegram-blue); background: rgba(36,161,222,0.05);" onclick="toggleProfileDrawer(); switchView('my-channels');">
                 <span>🗂️ Ver Mis Canales Creados (<strong id="cnt-my-owned-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
-            </button>
-            <button class="drawer-btn" style="border-color: var(--vip-gold); background: rgba(245,158,11,0.05); margin-top:8px;" onclick="toggleProfileDrawer(); switchView('directory'); filterByAdminChannels();">
-                <span>👑 Canales Globales Admin (<strong id="cnt-my-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
             </button>
         </div>
 
@@ -556,18 +551,17 @@
     </nav>
 
     <script>
-        // DATASET CON VINCULACIÓN AL USER ID DE TELEGRAM (SIMULADO O REAL EN WEBAPP)
+        // DATASET SINCRONIZADO: Todos tus canales de admin ahora apuntan exactamente a tu `telegramUserId` (12345678)
         const INITIAL_CHANNELS_DATASET = [
-            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true, telegramUserId: 12345678 },
-            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: true, telegramUserId: 99999999 },
-            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: false, telegramUserId: 11112222 },
-            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, isAdminOwned: false, telegramUserId: 33334444 },
-            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, isAdminOwned: false, telegramUserId: 12345678 },
-            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: false, telegramUserId: 55556666 },
-            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true, telegramUserId: 12345678 }
+            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 },
+            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
+            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 11112222 },
+            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, telegramUserId: 33334444 },
+            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, telegramUserId: 99999999 },
+            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 55556666 },
+            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 }
         ];
 
-        // SE SELECCIONAN SEMILLAS DE TEXTO PARA PASAR COMO PARÁMETROS A LA API DE MULTIAVATAR
         const PREMIUM_SHOP_CATALOG = [
             { id: "acc_1", name: "Corona Dorada IA", cost: 15, minRange: 1, visual: "goldking", type: "accessory" },
             { id: "acc_2", name: "Gafas Cyberpunk", cost: 30, minRange: 3, visual: "neoncyber", type: "accessory" },
@@ -580,7 +574,7 @@
         let state = {
             user: { 
                 username: "Invitado Anónimo", 
-                idTelegram: 12345678, // ID por defecto en desarrollo, se pisa con el de Telegram Real
+                idTelegram: 12345678, // ID fallback que machea perfectamente con los canales 1, 2 y 7
                 balance: 25, 
                 role: "user", 
                 range: 1,
@@ -595,7 +589,7 @@
             adminFilterOnly: false
         };
 
-        let showFullHistory = false; // Estado para el paginador solicitado del historial
+        let showFullHistory = false;
 
         const CATEGORIES = [
             { id: "all", name: "🌐 Todos" },
@@ -613,7 +607,7 @@
             renderAppUiComponents();
             renderTopPodium();
             lucide.createIcons();
-            addLog("Ecosistema Premium inicializado y sincronizado con API de Avatares.");
+            addLog("Ecosistema unificado bajo ID único de Telegram.");
         });
 
         function saveToLocalStorage() {
@@ -655,16 +649,13 @@
                 if (webApp.initDataUnsafe?.user) {
                     const tgUser = webApp.initDataUnsafe.user;
                     state.user.username = tgUser.username ? `@${tgUser.username}` : `${tgUser.first_name}`;
-                    state.user.idTelegram = tgUser.id; // Asignación del id real enviado por Telegram
+                    state.user.idTelegram = tgUser.id; // Mapeo automático de la API real de Telegram
                     
                     if (tgUser.photo_url) {
                         state.user.photoUrl = tgUser.photo_url;
                     } else {
                         state.user.photoUrl = `https://api.multiavatar.com/${tgUser.id}.svg`;
                     }
-                } else {
-                    state.user.username = "Invitado Anónimo";
-                    state.user.photoUrl = `https://api.multiavatar.com/default.svg`;
                 }
             }
             document.getElementById("header-avatar").src = state.user.photoUrl;
@@ -696,7 +687,6 @@
             saveToLocalStorage();
         }
 
-        // REDISEÑO: TOASTS BIEN GRANDES, MODERNOS Y VISTOSOS
         function showToast(text, type = "info") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -730,12 +720,9 @@
             const oldRange = state.user.range;
             state.user.range = Math.min(5, Math.floor(state.user.pointsProgress / 20) + 1);
             
-            addLog(`Ganaste +${amount} puntos por: ${actionLabel}`);
-            
             if(state.user.range > oldRange) {
-                addLog(`✨ ¡Evolución RPG! Subiste al Rango ${state.user.range}`);
-                triggerConfettiExplosion(); // EXPLOSIÓN DE CONFETTI AL DESBLOQUEAR LA TIENDA TOTALMENTE (Rango 5)
-                showToast(`¡Felicidades! Has alcanzado el Rango ${state.user.range}. ¡Tienda IA expandida!`, "gold");
+                triggerConfettiExplosion();
+                showToast(`¡Felicidades! Has alcanzado el Rango ${state.user.range}.`, "gold");
                 registerActionToHistory("Evolución de Rango", `Alcanzaste el rango de usuario de nivel ${state.user.range}`, "gold");
             }
             
@@ -749,7 +736,7 @@
             if(localStorage.getItem('last_checkin_date') !== today) {
                 localStorage.setItem('last_checkin_date', today);
                 rewardPoints(15, "Check-In de Sesión Diario");
-                registerActionToHistory("Check-In Diario", "Recibiste +15 puntos de energía automáticos.", "success");
+                registerActionToHistory("Check-In Diario", "Recibiste +15 puntos de energía.", "success");
             }
         }
 
@@ -795,7 +782,6 @@
             } else {
                 toggleProfileDrawer();
                 switchView('shop');
-                showToast("Bienvenido al taller de IA premium modular", "gold");
             }
         }
 
@@ -806,15 +792,13 @@
             if(state.user.role === "admin") {
                 toggle.classList.add("active");
                 document.body.classList.add("role-admin");
-                showToast("Vista Administrador Activada - Sección Privada Desbloqueada", "gold");
+                showToast("Vista Administrador Activada", "gold");
             } else {
                 toggle.classList.remove("active");
                 document.body.classList.remove("role-admin");
                 showToast("Vista Explorador Activada", "info");
             }
             
-            addLog(`Rol modificado a: ${state.user.role}`);
-            registerActionToHistory("Modo de Vista", `Cambio a rol: ${state.user.role.toUpperCase()}`, "info");
             renderDirectoryList();
             saveToLocalStorage();
         }
@@ -841,11 +825,6 @@
             `).join('');
         }
 
-        function filterByAdminChannels() {
-            state.adminFilterOnly = true;
-            renderDirectoryList();
-        }
-
         function renderAppUiComponents() {
             document.getElementById("drawer-username").innerText = state.user.username;
             
@@ -858,10 +837,9 @@
                 `).join('');
             }
             
-            const myChannelsCount = INITIAL_CHANNELS_DATASET.filter(c => c.isAdminOwned).length;
+            // CONTEO LOGICO UNIFICADO: Compara contra el ID de Telegram único del usuario
             const myOwnedIdCount = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram).length;
             
-            document.getElementById("cnt-my-channels").innerText = myChannelsCount;
             document.getElementById("cnt-my-owned-channels").innerText = myOwnedIdCount;
             document.getElementById("cnt-channels").innerText = INITIAL_CHANNELS_DATASET.length;
             document.getElementById("stat-total-channels").innerText = INITIAL_CHANNELS_DATASET.length;
@@ -937,7 +915,8 @@
             const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
             const liveViews = getDynamicDailyViews(c.id);
             
-            const adminDeleteButton = (state.user.role === 'admin' && c.isAdminOwned) ? `
+            // El botón de borrar aparece solo si eres admin y el canal es de tu propiedad mediante Telegram ID
+            const adminDeleteButton = (state.user.role === 'admin' && c.telegramUserId === state.user.idTelegram) ? `
                 <button class="btn-delete-channel" onclick="event.stopPropagation(); openDeleteModal(${c.id}, '${c.name}')">
                     <i data-lucide="trash-2" style="width:14px; height:14px;"></i> Eliminar del Directorio
                 </button>
@@ -981,7 +960,7 @@
             const statusFilter = document.getElementById("filter-status").value;
 
             let filtered = INITIAL_CHANNELS_DATASET.filter(c => {
-                if (state.adminFilterOnly && !c.isAdminOwned) return false;
+                if (state.adminFilterOnly && c.telegramUserId !== state.user.idTelegram) return false;
 
                 const matchesCategory = (activeCategoryFilter === "all" || c.category === activeCategoryFilter);
                 const matchesQuery = (c.name.toLowerCase().includes(query) || c.user.toLowerCase().includes(query) || c.description.toLowerCase().includes(query));
@@ -1002,16 +981,15 @@
             lucide.createIcons();
         }
 
-        // LÓGICA DE LA SECCIÓN SOLICITADA: FILTRADO POR EL ID DE TELEGRAM DEL EMISOR CONECTADO
+        // CONTROL LOGICO ABSOLUTO UNIFICADO CON EL ID DE TELEGRAM DE LA API
         function renderMyOwnedChannelsList() {
             const container = document.getElementById("my-owned-channels-list");
             if (!container) return;
             
-            // Filtra los canales de la BD cuyo telegramUserId coincida con el idTelegram del usuario logueado
             const myOwned = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram);
             
             if (myOwned.length === 0) {
-                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee canales registrados en este directorio.</div>`;
+                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee ningún canal asociado en el Directorio Global.</div>`;
                 return;
             }
             container.innerHTML = myOwned.map(c => buildChannelCardHtml(c)).join('');
@@ -1031,7 +1009,6 @@
             lucide.createIcons();
         }
 
-        // REDISEÑO SOLICITADO: DESPLEGABLE DESDE LAS 10 ACCIONES REGISTRADAS HASTA LAS 20 MÁXIMAS
         function renderHistoryList() {
             const container = document.getElementById("history-list");
             const paginationContainer = document.getElementById("history-pagination-container");
@@ -1043,10 +1020,7 @@
                 return;
             }
             
-            // Recortamos el historial completo a un máximo de 20 registros
             const totalToConsider = state.history.slice(0, 20);
-            
-            // Si no se ha pulsado el desplegable, recortamos estrictamente a 10 elementos
             const displayedItems = showFullHistory ? totalToConsider : totalToConsider.slice(0, 10);
             
             container.innerHTML = displayedItems.map(item => `
@@ -1064,7 +1038,6 @@
                 </div>
             `).join('');
 
-            // Construcción del botón desplegable interactivo
             if (totalToConsider.length > 10) {
                 if (!showFullHistory) {
                     paginationContainer.innerHTML = `<button class="btn-history-loadmore" onclick="expandHistoryView()">👇 Mostrar registros del 11 al ${totalToConsider.length}</button>`;
@@ -1179,7 +1152,7 @@
                 state.user.balance -= cost;
                 state.purchasedItems.push(itemId);
                 
-                triggerConfettiExplosion(); // EXPLOSIÓN DE CONFETTI EN TODOS LOS BOTONES DE COMPRA EXITOSOS
+                triggerConfettiExplosion();
                 equipAccessory(visual, itemType);
                 
                 showToast("¡Compra efectuada con éxito por API!", "gold");
@@ -1192,8 +1165,6 @@
 
         function equipAccessory(seedName, type) {
             state.user.currentSeed = seedName;
-            
-            // Actualización asíncrona de las llamadas a la API de Avatares gratuitos
             document.getElementById("shop-ia-avatar-preview").src = `https://api.multiavatar.com/${seedName}.svg`;
             document.getElementById("drawer-avatar-render").src = `https://api.multiavatar.com/${seedName}.svg`;
             
@@ -1201,7 +1172,6 @@
             saveToLocalStorage();
         }
 
-        // EXPLOSIÓN DE CONFETTI REESTRUCTURADA (PUNTO CENTRAL FLUIDO A TODA LA PANTALLA)
         function triggerConfettiExplosion() {
             const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];
             
@@ -1210,20 +1180,16 @@
                 particle.className = "confetti-particle";
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
                 
-                // Lanzamiento desde el centro del viewport visible
                 particle.style.left = `50%`;
                 particle.style.top = `50%`;
                 
                 const angle = Math.random() * Math.PI * 2;
-                // Velocidad explosiva masiva radial
                 const velocity = Math.random() * 260 + 80;
                 
                 particle.style.setProperty('--x', `${Math.cos(angle) * velocity}px`);
                 particle.style.setProperty('--y', `${Math.sin(angle) * velocity}px`);
                 
                 document.body.appendChild(particle);
-                
-                // Limpieza del árbol DOM tras ejecución de la animación
                 setTimeout(() => particle.remove(), 1200);
             }
         }

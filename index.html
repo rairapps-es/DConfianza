@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Canales Top</title>
+    <title>Canales Top & Avatar RPG Shop</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -238,29 +238,6 @@
         .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
         .form-control { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; color: var(--text-main); font-size: 0.9rem; }
 
-        .shop-layout { display: flex; flex-direction: column; gap: 20px; }
-        
-        .avatar-canvas-area { background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(15,23,42,1) 100%); border: 2px solid var(--mystic-purple); border-radius: 24px; padding: 30px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow-neon); }
-        .ia-avatar-frame { width: 120px; height: 120px; margin: 0 auto 15px auto; border-radius: 50%; border: 4px solid var(--vip-gold); box-shadow: var(--shadow-gold); background: #1e293b; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .ia-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-        .shop-slider-label { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 6px 0; text-align: left; }
-        .shop-carousel-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;}
-        .shop-carousel-row::-webkit-scrollbar { display: none; }
-        
-        .item-shop-card { min-width: 135px; max-width: 135px; background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 10px; text-align: center; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 6px; }
-        .item-shop-card.locked-item { opacity: 0.5; background: rgba(0,0,0,0.3); }
-        .btn-shop-buy { width: 100%; border: none; padding: 9px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .btn-shop-buy.state-locked { background: #1e293b; color: var(--text-muted); }
-        .btn-shop-buy.state-insufficient { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }
-        .btn-shop-buy.state-ready { background: var(--vip-gold-gradient); color: #000; font-weight: 800; }
-
-        .confetti-particle { position: fixed; width: 10px; height: 10px; border-radius: 30%; pointer-events: none; animation: explodeConfetti 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999; }
-        @keyframes explodeConfetti {
-            0% { transform: translate(0, 0) scale(1.5) rotate(0deg); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(0.2) rotate(720deg); opacity: 0; }
-        }
-
         .energy-table { width: 100%; border-collapse: collapse; background: var(--bg-tarjeta); border-radius: 18px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.85rem; }
         .energy-table th, .energy-table td { padding: 14px 16px; text-align: left; }
         .energy-table th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 700; }
@@ -281,6 +258,128 @@
         
         .btn-history-loadmore { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 700; width: 100%; padding: 12px; border-radius: 12px; cursor: pointer; margin-top: 5px; transition: var(--transition-smooth); }
         .btn-history-loadmore:hover { background: rgba(255,255,255,0.1); }
+
+        /* ==========================================================================
+           ESTILOS REMASTERIZADOS TIENDA RPG (ESTILO JUEGO DE MÓVIL)
+           ========================================================================== */
+        .shop-layout { display: flex; flex-direction: column; gap: 24px; }
+        
+        .avatar-canvas-area { 
+            background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, rgba(15,23,42,1) 100%); 
+            border: 2px solid var(--mystic-purple); 
+            border-radius: 24px; padding: 24px; text-align: center; position: relative; 
+            overflow: hidden; box-shadow: var(--shadow-neon);
+        }
+        .ia-avatar-frame { 
+            width: 130px; height: 130px; margin: 0 auto 12px auto; 
+            border-radius: 50%; border: 4px solid var(--vip-gold); 
+            box-shadow: var(--shadow-gold); background: #1e293b; 
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            position: relative; transition: var(--transition-smooth);
+        }
+        .ia-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Contenedor de equipamiento actual */
+        .equipped-badges-container {
+            display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+        }
+        .equipped-chip {
+            background: rgba(168, 85, 247, 0.2); border: 1px solid var(--mystic-purple);
+            color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 10px;
+            border-radius: 50px; display: inline-flex; align-items: center; gap: 6px;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-unequip {
+            background: none; border: none; color: #ef4444; cursor: pointer;
+            display: flex; align-items: center; padding: 2px;
+        }
+
+        /* Menú de navegación de la tienda */
+        .shop-nav-menu {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+            background: rgba(0,0,0,0.2); padding: 6px; border-radius: 14px;
+            border: 1px solid var(--border-color);
+        }
+        .shop-nav-btn {
+            background: transparent; border: none; color: var(--text-muted);
+            padding: 10px; font-weight: 700; font-size: 0.8rem; border-radius: 10px;
+            cursor: pointer; transition: var(--transition-smooth); display: flex;
+            align-items: center; justify-content: center; gap: 6px;
+        }
+        .shop-nav-btn.active {
+            background: var(--mystic-purple); color: white;
+            box-shadow: 0 4px 12px rgba(168,85,247,0.3);
+        }
+
+        /* Paneles de Contenido */
+        .shop-panel { display: none; animation: slideUpView 0.4s ease; }
+        .shop-panel.active { display: block; }
+
+        .shop-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+        }
+        
+        .item-shop-card { 
+            background: var(--bg-tarjeta); border: 1px solid var(--border-color); 
+            border-radius: 20px; padding: 16px; text-align: center; cursor: pointer; 
+            display: flex; flex-direction: column; justify-content: space-between; 
+            align-items: center; gap: 8px; transition: var(--transition-smooth);
+            position: relative; overflow: hidden;
+        }
+        .item-shop-card:hover {
+            transform: translateY(-4px) scale(1.02); border-color: var(--mystic-purple);
+            box-shadow: 0 8px 20px rgba(168,85,247,0.15);
+        }
+        .item-shop-card.locked-item { opacity: 0.6; background: rgba(15,23,42,0.4); }
+        
+        .btn-shop-buy { 
+            width: 100%; border: none; padding: 10px; border-radius: 12px; 
+            font-weight: 800; font-size: 0.8rem; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            transition: var(--transition-smooth);
+        }
+        .btn-shop-buy.state-locked { background: #334155; color: var(--text-muted); cursor: not-allowed; }
+        .btn-shop-buy.state-insufficient { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .btn-shop-buy.state-ready { background: var(--vip-gold-gradient); color: #000; box-shadow: 0 4px 10px rgba(245,158,11,0.2); }
+        .btn-shop-buy.state-equipped { background: var(--mystic-purple); color: white; }
+        .btn-shop-buy.state-unequipped { background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border-color); }
+
+        /* Tarjeta de Combos Épicos */
+        .epic-pack-card {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #1e293b 100%);
+            border: 2px dashed var(--vip-gold); border-radius: 24px; padding: 20px;
+            position: relative; overflow: hidden; box-shadow: var(--shadow-gold);
+            transition: var(--transition-smooth); text-align: left;
+            animation: pulsePack 4s infinite alternate;
+        }
+        @keyframes pulsePack {
+            0% { border-color: var(--vip-gold); box-shadow: 0 0 15px rgba(245,158,11,0.2); }
+            100% { border-color: var(--mystic-purple); box-shadow: 0 0 25px rgba(168,85,247,0.4); }
+        }
+        .pack-badge {
+            position: absolute; top: 12px; right: -30px; background: #ef4444;
+            color: white; font-size: 0.65rem; font-weight: 900; padding: 4px 30px;
+            transform: rotate(45deg); letter-spacing: 1px;
+        }
+        .pack-grid-preview {
+            display: flex; gap: 8px; margin: 14px 0;
+        }
+        .pack-preview-item {
+            width: 45px; height: 45px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+            padding: 4px; display: flex; align-items: center; justify-content: center;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .confetti-particle { position: fixed; width: 10px; height: 10px; border-radius: 30%; pointer-events: none; animation: explodeConfetti 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999; }
+        @keyframes explodeConfetti {
+            0% { transform: translate(0, 0) scale(1.5) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0.2) rotate(720deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -300,7 +399,7 @@
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-identity">
             <div class="ia-avatar-frame" style="width: 80px; height: 80px; margin-bottom: 8px;">
-                <img id="drawer-avatar-render" src="https://api.multiavatar.com/anon.svg" alt="Avatar IA">
+                <img id="drawer-avatar-render" src="" alt="Avatar Realtime">
             </div>
             <div class="drawer-username-tag">
                 <span id="drawer-username">@Anónimo</span>
@@ -460,19 +559,36 @@
     </main>
 
     <main id="view-shop" class="app-view">
-        <h2 class="view-title"><i data-lucide="shopping-bag" style="color:var(--mystic-purple)"></i> Tienda RPG & Personalización por IA</h2>
+        <h2 class="view-title"><i data-lucide="shopping-bag" style="color:var(--mystic-purple)"></i> Forja de Avatar RPG & Personalización</h2>
         <div class="shop-layout">
             
             <div class="avatar-canvas-area" id="canvas-area-wrapper">
                 <div class="ia-avatar-frame">
-                    <img id="shop-ia-avatar-preview" src="https://api.multiavatar.com/starbear.svg" alt="Preview IA">
+                    <img id="shop-ia-avatar-preview" src="" alt="Preview Avatar">
                 </div>
-                <div style="font-weight:700; font-size:0.95rem; color:#fff;">Diseñador Modular por API IA</div>
-                <p style="font-size:0.75rem; color:var(--text-muted); max-width:280px; margin:0 auto 5px auto;">Adquiere accesorios en la API y genera avatares vectoriales instantáneos.</p>
+                <div style="font-weight:800; font-size:1.1rem; color:#fff; text-shadow:0 2px 4px rgba(0,0,0,0.5);">Tu Avatar Actual</div>
+                <div class="equipped-badges-container" id="equipped-items-list">
+                    </div>
             </div>
 
-            <div class="shop-slider-label">Accesorios y Personajes Especiales</div>
-            <div id="shop-catalog-row" class="shop-carousel-row"></div>
+            <nav class="shop-nav-menu">
+                <button class="shop-nav-btn active" id="shop-tab-clothes" onclick="switchShopPanel('clothes')"><i data-lucide="shirt" style="width:16px;"></i> Ropa</button>
+                <button class="shop-nav-btn" id="shop-tab-glasses" onclick="switchShopPanel('glasses')"><i data-lucide="glasses" style="width:16px;"></i> Gafas</button>
+                <button class="shop-nav-btn" id="shop-tab-combos" onclick="switchShopPanel('combos')"><i data-lucide="sparkles" style="width:16px;"></i> Combos Épicos</button>
+            </nav>
+
+            <div id="panel-shop-clothes" class="shop-panel active">
+                <div class="shop-grid" id="grid-clothes"></div>
+            </div>
+
+            <div id="panel-shop-glasses" class="shop-panel">
+                <div class="shop-grid" id="grid-glasses"></div>
+            </div>
+
+            <div id="panel-shop-combos" class="shop-panel">
+                <div style="display:flex; flex-direction:column; gap:16px;" id="grid-combos">
+                    </div>
+            </div>
 
             <div class="roulette-card" style="background: linear-gradient(135deg, #112c24 0%, #121824 100%); border-color: var(--success-green);">
                 <div style="font-size: 2.2rem; margin-bottom: 6px;">🎁</div>
@@ -551,7 +667,6 @@
     </nav>
 
     <script>
-        // DATASET SINCRONIZADO: Todos tus canales de admin ahora apuntan exactamente a tu `telegramUserId` (12345678)
         const INITIAL_CHANNELS_DATASET = [
             { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 },
             { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
@@ -562,25 +677,63 @@
             { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 }
         ];
 
+        // DATOS DE ACCESORIOS DE DICEBEAR (Organizados por Tipo de Accesorio)
         const PREMIUM_SHOP_CATALOG = [
-            { id: "acc_1", name: "Corona Dorada IA", cost: 15, minRange: 1, visual: "goldking", type: "accessory" },
-            { id: "acc_2", name: "Gafas Cyberpunk", cost: 30, minRange: 3, visual: "neoncyber", type: "accessory" },
-            { id: "combo_1", name: "Combo Oso Astronauta", cost: 50, minRange: 5, visual: "spacebear", type: "character" },
-            { id: "combo_2", name: "Avatar VIP Bear de Oro", cost: 85, minRange: 5, visual: "vipgoldbear", type: "character" }
-        ];
+            // CATEGORÍA: Ropa (clothing)
+            { id: "cloth_1", name: "Sudadera Hoodie", cost: 15, minRange: 1, value: "hoodie", type: "clothing", previewSeed: "b6e3f4" },
+            { id: "cloth_2", name: "Blazer & Camisa", cost: 25, minRange: 2, value: "blazerAndShirt", type: "clothing", previewSeed: "c0aede" },
+            { id: "cloth_3", name: "Camiseta Gráfica", cost: 35, minRange: 3, value: "graphicShirt", type: "clothing", previewSeed: "ffdfbf" },
+            { id: "cloth_4", name: "Traje Ejecutivo V", cost: 45, minRange: 4, value: "shirtVNeck", type: "clothing", previewSeed: "d1fae5" },
+            
+            // CATEGORÍA: Gafas / Accesorios Faciales (glasses)
+            { id: "glass_1", name: "Gafas de Lectura", cost: 10, minRange: 1, value: "prescription01", type: "glasses", previewSeed: "fef08a" },
+            { id: "glass_2", name: "Gafas Redondas Hipster", cost: 20, minRange: 2, value: "round", type: "glasses", previewSeed: "fed7aa" },
+            { id: "glass_3", name: "Gafas Wayfarer Classic", cost: 30, minRange: 3, value: "wayfarers", type: "glasses", previewSeed: "fbcfe8" },
+            { id: "glass_4", name: "Gafas de Sol Premium", cost: 50, minRange: 4, value: "sunglasses", type: "glasses", previewSeed: "c7d2fe" },
 
-        const ANONYMOUS_AVATAR = "https://api.multiavatar.com/anonuser.svg";
+            // CATEGORÍA: COMBOS ESPECIALES (combos)
+            { 
+                id: "combo_epic_1", 
+                name: "Pack Hacker Cyberpunk", 
+                cost: 60, 
+                minRange: 1, 
+                type: "combos",
+                isPack: true,
+                itemsUnlocked: [
+                    { type: "clothing", value: "graphicShirt" },
+                    { type: "glasses", value: "sunglasses" }
+                ],
+                description: "Desbloquea instantáneamente el estilo épico de Sudadera Hacker y Gafas de Sol con un 30% de descuento incluido."
+            },
+            { 
+                id: "combo_epic_2", 
+                name: "Pack Elite Corporativo", 
+                cost: 85, 
+                minRange: 3, 
+                type: "combos",
+                isPack: true,
+                itemsUnlocked: [
+                    { type: "clothing", value: "blazerAndShirt" },
+                    { type: "glasses", value: "round" }
+                ],
+                description: "El pack definitivo para lucir como un Administrador de alto rango. Desbloquea el Blazer Ejecutivo y las Gafas Redondas."
+            }
+        ];
 
         let state = {
             user: { 
                 username: "Invitado Anónimo", 
-                idTelegram: 12345678, // ID fallback que machea perfectamente con los canales 1, 2 y 7
-                balance: 25, 
+                idTelegram: 12345678,
+                balance: 100, 
                 role: "user", 
                 range: 1,
                 pointsProgress: 25,
-                photoUrl: ANONYMOUS_AVATAR,
-                currentSeed: "default"
+                seed: "carlos", // Seed base fija para el generador
+                // Almacenamos qué valor de accesorio tiene equipado por tipo
+                equipped: {
+                    clothing: "",
+                    glasses: ""
+                }
             },
             favorites: [], 
             history: [], 
@@ -606,12 +759,13 @@
             executeDailyCheckIn();
             renderAppUiComponents();
             renderTopPodium();
+            updateAdminToggleUI(); // Sincronización del interruptor corregida
             lucide.createIcons();
             addLog("Ecosistema unificado bajo ID único de Telegram.");
         });
 
         function saveToLocalStorage() {
-            localStorage.setItem('canales_top_state_v2', JSON.stringify({
+            localStorage.setItem('canales_top_state_v3', JSON.stringify({
                 user: state.user,
                 favorites: state.favorites,
                 history: state.history,
@@ -621,7 +775,7 @@
         }
 
         function loadFromLocalStorage() {
-            const saved = localStorage.getItem('canales_top_state_v2');
+            const saved = localStorage.getItem('canales_top_state_v3');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -641,26 +795,79 @@
                 const webApp = window.Telegram.WebApp;
                 webApp.ready();
                 webApp.expand();
-                
-                if(webApp.colorScheme === 'light') {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                }
-
+                if(webApp.colorScheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
                 if (webApp.initDataUnsafe?.user) {
                     const tgUser = webApp.initDataUnsafe.user;
                     state.user.username = tgUser.username ? `@${tgUser.username}` : `${tgUser.first_name}`;
-                    state.user.idTelegram = tgUser.id; // Mapeo automático de la API real de Telegram
-                    
-                    if (tgUser.photo_url) {
-                        state.user.photoUrl = tgUser.photo_url;
-                    } else {
-                        state.user.photoUrl = `https://api.multiavatar.com/${tgUser.id}.svg`;
-                    }
+                    state.user.idTelegram = tgUser.id;
+                    state.user.seed = tgUser.username || "player";
                 }
             }
-            document.getElementById("header-avatar").src = state.user.photoUrl;
-            document.getElementById("shop-ia-avatar-preview").src = `https://api.multiavatar.com/${state.user.currentSeed}.svg`;
-            document.getElementById("drawer-avatar-render").src = `https://api.multiavatar.com/${state.user.currentSeed}.svg`;
+            updateAvatarRenderers();
+            saveToLocalStorage();
+        }
+
+        // FUNCIÓN CENTRALIZADA PARA RENDERIZAR AVATARES DINÁMICOS MEDIANTE DICEBEAR API
+        function updateAvatarRenderers() {
+            // Construimos los parámetros URL query según el inventario equipado
+            let queryParams = `?seed=${state.user.seed}&radius=50&backgroundColor=1e293b`;
+            
+            if (state.user.equipped.clothing) {
+                queryParams += `&clothing=${state.user.equipped.clothing}`;
+            }
+            if (state.user.equipped.glasses) {
+                queryParams += `&accessoriesProbability=100&accessories=${state.user.equipped.glasses}`;
+            }
+
+            const finalUrl = `https://api.dicebear.com/9.x/avataaars/svg${queryParams}`;
+            
+            document.getElementById("header-avatar").src = finalUrl;
+            document.getElementById("shop-ia-avatar-preview").src = finalUrl;
+            document.getElementById("drawer-avatar-render").src = finalUrl;
+            
+            renderEquippedChipsList();
+        }
+
+        // Muestra la lista de accesorios que llevas puestos con opción de quitárselos
+        function renderEquippedChipsList() {
+            const container = document.getElementById("equipped-items-list");
+            if (!container) return;
+            container.innerHTML = "";
+
+            let hasAddons = false;
+
+            if (state.user.equipped.clothing) {
+                hasAddons = true;
+                const itemData = PREMIUM_SHOP_CATALOG.find(i => i.value === state.user.equipped.clothing);
+                container.innerHTML += `
+                    <div class="equipped-chip">
+                        <span>👕 ${itemData ? itemData.name : 'Ropa'}</span>
+                        <button class="btn-unequip" onclick="unequipItem('clothing')"><i data-lucide="x" style="width:12px; height:12px;"></i></button>
+                    </div>
+                `;
+            }
+            if (state.user.equipped.glasses) {
+                hasAddons = true;
+                const itemData = PREMIUM_SHOP_CATALOG.find(i => i.value === state.user.equipped.glasses);
+                container.innerHTML += `
+                    <div class="equipped-chip">
+                        <span>👓 ${itemData ? itemData.name : 'Gafas'}</span>
+                        <button class="btn-unequip" onclick="unequipItem('glasses')"><i data-lucide="x" style="width:12px; height:12px;"></i></button>
+                    </div>
+                `;
+            }
+
+            if(!hasAddons) {
+                container.innerHTML = `<span style="font-size:0.72rem; color:var(--text-muted);">Sin accesorios equipados</span>`;
+            }
+            lucide.createIcons();
+        }
+
+        function unequipItem(type) {
+            state.user.equipped[type] = "";
+            showToast("Accesorio removido del avatar", "info");
+            updateAvatarRenderers();
+            renderShopCatalog();
             saveToLocalStorage();
         }
 
@@ -680,10 +887,6 @@
             
             state.history.unshift({ title, detail, time: timeString, icon: actionIcon, type });
             document.getElementById("cnt-purchases").innerText = state.history.filter(h => h.type === 'gold').length;
-            
-            if (document.getElementById("view-history").classList.contains("active-view")) {
-                renderHistoryList();
-            }
             saveToLocalStorage();
         }
 
@@ -785,21 +988,177 @@
             }
         }
 
+        /* CORRECCIÓN ABSOLUTA DEL INTERRUPTOR DE ROL ADMINISTRADOR */
         function toggleAdminRole() {
             state.user.role = state.user.role === "admin" ? "user" : "admin";
-            const toggle = document.getElementById("role-toggle");
+            updateAdminToggleUI();
             
             if(state.user.role === "admin") {
-                toggle.classList.add("active");
-                document.body.classList.add("role-admin");
                 showToast("Vista Administrador Activada", "gold");
             } else {
-                toggle.classList.remove("active");
-                document.body.classList.remove("role-admin");
                 showToast("Vista Explorador Activada", "info");
             }
             
             renderDirectoryList();
+            saveToLocalStorage();
+        }
+
+        function updateAdminToggleUI() {
+            const toggle = document.getElementById("role-toggle");
+            if (!toggle) return;
+
+            if(state.user.role === "admin") {
+                toggle.classList.add("active");
+                document.body.classList.add("role-admin");
+            } else {
+                toggle.classList.remove("active");
+                document.body.classList.remove("role-admin");
+            }
+        }
+
+        // MANEJO DE PANELES INTERNOS DE LA TIENDA DE RECOMPENSAS
+        function switchShopPanel(panelId) {
+            document.querySelectorAll(".shop-panel").forEach(p => p.classList.remove("active"));
+            document.querySelectorAll(".shop-nav-btn").forEach(b => b.classList.remove("active"));
+
+            document.getElementById(`panel-shop-${panelId}`).classList.add("active");
+            
+            // Buscar botón activo de forma segura
+            if(panelId === 'clothes') document.getElementById("shop-tab-clothes").classList.add("active");
+            if(panelId === 'glasses') document.getElementById("shop-tab-glasses").classList.add("active");
+            if(panelId === 'combos') document.getElementById("shop-tab-combos").classList.add("active");
+        }
+
+        function renderShopCatalog() {
+            const gridClothes = document.getElementById("grid-clothes");
+            const gridGlasses = document.getElementById("grid-glasses");
+            const gridCombos = document.getElementById("grid-combos");
+
+            if (!gridClothes || !gridGlasses || !gridCombos) return;
+
+            gridClothes.innerHTML = "";
+            gridGlasses.innerHTML = "";
+            gridCombos.innerHTML = "";
+
+            PREMIUM_SHOP_CATALOG.forEach(item => {
+                const hasRange = state.user.range >= item.minRange;
+                const hasBalance = state.user.balance >= item.cost;
+                const isPurchased = state.purchasedItems.includes(item.id);
+
+                if (item.isPack) {
+                    // Renderizado Especial de la Tarjeta de Combo / Pack Épico
+                    let packButtonHtml = '';
+                    if (isPurchased) {
+                        packButtonHtml = `<button class="btn-shop-buy state-equipped" onclick="equipPack('${item.id}')">⚡ Re-Equipar Pack</button>`;
+                    } else if (!hasBalance) {
+                        packButtonHtml = `<button class="btn-shop-buy state-insufficient">Falta Saldo (${item.cost} ✨)</button>`;
+                    } else {
+                        packButtonHtml = `<button class="btn-shop-buy state-ready" onclick="buyPack('${item.id}', ${item.cost})">Comprar Pack Especial</button>`;
+                    }
+
+                    gridCombos.innerHTML += `
+                        <div class="epic-pack-card">
+                            <div class="pack-badge">OFERTA</div>
+                            <h3 style="font-weight:900; color:var(--vip-gold); font-size:1.1rem; margin-bottom:4px;">${item.name}</h3>
+                            <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;">${item.description}</p>
+                            
+                            <div class="pack-grid-preview">
+                                ${item.itemsUnlocked.map(unl => `
+                                    <div class="pack-preview-item">
+                                        <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=preview&${unl.type}=${unl.value}" style="width:100%;" />
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                                <div style="font-weight:800; font-size:1.2rem; color:#fff;">${item.cost} <span style="color:var(--vip-gold); font-size:0.8rem;">✨ Pts</span></div>
+                                <div style="width:60%;">${packButtonHtml}</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Renderizado de Accesorios normales individuales
+                    const isEquipped = state.user.equipped[item.type] === item.value;
+                    let buttonHtml = '';
+                    let cardClass = 'item-shop-card';
+
+                    if (isEquipped) {
+                        buttonHtml = `<button class="btn-shop-buy state-equipped" onclick="unequipItem('${item.type}')">Quitar ❌</button>`;
+                    } else if (isPurchased) {
+                        buttonHtml = `<button class="btn-shop-buy state-unequipped" onclick="equipItem('${item.type}', '${item.value}')">Equipar</button>`;
+                    } else if (!hasRange) {
+                        cardClass += ' locked-item';
+                        buttonHtml = `<button class="btn-shop-buy state-locked">🔒 Rango ${item.minRange}</button>`;
+                    } else if (!hasBalance) {
+                        buttonHtml = `<button class="btn-shop-buy state-insufficient">Falta Saldo</button>`;
+                    } else {
+                        buttonHtml = `<button class="btn-shop-buy state-ready" onclick="buyItem('${item.id}', ${item.cost}, '${item.type}', '${item.value}')">Comprar</button>`;
+                    }
+
+                    const targetGrid = item.type === "clothing" ? gridClothes : gridGlasses;
+                    targetGrid.innerHTML += `
+                        <div class="${cardClass}">
+                            <div class="ia-avatar-frame" style="width:65px; height:65px; border-width:2px;">
+                                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=${item.previewSeed}&${item.type}=${item.value}" alt="Item Preview">
+                            </div>
+                            <div style="font-size:0.8rem; font-weight:800; color:#fff;">${item.name}</div>
+                            <div style="color:var(--vip-gold); font-size:0.85rem; font-weight:900;">${item.cost} ✨</div>
+                            ${buttonHtml}
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function buyItem(id, cost, type, value) {
+            state.user.balance -= cost;
+            state.purchasedItems.push(id);
+            state.user.equipped[type] = value;
+
+            triggerConfettiExplosion();
+            showToast("¡Artículo comprado y equipado!", "gold");
+            registerActionToHistory("Compra Tienda", `Compraste accesorio: ${value}`, "gold");
+
+            updateBalanceAndRpgUi();
+            updateAvatarRenderers();
+            renderShopCatalog();
+        }
+
+        function equipItem(type, value) {
+            state.user.equipped[type] = value;
+            showToast("Accesorio equipado", "success");
+            updateAvatarRenderers();
+            renderShopCatalog();
+            saveToLocalStorage();
+        }
+
+        function buyPack(id, cost) {
+            const pack = PREMIUM_SHOP_CATALOG.find(p => p.id === id);
+            state.user.balance -= cost;
+            state.purchasedItems.push(id);
+            
+            // Añade al inventario cada item del pack
+            pack.itemsUnlocked.forEach(addon => {
+                state.user.equipped[addon.type] = addon.value;
+            });
+
+            triggerConfettiExplosion();
+            showToast("¡Pack Épico Adquirido!", "gold");
+            registerActionToHistory("Compra Combo Épico", `Adquiriste ${pack.name}`, "gold");
+
+            updateBalanceAndRpgUi();
+            updateAvatarRenderers();
+            renderShopCatalog();
+        }
+
+        function equipPack(id) {
+            const pack = PREMIUM_SHOP_CATALOG.find(p => p.id === id);
+            pack.itemsUnlocked.forEach(addon => {
+                state.user.equipped[addon.type] = addon.value;
+            });
+            showToast("Combo Completo Equipado", "success");
+            updateAvatarRenderers();
+            renderShopCatalog();
             saveToLocalStorage();
         }
 
@@ -837,7 +1196,6 @@
                 `).join('');
             }
             
-            // CONTEO LOGICO UNIFICADO: Compara contra el ID de Telegram único del usuario
             const myOwnedIdCount = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram).length;
             
             document.getElementById("cnt-my-owned-channels").innerText = myOwnedIdCount;
@@ -894,9 +1252,6 @@
             lucide.createIcons();
         }
 
-        document.getElementById("role-toggle").classList.toggle("active", state.user.role === "admin");
-        if(state.user.role === "admin") document.body.classList.add("role-admin");
-
         function scrollSlider(dir) {
             document.getElementById("vip-slider").scrollLeft += (dir * 220);
         }
@@ -915,7 +1270,6 @@
             const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
             const liveViews = getDynamicDailyViews(c.id);
             
-            // El botón de borrar aparece solo si eres admin y el canal es de tu propiedad mediante Telegram ID
             const adminDeleteButton = (state.user.role === 'admin' && c.telegramUserId === state.user.idTelegram) ? `
                 <button class="btn-delete-channel" onclick="event.stopPropagation(); openDeleteModal(${c.id}, '${c.name}')">
                     <i data-lucide="trash-2" style="width:14px; height:14px;"></i> Eliminar del Directorio
@@ -981,15 +1335,12 @@
             lucide.createIcons();
         }
 
-        // CONTROL LOGICO ABSOLUTO UNIFICADO CON EL ID DE TELEGRAM DE LA API
         function renderMyOwnedChannelsList() {
             const container = document.getElementById("my-owned-channels-list");
             if (!container) return;
-            
             const myOwned = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram);
-            
             if (myOwned.length === 0) {
-                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee ningún canal asociado en el Directorio Global.</div>`;
+                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee ningún canal asociado.</div>`;
                 return;
             }
             container.innerHTML = myOwned.map(c => buildChannelCardHtml(c)).join('');
@@ -1000,7 +1351,6 @@
             const container = document.getElementById("favorites-list");
             if (!container) return;
             const favs = INITIAL_CHANNELS_DATASET.filter(c => state.favorites.includes(c.id));
-            
             if (favs.length === 0) {
                 container.innerHTML = `<div class="empty-state-notice">No tienes canales guardados como favoritos todavía.</div>`;
                 return;
@@ -1050,15 +1400,8 @@
             lucide.createIcons();
         }
 
-        function expandHistoryView() {
-            showFullHistory = true;
-            renderHistoryList();
-        }
-
-        function collapseHistoryView() {
-            showFullHistory = false;
-            renderHistoryList();
-        }
+        function expandHistoryView() { showFullHistory = true; renderHistoryList(); }
+        function collapseHistoryView() { showFullHistory = false; renderHistoryList(); }
 
         function toggleAccordionEffect(id) {
             document.getElementById(`accordion-${id}`)?.parentElement.classList.toggle("expanded");
@@ -1105,90 +1448,17 @@
             registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
         }
 
-        function renderShopCatalog() {
-            const row = document.getElementById("shop-catalog-row");
-            if (!row) return;
-
-            row.innerHTML = PREMIUM_SHOP_CATALOG.map(item => {
-                const hasRange = state.user.range >= item.minRange;
-                const hasBalance = state.user.balance >= item.cost;
-                const isPurchased = state.purchasedItems.includes(item.id);
-                
-                let buttonHtml = '';
-                let cardClass = 'item-shop-card';
-
-                if (isPurchased) {
-                    buttonHtml = `<button class="btn-shop-buy" style="background:rgba(46,204,113,0.2); color:var(--success-green); border:1px solid var(--success-green);" onclick="equipAccessory('${item.visual}', '${item.type}')">Equipar</button>`;
-                } else if (!hasRange) {
-                    cardClass += ' locked-item';
-                    buttonHtml = `<button class="btn-shop-buy state-locked" onclick="handlePurchaseAttempt('${item.id}', 'locked')">🔒 Rango ${item.minRange}</button>`;
-                } else if (!hasBalance) {
-                    buttonHtml = `<button class="btn-shop-buy state-insufficient" onclick="handlePurchaseAttempt('${item.id}', 'insufficient')">Falta Saldo</button>`;
-                } else {
-                    buttonHtml = `<button class="btn-shop-buy state-ready" onclick="handlePurchaseAttempt('${item.id}', 'ready', ${item.cost}, '${item.visual}', '${item.type}')">Comprar</button>`;
-                }
-
-                return `
-                    <div class="${cardClass}">
-                        <div class="ia-avatar-frame" style="width:50px; height:50px; border-width:2px; margin-bottom:2px;">
-                            <img src="https://api.multiavatar.com/${item.visual}.svg" alt="Item">
-                        </div>
-                        <div style="font-size:0.75rem; font-weight:700; min-height:32px; display:flex; align-items:center; justify-content:center;">${item.name}</div>
-                        <div style="color:var(--vip-gold); font-size:0.8rem; font-weight:800; margin-bottom:6px;">${item.cost} ✨</div>
-                        ${buttonHtml}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function handlePurchaseAttempt(itemId, stateType, cost = 0, visual = '', itemType = '') {
-            if (stateType === 'locked') {
-                showToast("Artículo Bloqueado por Rango", "error");
-            } 
-            else if (stateType === 'insufficient') {
-                showToast("Puntos de energía insuficientes", "error");
-            } 
-            else if (stateType === 'ready') {
-                state.user.balance -= cost;
-                state.purchasedItems.push(itemId);
-                
-                triggerConfettiExplosion();
-                equipAccessory(visual, itemType);
-                
-                showToast("¡Compra efectuada con éxito por API!", "gold");
-                registerActionToHistory("Compra Premium", `Adquiriste el artículo estético: ${visual}`, "gold");
-                
-                updateBalanceAndRpgUi();
-                renderShopCatalog();
-            }
-        }
-
-        function equipAccessory(seedName, type) {
-            state.user.currentSeed = seedName;
-            document.getElementById("shop-ia-avatar-preview").src = `https://api.multiavatar.com/${seedName}.svg`;
-            document.getElementById("drawer-avatar-render").src = `https://api.multiavatar.com/${seedName}.svg`;
-            
-            showToast("Apariencia forjada por IA con éxito", "success");
-            saveToLocalStorage();
-        }
-
         function triggerConfettiExplosion() {
             const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];
-            
             for (let i = 0; i < 65; i++) {
                 const particle = document.createElement("div");
                 particle.className = "confetti-particle";
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                particle.style.left = `50%`;
-                particle.style.top = `50%`;
-                
+                particle.style.left = `50%`; particle.style.top = `50%`;
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = Math.random() * 260 + 80;
-                
                 particle.style.setProperty('--x', `${Math.cos(angle) * velocity}px`);
                 particle.style.setProperty('--y', `${Math.sin(angle) * velocity}px`);
-                
                 document.body.appendChild(particle);
                 setTimeout(() => particle.remove(), 1200);
             }
@@ -1201,12 +1471,9 @@
             document.getElementById("modal-delete-request").style.display = "flex";
         }
 
-        document.getElementById("modal-delete-request").style.display = "none";
-        document.getElementById("modal-logs-view").style.display = "none";
-
-        function closeDeleteModal() {
-            document.getElementById("modal-delete-request").style.display = "none";
-        }
+        function closeDeleteModal() { document.getElementById("modal-delete-request").style.display = "none"; }
+        function openLogsModal() { document.getElementById("modal-logs-view").style.display = "flex"; }
+        function closeLogsModal() { document.getElementById("modal-logs-view").style.display = "none"; }
 
         function sendDeleteRequestToTelegram() {
             const chId = document.getElementById("delete-channel-id").value;
@@ -1219,21 +1486,12 @@
             }
 
             const messagePayload = `🚨 SOLICITUD DE BAJA DE CANAL 🚨\n\n• Canal ID: ${chId}\n• Nombre: ${chName}\n• Solicitante: ${state.user.username}\n• Motivo: ${reason}`;
-
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
                 window.Telegram.WebApp.sendData(messagePayload);
-            } else {
-                console.log("Datos enviados a Telegram Soporte Privado:", messagePayload);
             }
-
             closeDeleteModal();
             showToast("Solicitud enviada a soporte privado", "gold");
-            registerActionToHistory("Solicitud de Baja", `Solicitaste remover del directorio a: ${chName}`, "info");
-            addLog(`Solicitud de baja para canal id ${chId} enviada.`);
         }
-
-        function openLogsModal() { document.getElementById("modal-logs-view").style.display = "flex"; }
-        function closeLogsModal() { document.getElementById("modal-logs-view").style.display = "none"; }
     </script>
 </body>
 </html>

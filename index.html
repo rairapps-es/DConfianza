@@ -3,44 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lista Golden Ads - MiniApp Premium</title>
-    <!-- Script Oficial de Telegram WebApp -->
+    <title>Canales Top</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Lucide Icons para una interfaz de alta fidelidad -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* ==========================================================================
            VARIABLES DE DISEÑO PREMIUM (TEMA OSCURO / CLARO FLUIDO)
            ========================================================================== */
         :root {
-            --bg-principal: #0b0e14;
-            --bg-tarjeta: #161b22;
-            --bg-tarjeta-hover: #1f2631;
+            --bg-principal: #080b11;
+            --bg-tarjeta: #121824;
+            --bg-tarjeta-hover: #1b2436;
             --telegram-blue: #24A1DE;
             --success-green: #2ecc71;
-            --mystic-purple: #8a2be2;
-            --vip-gold: #F5A623;
-            --vip-gold-gradient: linear-gradient(135deg, #F5A623 0%, #f1c40f 100%);
-            --text-main: #ffffff;
-            --text-muted: #8b949e;
-            --border-color: #30363d;
-            --glass-bg: rgba(22, 27, 34, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --shadow-neon: 0 0 15px rgba(36, 161, 222, 0.2);
-            --shadow-gold: 0 0 20px rgba(245, 166, 35, 0.35);
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --mystic-purple: #a855f7;
+            --vip-gold: #f59e0b;
+            --vip-gold-gradient: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+            --premium-gradient: linear-gradient(135deg, #24A1DE 0%, #a855f7 50%, #f59e0b 100%);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --glass-bg: rgba(18, 24, 36, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --shadow-neon: 0 0 25px rgba(36, 161, 222, 0.25);
+            --shadow-gold: 0 0 30px rgba(245, 158, 11, 0.35);
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         [data-theme="light"] {
-            --bg-principal: #f4f6f9;
+            --bg-principal: #f8fafc;
             --bg-tarjeta: #ffffff;
-            --bg-tarjeta-hover: #f8fafc;
+            --bg-tarjeta-hover: #f1f5f9;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: rgba(15, 23, 42, 0.08);
-            --shadow-neon: 0 4px 12px rgba(36, 161, 222, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(15, 23, 42, 0.05);
+            --shadow-neon: 0 8px 20px rgba(36, 161, 222, 0.1);
         }
 
         * {
@@ -57,6 +56,9 @@
             overflow-x: hidden;
             padding-bottom: 90px;
             transition: var(--transition-smooth);
+            background-image: radial-gradient(circle at 50% 0%, rgba(36, 161, 222, 0.12), transparent 50%),
+                              radial-gradient(circle at 0% 100%, rgba(168, 85, 247, 0.08), transparent 40%);
+            background-attachment: fixed;
         }
 
         /* REGLAS DE VISIBILIDAD ADMIN SEGÚN EL ROL */
@@ -70,220 +72,279 @@
         /* CABECERA Y PANEL */
         .app-header {
             position: fixed; top: 0; left: 0; width: 100%; height: 65px;
-            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border); display: flex;
             justify-content: space-between; align-items: center; padding: 0 20px; z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
         .header-logo {
-            font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5px;
-            background: linear-gradient(90deg, var(--telegram-blue), var(--mystic-purple));
+            font-weight: 900; font-size: 1.3rem; letter-spacing: 1px;
+            background: var(--premium-gradient);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 2px rgba(36,161,222,0.3)); }
+            100% { filter: drop-shadow(0 0 8px rgba(168,85,247,0.6)); }
         }
 
         .header-center-icon { cursor: pointer; color: var(--text-muted); transition: var(--transition-smooth); display: flex; align-items: center; }
-        .header-center-icon:hover { color: var(--vip-gold); transform: scale(1.1); }
+        .header-center-icon:hover { color: var(--vip-gold); transform: scale(1.1) rotate(15deg); }
 
-        .avatar-container { width: 40px; height: 40px; position: relative; cursor: pointer; }
+        .avatar-container { width: 40px; height: 40px; position: relative; cursor: pointer; transition: var(--transition-smooth); }
+        .avatar-container:hover { transform: scale(1.05); }
         .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid transparent; }
         .avatar-container::after {
             content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px;
-            border-radius: 50%; border: 2px solid var(--ring-color, var(--telegram-blue));
-            box-shadow: 0 0 10px var(--ring-color, var(--telegram-blue)); z-index: -1; pointer-events: none;
+            border-radius: 50%; border: 2px solid var(--telegram-blue);
+            box-shadow: var(--shadow-neon); z-index: -1; pointer-events: none;
+            animation: rotateRing 6s linear infinite;
         }
 
+        @keyframes rotateRing { 100% { transform: rotate(360deg); } }
+
         .profile-drawer {
-            position: fixed; top: -100%; left: 0; width: 100%; max-height: 90vh;
-            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            position: fixed; top: -100%; left: 0; width: 100%; max-height: 95vh;
+            background: rgba(18, 24, 36, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-bottom: 1px solid var(--glass-border); z-index: 999; padding: 85px 20px 25px 20px;
-            border-radius: 0 0 24px 24px; transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-            overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 0 0 32px 32px; transition: top 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
         .profile-drawer.open { top: 0; }
         .drawer-identity { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 15px; }
-        .drawer-avatar-big { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 3px solid var(--border-color); transition: var(--transition-smooth); }
-        .drawer-username-tag { font-size: 1.1rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; flex-direction: column; }
+        .drawer-avatar-big { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 3px solid var(--border-color); transition: var(--transition-smooth); box-shadow: var(--shadow-neon); }
+        .drawer-username-tag { font-size: 1.2rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; flex-direction: column; }
 
         /* BARRA PROGRESO RPG */
-        .rpg-progress-container { width: 100%; margin: 5px 0 15px 0; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 10px; border-radius: 12px; }
-        .rpg-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+        .rpg-progress-container { width: 100%; margin: 5px 0 15px 0; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 12px; border-radius: 16px; }
+        .rpg-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
 
         .premium-balance-box {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(36, 161, 222, 0.2) 100%);
-            border: 1px solid var(--telegram-blue); box-shadow: var(--shadow-neon); border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 15px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(36, 161, 222, 0.15) 100%);
+            border: 1px solid rgba(36, 161, 222, 0.4); box-shadow: var(--shadow-neon); border-radius: 16px; padding: 14px; text-align: center; margin-bottom: 15px;
+            position: relative; overflow: hidden;
         }
-        .balance-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 5px; }
-        .balance-amount { font-size: 1.6rem; font-weight: 800; color: #fff; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .premium-balance-box::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: rotate(45deg); animation: shineGlow 4s infinite linear;
+        }
+        @keyframes shineGlow { 0% { transform: translate(-50%,-50%) rotate(45deg); } 100% { transform: translate(50%,50%) rotate(45deg); } }
+        
+        .balance-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 5px; }
+        .balance-amount { font-size: 1.8rem; font-weight: 900; color: #fff; display: flex; justify-content: center; align-items: center; gap: 8px; }
 
-        .role-switch-container { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 12px 16px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border-color); }
-        .switch-label { font-size: 0.9rem; font-weight: 500; }
-        .toggle-btn { position: relative; width: 50px; height: 26px; background-color: var(--border-color); border-radius: 50px; cursor: pointer; transition: var(--transition-smooth); }
-        .toggle-btn::after { content: ''; position: absolute; width: 20px; height: 20px; border-radius: 50%; background-color: #fff; top: 3px; left: 3px; transition: var(--transition-smooth); }
-        .toggle-btn.active { background-color: var(--telegram-blue); }
-        .toggle-btn.active::after { left: 27px; }
+        .role-switch-container { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 12px 16px; border-radius: 14px; margin-bottom: 15px; border: 1px solid var(--border-color); }
+        .switch-label { font-size: 0.9rem; font-weight: 600; }
+        .toggle-btn { position: relative; width: 54px; height: 28px; background-color: var(--border-color); border-radius: 50px; cursor: pointer; transition: var(--transition-smooth); }
+        .toggle-btn::after { content: ''; position: absolute; width: 22px; height: 22px; border-radius: 50%; background-color: #fff; top: 3px; left: 3px; transition: var(--transition-smooth); box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .toggle-btn.active { background-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
+        .toggle-btn.active::after { left: 29px; }
 
         .status-counters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
-        .counter-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px 6px; text-align: center; display: flex; flex-direction: column; justify-content: center; cursor: pointer; transition: var(--transition-smooth); }
-        .counter-card:hover { background: rgba(255,255,255,0.06); border-color: var(--telegram-blue); }
-        .counter-card span:first-child { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
-        .counter-card span:last-child { font-size: 0.68rem; color: var(--text-muted); margin-top: 4px; }
+        .counter-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 6px; text-align: center; display: flex; flex-direction: column; justify-content: center; cursor: pointer; transition: var(--transition-smooth); }
+        .counter-card:hover { background: rgba(255,255,255,0.05); border-color: var(--telegram-blue); transform: translateY(-2px); }
+        .counter-card span:first-child { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+        .counter-card span:last-child { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
 
         .drawer-links { display: flex; flex-direction: column; gap: 8px; }
-        .drawer-btn { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: var(--transition-smooth); }
-        .drawer-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--text-muted); }
-        .drawer-btn.locked { opacity: 0.5; background: rgba(0,0,0,0.4); border-color: transparent; }
+        .drawer-btn { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); color: var(--text-main); padding: 14px 18px; border-radius: 14px; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: var(--transition-smooth); }
+        .drawer-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--text-muted); transform: translateX(4px); }
+        .drawer-btn.locked { opacity: 0.5; background: rgba(0,0,0,0.4); border-color: transparent; cursor: not-allowed; }
 
-        .app-view { display: none; padding: 85px 16px 20px 16px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.4s ease-out forwards; }
-        .app-view.active-view { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .view-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        /* VISTAS Y ANIMACIONES */
+        .app-view { display: none; padding: 85px 16px 20px 16px; max-width: 600px; margin: 0 auto; }
+        .app-view.active-view { display: block; animation: slideUpView 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideUpView { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .view-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
 
         /* TAB BAR INFERIOR */
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-top: 1px solid var(--glass-border); display: grid; grid-template-columns: repeat(5, 1fr); z-index: 1000; }
-        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); font-size: 0.65rem; font-weight: 500; gap: 4px; }
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 72px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: grid; grid-template-columns: repeat(5, 1fr); z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.3); }
+        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); font-size: 0.7rem; font-weight: 600; gap: 5px; position: relative; }
         .tab-item.active-tab { color: var(--telegram-blue); }
-        .tab-item i { width: 22px; height: 22px; }
+        .tab-item.active-tab::before { content: ''; position: absolute; top: 0; width: 40%; height: 3px; background: var(--telegram-blue); border-radius: 0 0 4px 4px; box-shadow: var(--shadow-neon); }
+        .tab-item i { width: 22px; height: 22px; transition: var(--transition-smooth); }
+        .tab-item.active-tab i { transform: scale(1.15) translateY(-2px); }
 
-        /* TOASTS Y COMPONENTES */
-        #toast-container { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 2200; width: calc(100% - 32px); max-width: 400px; pointer-events: none; display: flex; flex-direction: column; gap: 10px; }
-        .toast-card { background: var(--bg-tarjeta); color: var(--text-main); border-left: 4px solid var(--telegram-blue); padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 12px; font-size: 0.85rem; font-weight: 500; pointer-events: auto; border: 1px solid var(--glass-border); animation: slideInToast 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25) forwards; }
-        .toast-card.error { border-left-color: #e74c3c; }
-        .toast-card.success { border-left-color: var(--success-green); }
-        .toast-card.gold { border-left-color: var(--vip-gold); }
-        @keyframes slideInToast { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        /* TOASTS AVANZADOS Y LLAMATIVOS */
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 2200; width: calc(100% - 32px); max-width: 420px; pointer-events: none; display: flex; flex-direction: column; gap: 10px; }
+        .toast-card { background: rgba(18, 24, 36, 0.9); backdrop-filter: blur(12px); color: var(--text-main); border-left: 5px solid var(--telegram-blue); padding: 16px 20px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 14px; font-size: 0.9rem; font-weight: 600; pointer-events: auto; border: 1px solid var(--glass-border); animation: toastBounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .toast-card.error { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); }
+        .toast-card.success { border-left-color: var(--success-green); background: rgba(46, 204, 113, 0.1); border-color: rgba(46, 204, 113, 0.2); }
+        .toast-card.gold { border-left-color: var(--vip-gold); background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); box-shadow: var(--shadow-gold); }
+        @keyframes toastBounceIn { from { opacity: 0; transform: translateY(-30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .toast-leave { animation: toastFadeOut 0.3s ease forwards; }
+        @keyframes toastFadeOut { to { opacity: 0; transform: scale(0.8); margin-top: -60px; } }
+
+        /* SECCIÓN DE TOP 3 CANALES */
+        .top-podium-section { margin-bottom: 28px; }
+        .podium-grid { display: flex; flex-direction: column; gap: 14px; position: relative; }
+        .podium-card { background: linear-gradient(145deg, #161f30 0%, var(--bg-tarjeta) 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; position: relative; transition: var(--transition-smooth); overflow: hidden; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        .podium-card:hover { transform: translateY(-4px) scale(1.02); border-color: rgba(255,255,255,0.15); }
+        .podium-card.rank-1 { border: 1.5px solid var(--vip-gold); box-shadow: var(--shadow-gold); background: linear-gradient(145deg, #241a08 0%, var(--bg-tarjeta) 100%); }
+        .podium-card.rank-2 { border: 1.5px solid #cbd5e1; background: linear-gradient(145deg, #1e242e 0%, var(--bg-tarjeta) 100%); }
+        .podium-card.rank-3 { border: 1.5px solid #b45309; background: linear-gradient(145deg, #1c140e 0%, var(--bg-tarjeta) 100%); }
+        .podium-badge { position: absolute; top: 12px; right: 16px; font-weight: 900; font-size: 1.8rem; opacity: 0.8; font-style: italic; }
+        .rank-1 .podium-badge { color: var(--vip-gold); text-shadow: 0 0 10px rgba(245,158,11,0.5); }
+        .rank-2 .podium-badge { color: #cbd5e1; }
+        .rank-3 .podium-badge { color: #b45309; }
 
         /* FILTROS AVANZADOS EN DIRECTORIO */
-        .directory-filters-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px; margin-bottom: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .filter-select { background: rgba(0,0,0,0.2); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; font-size: 0.8rem; outline: none; width: 100%; }
+        .directory-filters-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .filter-select { background: rgba(0,0,0,0.3); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; font-size: 0.85rem; outline: none; width: 100%; transition: var(--transition-smooth); font-weight: 600; cursor: pointer; }
+        .filter-select:focus { border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-        .stat-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 12px; transition: var(--transition-smooth); cursor: pointer; }
-        .stat-card:hover { transform: translateY(-3px); background: var(--bg-tarjeta-hover); border-color: var(--telegram-blue); }
-        .stat-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(36, 161, 222, 0.1); color: var(--telegram-blue); display: flex; align-items: center; justify-content: center; }
-        .stat-info h4 { font-size: 1.1rem; font-weight: 700; }
-        .stat-info p { font-size: 0.75rem; color: var(--text-muted); }
+        .stat-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 16px; border-radius: 18px; display: flex; align-items: center; gap: 14px; transition: var(--transition-smooth); cursor: pointer; }
+        .stat-card:hover { transform: translateY(-4px); background: var(--bg-tarjeta-hover); border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
+        .stat-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(36, 161, 222, 0.1); color: var(--telegram-blue); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); }
+        .stat-card:hover .stat-icon { transform: scale(1.1) rotate(-5deg); }
+        .stat-info h4 { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .stat-info p { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
 
         /* VIP SLIDER */
         .slider-section { margin-bottom: 24px; }
-        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .slider-arrows { display: flex; gap: 8px; }
-        .arrow-btn { background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition-smooth); }
-        .slider-container { display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 8px; scrollbar-width: none; }
+        .arrow-btn { background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition-smooth); }
+        .arrow-btn:hover { background: var(--bg-tarjeta-hover); border-color: var(--text-main); }
+        .slider-container { display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; padding: 4px 4px 10px 4px; scrollbar-width: none; }
         .slider-container::-webkit-scrollbar { display: none; }
-        .vip-slide-card { min-width: 260px; max-width: 260px; background: linear-gradient(145deg, #1d2430 0%, #161b22 100%); border: 1px solid var(--vip-gold); box-shadow: 0 4px 15px rgba(245, 166, 35, 0.1); border-radius: 16px; padding: 16px; cursor: pointer; }
+        .vip-slide-card { min-width: 260px; max-width: 260px; background: linear-gradient(145deg, #182235 0%, #121824 100%); border: 1px solid var(--vip-gold); box-shadow: 0 6px 18px rgba(245, 158, 11, 0.12); border-radius: 18px; padding: 16px; cursor: pointer; transition: var(--transition-smooth); }
+        .vip-slide-card:hover { transform: scale(1.03); box-shadow: var(--shadow-gold); }
 
-        .roulette-card { background: linear-gradient(135deg, #2c1a4d 0%, #161b22 100%); border: 1px solid var(--mystic-purple); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 24px; }
-        .roulette-btn { background: var(--mystic-purple); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth); margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; }
-        .shake-anim { animation: shake 0.4s ease-in-out; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+        .roulette-card { background: linear-gradient(135deg, #2d124d 0%, #121824 100%); border: 1px solid var(--mystic-purple); border-radius: 24px; padding: 22px; text-align: center; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(168,85,247,0.15); }
+        .roulette-btn { background: var(--mystic-purple); color: white; border: none; padding: 14px 28px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth); margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(168,85,247,0.4); }
+        .roulette-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168,85,247,0.6); }
+        .shake-anim { animation: shake 0.5s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
 
-        .creator-banner { background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%); border: 1px dashed var(--vip-gold); border-radius: 16px; padding: 18px; text-align: center; margin-bottom: 24px; }
+        .creator-banner { background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%); border: 1.5px dashed var(--vip-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 24px; animation: pulseBorder 2s infinite alternate; }
+        @keyframes pulseBorder { from { border-color: var(--border-color); } to { border-color: var(--vip-gold); } }
 
         /* CARDS Y CONTADOR DE VISITAS */
-        .search-wrapper { position: relative; margin-bottom: 16px; }
-        .search-input { width: 100%; background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); padding: 14px 16px 14px 46px; border-radius: 14px; font-size: 0.95rem; transition: var(--transition-smooth); }
-        .search-icon { position: absolute; top: 14px; left: 16px; color: var(--text-muted); pointer-events: none; }
+        .search-wrapper { position: relative; margin-bottom: 18px; }
+        .search-input { width: 100%; background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); padding: 15px 16px 15px 48px; border-radius: 16px; font-size: 1rem; transition: var(--transition-smooth); }
+        .search-input:focus { border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); outline: none; }
+        .search-icon { position: absolute; top: 15px; left: 16px; color: var(--text-muted); pointer-events: none; }
 
         .categories-carousel { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 14px; margin-bottom: 12px; scrollbar-width: none; }
         .categories-carousel::-webkit-scrollbar { display: none; }
-        .cat-chip { white-space: nowrap; background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
-        .cat-chip.active-chip { background: var(--telegram-blue); color: #fff; border-color: var(--telegram-blue); }
+        .cat-chip { white-space: nowrap; background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
+        .cat-chip:hover { color: var(--text-main); background: var(--bg-tarjeta-hover); }
+        .cat-chip.active-chip { background: var(--telegram-blue); color: #fff; border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
 
         .directory-grid { display: flex; flex-direction: column; gap: 14px; }
-        .channel-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; overflow: hidden; transition: var(--transition-smooth); position: relative; }
-        .channel-card.vip-border { border: 1.5px solid var(--vip-gold); background: linear-gradient(180deg, rgba(22,27,34,1) 0%, rgba(35,30,22,0.4) 100%); }
+        .channel-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; overflow: hidden; transition: var(--transition-smooth); position: relative; }
+        .channel-card:hover { border-color: var(--text-muted); }
+        .channel-card.vip-border { border: 1.5px solid var(--vip-gold); background: linear-gradient(180deg, rgba(18,24,36,1) 0%, rgba(245,158,11,0.03) 100%); box-shadow: 0 4px 15px rgba(245,158,11,0.05); }
+        .channel-card.vip-border:hover { box-shadow: var(--shadow-gold); }
         
         .card-main-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .card-identity-box { display: flex; align-items: center; gap: 12px; }
-        .channel-thumb { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; background: #24a2de1a; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-        .channel-meta h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-        .channel-meta p { font-size: 0.75rem; color: var(--text-muted); }
+        .card-identity-box { display: flex; align-items: center; gap: 14px; }
+        .channel-thumb { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; background: rgba(36,161,222,0.08); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: var(--transition-smooth); }
+        .channel-card:hover .channel-thumb { transform: scale(1.05); }
+        .channel-meta h4 { font-size: 1rem; font-weight: 800; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; letter-spacing: -0.3px; }
+        .channel-meta p { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
         
-        /* CONTADOR DE VISITAS DIARIAS */
-        .live-traffic-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(36,161,222,0.1); color: var(--telegram-blue); font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; margin-top: 6px; border: 1px solid rgba(36,161,222,0.2); }
-        .animated-vip-badge { background: var(--vip-gold-gradient); color: #000; font-size: 0.6rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; box-shadow: 0 0 8px rgba(245,166,35,0.4); }
+        /* BADGES */
+        .live-traffic-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(36,161,222,0.08); color: var(--telegram-blue); font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; margin-top: 6px; border: 1px solid rgba(36,161,222,0.15); }
+        .animated-vip-badge { background: var(--vip-gold-gradient); color: #000; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 6px; box-shadow: 0 0 10px rgba(245,158,11,0.3); letter-spacing: 0.5px; }
 
-        .fav-star-icon { color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
-        .fav-star-icon.is-fav { color: var(--vip-gold); fill: var(--vip-gold); transform: scale(1.15); }
+        .fav-star-icon { color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); padding: 5px; }
+        .fav-star-icon:hover { transform: scale(1.2); color: var(--vip-gold); }
+        .fav-star-icon.is-fav { color: var(--vip-gold); fill: var(--vip-gold); transform: scale(1.2); filter: drop-shadow(0 0 5px rgba(245,158,11,0.5)); }
 
-        .card-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; margin-top: 0; }
-        .channel-card.expanded .card-accordion-content { max-height: 300px; border-top: 1px solid var(--border-color); margin-top: 14px; padding-top: 14px; }
-        .extended-data-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; }
+        /* ACCORDION */
+        .card-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s ease; margin-top: 0; }
+        .channel-card.expanded .card-accordion-content { max-height: 380px; border-top: 1px solid var(--border-color); margin-top: 14px; padding-top: 14px; }
+        .extended-data-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }
         .extended-data-row span strong { color: var(--text-main); }
-        .btn-subscribe-trigger { width: 100%; background: var(--telegram-blue); color: white; border: none; padding: 10px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition-smooth); }
-
-        /* COMPONENTES AVATAR PREMIUM E IA DE BEAR */
-        .shop-layout { display: flex; flex-direction: column; gap: 20px; }
-        .avatar-canvas-area { background: radial-gradient(circle, rgba(138,43,226,0.15) 0%, rgba(11,14,20,1) 100%); border: 2px solid var(--mystic-purple); border-radius: 20px; padding: 24px; text-align: center; position: relative; overflow: hidden; }
         
-        .bear-avatar-preview { width: 110px; height: 110px; margin: 0 auto 12px auto; background: var(--bg-tarjeta); border-radius: 50%; border: 3px solid var(--vip-gold); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; box-shadow: var(--shadow-gold); transition: var(--transition-smooth); }
-        .bear-accessory { position: absolute; top: -5px; right: -5px; font-size: 1.8rem; animation: pulseGacha 1.5s infinite alternate; }
+        .btn-subscribe-trigger { width: 100%; background: var(--telegram-blue); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition-smooth); box-shadow: 0 4px 12px rgba(36,161,222,0.25); }
+        .btn-subscribe-trigger:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(36,161,222,0.4); }
+        .btn-delete-channel { width: 100%; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition-smooth); margin-top: 8px; }
+        .btn-delete-channel:hover { background: #ef4444; color: white; transform: translateY(-2px); }
 
-        .shop-slider-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 6px 0; text-align: left; letter-spacing: 0.5px; }
-        .shop-carousel-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;}
+        /* MODALES FORMULARIOS */
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-control { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; color: var(--text-main); font-size: 0.9rem; transition: var(--transition-smooth); }
+        .form-control:focus { border-color: var(--telegram-blue); outline: none; }
+
+        /* SHOP */
+        .shop-layout { display: flex; flex-direction: column; gap: 20px; }
+        .avatar-canvas-area { background: radial-gradient(circle, rgba(168,85,247,0.2) 0%, rgba(18,24,36,1) 100%); border: 2px solid var(--mystic-purple); border-radius: 24px; padding: 26px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(168,85,247,0.1); }
+        
+        .bear-avatar-preview { width: 115px; height: 115px; margin: 0 auto 12px auto; background: var(--bg-tarjeta); border-radius: 50%; border: 3px solid var(--vip-gold); display: flex; align-items: center; justify-content: center; font-size: 3.8rem; position: relative; box-shadow: var(--shadow-gold); transition: var(--transition-smooth); }
+        .bear-accessory { position: absolute; top: -5px; right: -5px; font-size: 2rem; animation: pulseGacha 1.5s infinite alternate; }
+        @keyframes pulseGacha { from { transform: scale(0.9) rotate(-10deg); } to { transform: scale(1.1) rotate(10deg); } }
+
+        .shop-slider-label { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 6px 0; text-align: left; letter-spacing: 1px; }
+        .shop-carousel-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;}
         .shop-carousel-row::-webkit-scrollbar { display: none; }
         
-        .item-shop-card { min-width: 120px; max-width: 120px; background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 8px; text-align: center; cursor: pointer; transition: var(--transition-smooth); display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 6px; }
-        .item-shop-card.locked-item { opacity: 0.6; background: rgba(0,0,0,0.2); }
+        .item-shop-card { min-width: 125px; max-width: 125px; background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 10px; text-align: center; cursor: pointer; transition: var(--transition-smooth); display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 6px; }
+        .item-shop-card:hover { transform: translateY(-4px); border-color: var(--text-muted); }
+        .item-shop-card.locked-item { opacity: 0.5; background: rgba(0,0,0,0.3); }
         
-        /* ESTADOS DE BOTONES EN TIENDA */
-        .btn-shop-buy { width: 100%; border: none; padding: 8px; border-radius: 8px; font-weight: 700; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: var(--transition-smooth); }
-        .btn-shop-buy.state-locked { background: #30363d; color: var(--text-muted); }
-        .btn-shop-buy.state-insufficient { background: rgba(231,76,60,0.2); color: #e74c3c; border: 1px solid #e74c3c; }
-        .btn-shop-buy.state-ready { background: var(--vip-gold-gradient); color: #000; box-shadow: 0 4px 10px rgba(245,166,35,0.2); }
+        .btn-shop-buy { width: 100%; border: none; padding: 9px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: var(--transition-smooth); }
+        .btn-shop-buy.state-locked { background: #1e293b; color: var(--text-muted); }
+        .btn-shop-buy.state-insufficient { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }
+        .btn-shop-buy.state-ready { background: var(--vip-gold-gradient); color: #000; box-shadow: 0 4px 10px rgba(245,158,11,0.25); }
 
-        /* EFECTO CONFETI BURST */
-        .confetti-particle { position: absolute; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; animation: explodeConfetti 0.8s ease-out forwards; z-index: 2500; }
+        /* CONFETTI BURST */
+        .confetti-particle { position: absolute; width: 9px; height: 9px; border-radius: 50%; pointer-events: none; animation: explodeConfetti 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 2500; }
         @keyframes explodeConfetti {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(0.4); opacity: 0; }
+            0% { transform: translate(0, 0) scale(1.2); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0.3) rotate(360deg); opacity: 0; }
         }
 
-        .energy-table { width: 100%; border-collapse: collapse; background: var(--bg-tarjeta); border-radius: 14px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.82rem; }
-        .energy-table th, .energy-table td { padding: 12px 14px; text-align: left; }
-        .energy-table th { background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted); }
+        .energy-table { width: 100%; border-collapse: collapse; background: var(--bg-tarjeta); border-radius: 18px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.85rem; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .energy-table th, .energy-table td { padding: 14px 16px; text-align: left; }
+        .energy-table th { background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 700; }
+        .energy-table tr:not(:last-child) { border-bottom: 1px solid var(--border-color); }
 
         /* MODALES */
-        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 10, 15, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-body-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 24px; padding: 24px; width: 100%; max-width: 440px; position: relative; animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards; }
-        @keyframes modalPop { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 7, 11, 0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-body-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 28px; padding: 26px; width: 100%; max-width: 440px; position: relative; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center; }
+        @keyframes modalPop { from { transform: scale(0.92) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
         
-        .logs-terminal { background: #05070a; border: 1px solid #1f242c; border-radius: 10px; padding: 12px; max-height: 250px; overflow-y: auto; font-family: monospace; font-size: 0.72rem; color: #39ff14; }
-        .log-line { padding: 4px 0; border-bottom: 1px solid rgba(57,255,20,0.05); line-height: 1.4; }
+        .logs-terminal { background: #04060a; border: 1px solid #141b26; border-radius: 12px; padding: 14px; max-height: 250px; overflow-y: auto; font-family: monospace; font-size: 0.75rem; color: #4ade80; text-align: left; }
+        .log-line { padding: 5px 0; border-bottom: 1px solid rgba(74,222,128,0.05); line-height: 1.4; }
 
-        .history-item-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .history-item-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 14px 18px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
         .history-left-pane { display: flex; align-items: center; gap: 12px; }
-        .history-icon-badge { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; background: rgba(255,255,255,0.04); }
-        .history-timestamp { font-size: 0.72rem; color: var(--text-muted); font-family: monospace; }
-        .empty-state-notice { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.9rem; }
+        .history-icon-badge { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: rgba(255,255,255,0.03); }
+        .history-timestamp { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
+        .empty-state-notice { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
 
-    <!-- CABECERA PRINCIPAL -->
     <header class="app-header">
-        <div class="header-logo">GOLDEN ADS</div>
+        <div class="header-logo">CANALES TOP</div>
         <div class="header-center-icon" onclick="switchView('shop')">
             <i data-lucide="shopping-bag"></i>
         </div>
         <div class="avatar-container" onclick="toggleProfileDrawer()">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2324A1DE'/><text x='50%' y='55%' font-size='40' font-weight='bold' fill='white' text-anchor='middle'>G</text></svg>" id="header-avatar" class="avatar-img" alt="Avatar">
+            <img src="" id="header-avatar" class="avatar-img" alt="Avatar">
         </div>
     </header>
 
-    <!-- MENÚ / GAVETA DE USUARIO RPG -->
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-identity">
             <div id="drawer-avatar-render" class="bear-avatar-preview" style="width: 75px; height: 75px; font-size: 2.2rem; margin-bottom: 5px;">🐻</div>
             <div class="drawer-username-tag">
-                <span id="drawer-username">@Explorador_Golden</span>
+                <span id="drawer-username">@Anónimo</span>
                 <span id="drawer-range" style="color: var(--vip-gold); font-size: 0.85rem; font-weight: 800;">[ Rango ]</span>
             </div>
         </div>
 
-        <!-- BARRA PROGRESO RANGO 5 -->
         <div class="rpg-progress-container">
             <div class="rpg-labels">
                 <span>Progreso RPG: <strong id="rpg-current-pts">0</strong>/100 Pts</span>
@@ -299,16 +360,14 @@
             <div class="balance-amount"><span id="profile-balance">0</span> <span style="color: var(--vip-gold)">✨ Pts</span></div>
         </div>
 
-        <!-- CAMBIO MODO VISTA EXPLORADOR / ADMIN -->
         <div class="role-switch-container">
             <div class="switch-label">Modo Vista Administrador</div>
             <div id="role-toggle" class="toggle-btn" onclick="toggleAdminRole()"></div>
         </div>
 
-        <!-- CONTADORES DE ESTADO CON ENLACES DIRECTOS -->
         <div class="status-counters">
             <div class="counter-card" onclick="toggleProfileDrawer(); switchView('directory')">
-                <span id="cnt-channels">38</span>
+                <span id="cnt-channels">0</span>
                 <span>Directorio</span>
             </div>
             <div class="counter-card" onclick="toggleProfileDrawer(); switchView('favorites')">
@@ -319,6 +378,12 @@
                 <span id="cnt-purchases">0</span>
                 <span>Mis Compras</span>
             </div>
+        </div>
+
+        <div class="admin-only" style="margin-bottom: 12px;">
+            <button class="drawer-btn" style="border-color: var(--vip-gold); background: rgba(245,158,11,0.05);" onclick="toggleProfileDrawer(); switchView('directory'); filterByAdminChannels();">
+                <span>🗂️ Mis Canales en Directorio (<strong id="cnt-my-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
+            </button>
         </div>
 
         <div class="drawer-links">
@@ -337,18 +402,22 @@
         </div>
     </div>
 
-    <!-- PESTAÑA 1: INICIO (HOME) -->
     <main id="view-home" class="app-view active-view">
         <div class="stats-grid">
             <div class="stat-card" onclick="switchView('directory')">
                 <div class="stat-icon"><i data-lucide="layers"></i></div>
-                <div class="stat-info"><h4 id="stat-total-channels">38</h4><p>Canales Activos</p></div>
+                <div class="stat-info"><h4 id="stat-total-channels">0</h4><p>Canales Activos</p></div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="color:var(--success-green); background:rgba(46,204,113,0.1);"><i data-lucide="users"></i></div>
                 <div class="stat-info"><h4>1,240</h4><p>Usuarios Online</p></div>
             </div>
         </div>
+
+        <section class="top-podium-section">
+            <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:14px; display:flex; align-items:center; gap:8px;">🔥 Canales del Top 3 Histórico</h3>
+            <div id="top-podium-container" class="podium-grid"></div>
+        </section>
 
         <section class="slider-section">
             <div class="slider-header">
@@ -370,7 +439,6 @@
             </button>
         </section>
 
-        <!-- CONTENIDO RESTRINGIDO: REGLA DE VISIBILIDAD DE ROL -->
         <div id="creator-ad-banner" class="creator-banner admin-only">
             <h4 style="color:var(--vip-gold); font-size:0.95rem; font-weight:800; margin-bottom:4px;">📣 Panel Avanzado de Administrador</h4>
             <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Estás viendo este banner porque tu rol actual es ADMIN.</p>
@@ -378,7 +446,6 @@
         </div>
     </main>
 
-    <!-- PESTAÑA 2: EXPLORAR DIRECTORIO (FILTROS Y PESTAÑAS) -->
     <main id="view-directory" class="app-view">
         <h2 class="view-title"><i data-lucide="compass" style="color:var(--telegram-blue)"></i> Explorar Directorio</h2>
         
@@ -387,23 +454,22 @@
             <input type="text" id="directory-search" class="search-input" placeholder="Buscar por palabra clave..." oninput="filterDirectory()">
         </div>
 
-        <!-- NAVEGACIÓN POR CATEGORÍAS EN PESTAÑAS -->
         <div id="categories-bar" class="categories-carousel"></div>
 
-        <!-- BLOQUE DE FILTROS AVANZADOS -->
         <div class="directory-filters-box">
             <div>
-                <label style="font-size:0.68rem; color:var(--text-muted); display:block; margin-bottom:4px;">Idioma</label>
-                <select id="filter-lang" class="filter-select" onchange="filterDirectory()">
-                    <option value="all">🌐 Todos los Idiomas</option>
-                    <option value="Español">Español</option>
-                    <option value="Inglés">Inglés</option>
+                <label style="font-size:0.68rem; color:var(--text-muted); display:block; margin-bottom:4px;">Filtrado Avanzado</label>
+                <select id="filter-sorting" class="filter-select" onchange="filterDirectory()">
+                    <option value="all">⚡ Todos los Canales</option>
+                    <option value="popular">🔥 Canales Populares</option>
+                    <option value="new">🆕 Nuevos Canales</option>
+                    <option value="trend">📈 Canales en Tendencia</option>
                 </select>
             </div>
             <div>
                 <label style="font-size:0.68rem; color:var(--text-muted); display:block; margin-bottom:4px;">Estatus del Canal</label>
                 <select id="filter-status" class="filter-select" onchange="filterDirectory()">
-                    <option value="all">⚡ Cualquier Estatus</option>
+                    <option value="all">💎 Cualquier Estatus</option>
                     <option value="Destacado">Destacados VIP</option>
                     <option value="Público">Públicos Estándar</option>
                 </select>
@@ -413,35 +479,30 @@
         <div id="directory-list" class="directory-grid"></div>
     </main>
 
-    <!-- PESTAÑA 3: FAVORITOS -->
     <main id="view-favorites" class="app-view">
         <h2 class="view-title"><i data-lucide="star" style="color:var(--vip-gold)"></i> Mis Favoritos</h2>
         <div id="favorites-list" class="directory-grid"></div>
     </main>
 
-    <!-- PESTAÑA 4: HISTORIAL DE COMPRAS / ACCESOS -->
     <main id="view-history" class="app-view">
         <h2 class="view-title"><i data-lucide="history" style="color:var(--success-green)"></i> Historial de Compras y Accesos</h2>
         <div id="history-list" class="directory-grid"></div>
     </main>
 
-    <!-- PESTAÑA 5: TIENDA RPG E IA AVATAR CON CONTROL DE ESTADOS -->
     <main id="view-shop" class="app-view">
         <h2 class="view-title"><i data-lucide="shopping-bag" style="color:var(--mystic-purple)"></i> Tienda RPG & Personalización por IA</h2>
         <div class="shop-layout">
             
-            <!-- Lienzo de personalización del Oso Bear -->
             <div class="avatar-canvas-area" id="canvas-area-wrapper">
                 <div class="bear-avatar-preview" id="shop-bear-avatar">🐻<span class="bear-accessory" id="active-acc"></span></div>
                 <div style="font-weight:700; font-size:0.95rem; color:#fff;">Constructor Personalizado por IA Bear</div>
                 <p style="font-size:0.75rem; color:var(--text-muted); max-width:280px; margin:0 auto 5px auto;">Forja trajes o reclama avatares premium usando tus puntos.</p>
             </div>
 
-            <!-- Catálogo de Accesorios y Personajes Predefinidos con Lógica de Botones Estricta -->
             <div class="shop-slider-label">Accesorios y Personajes Especiales</div>
             <div id="shop-catalog-row" class="shop-carousel-row"></div>
 
-            <div class="gacha-wrapper">
+            <div class="roulette-card" style="background: linear-gradient(135deg, #112c24 0%, #121824 100%); border-color: var(--success-green);">
                 <div style="font-size: 2.2rem; margin-bottom: 6px;">🎁</div>
                 <h3 style="font-size:1rem; font-weight:800; margin-bottom:4px;">Caja de Energía Diaria</h3>
                 <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">Obtén entre 5 y 50 puntos gratis cada 24h para subir tu Rango.</p>
@@ -450,7 +511,6 @@
         </div>
     </main>
 
-    <!-- PESTAÑA 6: TABLA INFORMATIVA GANAR PUNTOS -->
     <main id="view-energy" class="app-view">
         <h2 class="view-title"><i data-lucide="zap" style="color:var(--vip-gold)"></i> Tabla Informativa de Energía</h2>
         <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Acumula puntos de energía para subir tu nivel RPG hasta el Rango 5 y desbloquear la personalización avanzada por IA.</p>
@@ -469,7 +529,6 @@
         </table>
     </main>
 
-    <!-- MODAL LOCAL DE LOGS -->
     <div id="modal-logs-view" class="fullscreen-modal">
         <div class="modal-body-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
@@ -480,7 +539,27 @@
         </div>
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR (TAB BAR) -->
+    <div id="modal-delete-request" class="fullscreen-modal">
+        <div class="modal-body-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+                <h3 style="font-size:1.1rem; font-weight:800; color:#ef4444;">Formulario de Baja de Canal</h3>
+                <button style="background:none; border:none; color:var(--text-muted);" onclick="closeDeleteModal()"><i data-lucide="x"></i></button>
+            </div>
+            <input type="hidden" id="delete-channel-id">
+            <div class="form-group">
+                <label>Canal a remover</label>
+                <input type="text" id="delete-channel-name" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+                <label>Razón de la baja o Comentarios adicionales</label>
+                <textarea id="delete-channel-reason" class="form-control" rows="3" placeholder="Escribe aquí el motivo para enviar al soporte..."></textarea>
+            </div>
+            <button class="btn-subscribe-trigger" style="background:#ef4444; color:white; margin-top:10px; box-shadow:0 4px 12px rgba(239,68,68,0.25);" onclick="sendDeleteRequestToTelegram()">
+                <i data-lucide="send"></i> Enviar Solicitud Privada
+            </button>
+        </div>
+    </div>
+
     <nav class="tab-bar">
         <div class="tab-item active-tab" id="tab-home" onclick="switchView('home')">
             <i data-lucide="home"></i><span>Inicio</span>
@@ -499,20 +578,18 @@
         </div>
     </nav>
 
-    <!-- LOGICA DEL MOTOR PREMIUM -->
     <script>
-        // BASE DE DATOS LOCAL AMPLIADA DE CANALES
+        // BASE DE DATOS LOCAL AMPLIADA DE CANALES (CON ATRIBUTOS DE FILTRADO POPULARES, NUEVOS Y TENDENCIAS)
         const INITIAL_CHANNELS_DATASET = [
-            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos." },
-            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo." },
-            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables." },
-            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real." },
-            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial." },
-            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución." },
-            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram." }
+            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true },
+            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: true },
+            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: false },
+            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, isAdminOwned: false },
+            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, isAdminOwned: false },
+            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: false },
+            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true }
         ];
 
-        // CONFIGURACIÓN DEL CATÁLOGO DE LA TIENDA PREMIUM (ACCESORIOS Y COMBOS)
         const PREMIUM_SHOP_CATALOG = [
             { id: "acc_1", name: "Corona Dorada IA", cost: 15, minRange: 1, visual: "👑", type: "accessory" },
             { id: "acc_2", name: "Gafas Cyberpunk", cost: 30, minRange: 3, visual: "🕶️", type: "accessory" },
@@ -520,19 +597,23 @@
             { id: "combo_2", name: "Avatar VIP Bear de Oro", cost: 85, minRange: 5, visual: "🏆", type: "character" }
         ];
 
-        // ESTADO GLOBAL DE LA APLICACIÓN DE TELEGRAM
+        // CONFIGURACIÓN DE DATOS PREDEFINIDOS PARA USUARIO ANÓNIMO
+        const ANONYMOUS_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2364748b'/><text x='50%' y='55%' font-size='40' font-weight='bold' fill='white' text-anchor='middle'>?</text></svg>";
+
         let state = {
             user: { 
-                username: "Explorador_Golden", 
+                username: "Invitado Anónimo", 
                 balance: 25, 
                 role: "user", 
                 range: 1,
-                pointsProgress: 25
+                pointsProgress: 25,
+                photoUrl: ANONYMOUS_AVATAR
             },
             favorites: [], 
             history: [], 
             systemLogs: [],
-            purchasedItems: []
+            purchasedItems: [],
+            adminFilterOnly: false
         };
 
         const CATEGORIES = [
@@ -545,23 +626,74 @@
         let activeCategoryFilter = "all";
 
         document.addEventListener("DOMContentLoaded", () => {
+            loadFromLocalStorage();
             initTelegramContext();
             executeDailyCheckIn();
             renderAppUiComponents();
+            renderTopPodium();
             lucide.createIcons();
-            addLog("Ecosistema Premium inicializado.");
+            addLog("Ecosistema Premium inicializado y sincronizado.");
         });
 
+        // PERSISTENCIA ABSOLUTA EN LOCALSTORAGE
+        function saveToLocalStorage() {
+            localStorage.setItem('canales_top_state', JSON.stringify({
+                user: state.user,
+                favorites: state.favorites,
+                history: state.history,
+                systemLogs: state.systemLogs,
+                purchasedItems: state.purchasedItems
+            }));
+        }
+
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('canales_top_state');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    state.user = parsed.user || state.user;
+                    state.favorites = parsed.favorites || state.favorites;
+                    state.history = parsed.history || state.history;
+                    state.systemLogs = parsed.systemLogs || state.systemLogs;
+                    state.purchasedItems = parsed.purchasedItems || state.purchasedItems;
+                } catch(e) {
+                    console.error("Error cargando localStorage", e);
+                }
+            }
+        }
+
+        // CONTROL Y ACCESO AL CONTEXTO DE TELEGRAM (CON DATOS REALES VS PREDEFINIDOS)
         function initTelegramContext() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const webApp = window.Telegram.WebApp;
                 webApp.ready();
                 webApp.expand();
+                
+                // Aplicar colores nativos si están disponibles para mejorar inmersión elegante
+                if(webApp.colorScheme === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+
                 if (webApp.initDataUnsafe?.user) {
                     const tgUser = webApp.initDataUnsafe.user;
-                    state.user.username = tgUser.username ? `@${tgUser.username}` : `@id_${tgUser.id}`;
+                    state.user.username = tgUser.username ? `@${tgUser.username}` : `${tgUser.first_name}`;
+                    
+                    // Sincronización real de la imagen de Telegram si existe
+                    if (tgUser.photo_url) {
+                        state.user.photoUrl = tgUser.photo_url;
+                    } else {
+                        // Construcción elegante con su inicial real
+                        const letra = (tgUser.first_name || "U").charAt(0).toUpperCase();
+                        state.user.photoUrl = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2324A1DE'/><text x='50%' y='55%' font-size='40' font-weight='bold' fill='white' text-anchor='middle'>${letra}</text></svg>`;
+                    }
+                } else {
+                    // Datos predefinidos si es un usuario completamente anónimo fuera de Telegram
+                    state.user.username = "Invitado Anónimo";
+                    state.user.photoUrl = ANONYMOUS_AVATAR;
                 }
             }
+            document.getElementById("header-avatar").src = state.user.photoUrl;
+            saveToLocalStorage();
         }
 
         function addLog(msg) {
@@ -569,6 +701,7 @@
             state.systemLogs.unshift(`[${timestamp}] ${msg}`);
             const container = document.getElementById("logs-terminal-box");
             if (container) container.innerHTML = state.systemLogs.map(l => `<div class="log-line">${l}</div>`).join('');
+            saveToLocalStorage();
         }
 
         function registerActionToHistory(title, detail, type = "info") {
@@ -583,32 +716,41 @@
             if (document.getElementById("view-history").classList.contains("active-view")) {
                 renderHistoryList();
             }
+            saveToLocalStorage();
         }
 
+        // NOTIFICACIONES TOAST MEJORADAS Y VISTOSAS CON CONTROL ANIMADO ANIMATIONEND
         function showToast(text, type = "info") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             toast.className = `toast-card ${type}`;
-            toast.innerText = text;
+            
+            let iconName = "info";
+            if(type === "success") iconName = "check-circle";
+            if(type === "error") iconName = "alert-circle";
+            if(type === "gold") iconName = "sparkles";
+
+            toast.innerHTML = `<i data-lucide="${iconName}"></i> <span>${text}</span>`;
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3200);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add("toast-leave");
+                toast.addEventListener("animationend", () => toast.remove());
+            }, 3500);
         }
 
-        // CONTROL MATEMÁTICO DE VISITAS ÚNICAS ALEATORIAS DIARIAS (REFRESCO 24 HORAS REAL)
         function getDynamicDailyViews(channelId) {
             const todayTimestamp = Math.floor(new Date().setHours(0,0,0,0) / 86400000);
-            // Semilla pseudo-aleatoria basada en ID y la fecha del día
             const seed = (channelId * 31) + todayTimestamp;
             const MathRandomFromSeed = Math.abs(Math.sin(seed));
             return Math.floor(MathRandomFromSeed * (50 - 5 + 1)) + 5;
         }
 
-        // SISTEMA ACUMULADOR DE PUNTOS Y REGLA DE RANGOS RPG AUTOMÁTICOS
         function rewardPoints(amount, actionLabel) {
             state.user.balance += amount;
             state.user.pointsProgress += amount;
             
-            // Lógica de Niveles: Cada 20 puntos sube 1 Rango (Máximo Rango 5 a los 100 puntos)
             const oldRange = state.user.range;
             state.user.range = Math.min(5, Math.floor(state.user.pointsProgress / 20) + 1);
             
@@ -622,11 +764,17 @@
             
             updateBalanceAndRpgUi();
             renderShopCatalog();
+            saveToLocalStorage();
         }
 
         function executeDailyCheckIn() {
-            rewardPoints(15, "Check-In de Sesión Diario");
-            registerActionToHistory("Check-In Diario", "Recibiste +15 puntos de energía automáticos.", "success");
+            // Check-in diario solo una vez por fecha
+            const today = new Date().toDateString();
+            if(localStorage.getItem('last_checkin_date') !== today) {
+                localStorage.setItem('last_checkin_date', today);
+                rewardPoints(15, "Check-In de Sesión Diario");
+                registerActionToHistory("Check-In Diario", "Recibiste +15 puntos de energía automáticos.", "success");
+            }
         }
 
         function claimDailyGacha() {
@@ -642,6 +790,7 @@
         }
 
         function switchView(viewId) {
+            state.adminFilterOnly = false; // Resetear filtros especiales de vistas al navegar
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active-tab'));
             
@@ -654,7 +803,7 @@
             if (viewId === 'directory') renderDirectoryList();
             if (viewId === 'favorites') renderFavoritesList();
             if (viewId === 'history') renderHistoryList();
-            if (viewId === 'home') renderVipSlider();
+            if (viewId === 'home') { renderVipSlider(); renderTopPodium(); }
             if (viewId === 'shop') renderShopCatalog();
             lucide.createIcons();
         }
@@ -673,7 +822,6 @@
             }
         }
 
-        // CAMBIO DE MODO DE VISTA EXPLORADOR / ADMIN CON FILTRO REAL DE VISIBILIDAD
         function toggleAdminRole() {
             state.user.role = state.user.role === "admin" ? "user" : "admin";
             const toggle = document.getElementById("role-toggle");
@@ -681,15 +829,47 @@
             if(state.user.role === "admin") {
                 toggle.classList.add("active");
                 document.body.classList.add("role-admin");
-                showToast("Vista Cambiada: Administrador", "gold");
+                showToast("Vista Administrador Activada", "gold");
             } else {
                 toggle.classList.remove("active");
                 document.body.classList.remove("role-admin");
-                showToast("Vista Cambiada: Explorador", "info");
+                showToast("Vista Explorador Activada", "info");
             }
             
             addLog(`Rol modificado a: ${state.user.role}`);
             registerActionToHistory("Modo de Vista", `Cambio a rol: ${state.user.role.toUpperCase()}`, "info");
+            renderDirectoryList();
+            saveToLocalStorage();
+        }
+
+        // SECCIÓN NUEVA: RENDER DEL TOP 3 DE CANALES EN EL HOME
+        function renderTopPodium() {
+            const container = document.getElementById("top-podium-container");
+            if (!container) return;
+            
+            // Ordenamos los canales por mayor cantidad de suscriptores para el Top 3
+            const sortedTop = [...INITIAL_CHANNELS_DATASET].sort((a, b) => b.subs - a.subs).slice(0, 3);
+            
+            container.innerHTML = sortedTop.map((c, index) => `
+                <div class="podium-card rank-${index + 1}">
+                    <div class="podium-badge">#${index + 1}</div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span style="font-size:1.8rem;">${c.logo}</span>
+                        <div>
+                            <h4 style="font-weight:800; font-size:1.05rem;">${c.name}</h4>
+                            <p style="font-size:0.75rem; color:var(--text-muted);">${c.user}</p>
+                        </div>
+                    </div>
+                    <p style="font-size:0.8rem; color:var(--text-muted); line-height:1.4;">${c.description}</p>
+                    <div style="font-size:0.75rem; font-weight:700;">👥 Suscriptores: <span style="color:var(--telegram-blue);">${c.subs.toLocaleString()}</span></div>
+                    <button class="btn-subscribe-trigger" style="padding:10px; font-size:0.8rem;" onclick="registerChannelAccess(${c.id})">Visitar Canal Top</button>
+                </div>
+            `).join('');
+        }
+
+        function filterByAdminChannels() {
+            state.adminFilterOnly = true;
+            renderDirectoryList();
         }
 
         function renderAppUiComponents() {
@@ -703,19 +883,23 @@
                     </div>
                 `).join('');
             }
+            
+            const myChannelsCount = INITIAL_CHANNELS_DATASET.filter(c => c.isAdminOwned).length;
+            document.getElementById("cnt-my-channels").innerText = myChannelsCount;
+            document.getElementById("cnt-channels").innerText = INITIAL_CHANNELS_DATASET.length;
+            document.getElementById("stat-total-channels").innerText = INITIAL_CHANNELS_DATASET.length;
+
             renderVipSlider();
             renderDirectoryList();
             updateBalanceAndRpgUi();
         }
 
         function updateBalanceAndRpgUi() {
-            // Actualizar textos y números
             document.getElementById("profile-balance").innerText = state.user.balance;
             document.getElementById("drawer-range").innerText = `[ Rango RPG Nivel ${state.user.range} ]`;
             document.getElementById("cnt-favs").innerText = state.favorites.length;
             document.getElementById("rpg-current-pts").innerText = state.user.pointsProgress;
             
-            // Actualizar Barra de Progreso Visual
             const percentage = Math.min(100, state.user.pointsProgress);
             document.getElementById("rpg-bar-fill").style.width = `${percentage}%`;
             
@@ -747,13 +931,16 @@
                         <div>
                             <h4 style="font-size:0.85rem; font-weight:700;">${c.name}</h4>
                             <p style="font-size:0.7rem; color:var(--text-muted);">${c.user}</p>
-                            <span class="live-traffic-badge" style="font-size:0.6rem; padding:1px 4px;"><i data-lucide="eye" style="width:10px;height:10px;"></i> ${getDynamicDailyViews(c.id)}</span>
+                            <span class="live-traffic-badge" style="font-size:0.6rem; padding:2px 6px;"><i data-lucide="eye" style="width:10px;height:10px;"></i> ${getDynamicDailyViews(c.id)}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
             lucide.createIcons();
         }
+
+        document.getElementById("role-toggle").classList.toggle("active", state.user.role === "admin");
+        if(state.user.role === "admin") document.body.classList.add("role-admin");
 
         function scrollSlider(dir) {
             document.getElementById("vip-slider").scrollLeft += (dir * 220);
@@ -768,10 +955,18 @@
             renderDirectoryList();
         }
 
+        // AGREGADO EXTRACTO DE BOTÓN PARA ELIMINAR BAJO ROL DE ADMINISTRADOR
         function buildChannelCardHtml(c) {
             const isFav = state.favorites.includes(c.id);
             const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
             const liveViews = getDynamicDailyViews(c.id);
+            
+            // Botón de eliminar visible solo para administradores si el canal es de su propiedad
+            const adminDeleteButton = (state.user.role === 'admin' && c.isAdminOwned) ? `
+                <button class="btn-delete-channel" onclick="event.stopPropagation(); openDeleteModal(${c.id}, '${c.name}')">
+                    <i data-lucide="trash-2" style="width:14px; height:14px;"></i> Eliminar del Directorio
+                </button>
+            ` : '';
             
             return `
                 <div class="channel-card ${c.isVip ? 'vip-border' : ''}">
@@ -796,29 +991,37 @@
                             <span>Subs: <strong>${c.subs.toLocaleString()}</strong></span>
                         </div>
                         <button class="btn-subscribe-trigger" onclick="registerChannelAccess(${c.id})">Visitar Canal en Telegram</button>
+                        ${adminDeleteButton}
                     </div>
                 </div>
             `;
         }
 
+        // FILTRADO ROBUSTO: INCLUYE LOS NUEVOS CRITERIOS DE POPULARES, NUEVOS Y TENDENCIAS
         function renderDirectoryList() {
             const list = document.getElementById("directory-list");
             if (!list) return;
             
             const query = document.getElementById("directory-search")?.value.toLowerCase() || "";
-            const langFilter = document.getElementById("filter-lang").value;
+            const sortingFilter = document.getElementById("filter-sorting").value;
             const statusFilter = document.getElementById("filter-status").value;
 
             let filtered = INITIAL_CHANNELS_DATASET.filter(c => {
+                if (state.adminFilterOnly && !c.isAdminOwned) return false;
+
                 const matchesCategory = (activeCategoryFilter === "all" || c.category === activeCategoryFilter);
                 const matchesQuery = (c.name.toLowerCase().includes(query) || c.user.toLowerCase().includes(query) || c.description.toLowerCase().includes(query));
-                const matchesLang = (langFilter === "all" || c.lang === langFilter);
                 
                 let matchesStatus = true;
                 if(statusFilter === "Destacado") matchesStatus = c.isVip;
                 if(statusFilter === "Público") matchesStatus = !c.isVip;
 
-                return matchesCategory && matchesQuery && matchesLang && matchesStatus;
+                let matchesSorting = true;
+                if(sortingFilter === "popular") matchesSorting = c.isPopular;
+                if(sortingFilter === "new") matchesSorting = c.isNew;
+                if(sortingFilter === "trend") matchesSorting = c.isTrending;
+
+                return matchesCategory && matchesQuery && matchesStatus && matchesSorting;
             });
 
             list.innerHTML = filtered.map(c => buildChannelCardHtml(c)).join('');
@@ -902,14 +1105,13 @@
             const display = document.getElementById("roulette-display");
             display.innerText = randomChannel.name;
             display.classList.add("shake-anim");
-            setTimeout(() => display.classList.remove("shake-anim"), 400);
+            setTimeout(() => display.classList.remove("shake-anim"), 500);
             
             updateBalanceAndRpgUi();
             showToast(`¡Canal asignado: ${randomChannel.name}!`, "gold");
             registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
         }
 
-        // CONTROL MATRICIAL DE COMPRAS DE ACCESORIOS Y AVATARES DE LA TIENDA
         function renderShopCatalog() {
             const row = document.getElementById("shop-catalog-row");
             if (!row) return;
@@ -925,14 +1127,11 @@
                 if (isPurchased) {
                     buttonHtml = `<button class="btn-shop-buy" style="background:rgba(46,204,113,0.2); color:var(--success-green); border:1px solid var(--success-green);" onclick="equipAccessory('${item.visual}', '${item.type}')">Equipar</button>`;
                 } else if (!hasRange) {
-                    // Estado 1: Bloqueado por Rango Insuficiente
                     cardClass += ' locked-item';
                     buttonHtml = `<button class="btn-shop-buy state-locked" onclick="handlePurchaseAttempt('${item.id}', 'locked')">🔒 Rango ${item.minRange}</button>`;
                 } else if (!hasBalance) {
-                    // Estado 2: Desbloqueado pero con Saldo Insuficiente
                     buttonHtml = `<button class="btn-shop-buy state-insufficient" onclick="handlePurchaseAttempt('${item.id}', 'insufficient')">Falta Saldo</button>`;
                 } else {
-                    // Estado 3: Listo para comprar con éxito y confeti
                     buttonHtml = `<button class="btn-shop-buy state-ready" onclick="handlePurchaseAttempt('${item.id}', 'ready', ${item.cost}, '${item.visual}', '${item.type}')">Comprar</button>`;
                 }
 
@@ -949,23 +1148,20 @@
 
         function handlePurchaseAttempt(itemId, stateType, cost = 0, visual = '', itemType = '') {
             if (stateType === 'locked') {
-                alert("🔒 Notificación Informativa: Este objeto estético requiere un Rango RPG superior. Sigue sumando puntos visitando canales o abriendo el cofre.");
-                addLog("Compra rechazada: Rango insuficiente.");
+                showToast("Artículo Bloqueado por Rango", "error");
             } 
             else if (stateType === 'insufficient') {
-                alert("❌ Saldo Insuficiente: No tienes suficientes puntos acumulados en tu billetera para pagar esta recompensa.");
-                addLog("Compra rechazada: Saldo insuficiente.");
+                showToast("Puntos de energía insuficientes", "error");
             } 
             else if (stateType === 'ready') {
-                // Ejecución exitosa de la compra
                 state.user.balance -= cost;
                 state.purchasedItems.push(itemId);
                 
                 triggerConfettiExplosion();
                 equipAccessory(visual, itemType);
                 
-                showToast("¡Compra efectuada con éxito!", "success");
-                registerActionToHistory("Compra Premium", `Adquiriste el artículo estético por IA: ${visual}`, "gold");
+                showToast("¡Compra efectuada con éxito!", "gold");
+                registerActionToHistory("Compra Premium", `Adquiriste el artículo estético: ${visual}`, "gold");
                 
                 updateBalanceAndRpgUi();
                 renderShopCatalog();
@@ -979,35 +1175,70 @@
                 document.getElementById("shop-bear-avatar").innerHTML = `${visual}<span class="bear-accessory" id="active-acc"></span>`;
                 document.getElementById("drawer-avatar-render").innerText = visual;
             }
-            showToast("Apariencia actualizada en el lienzo", "success");
+            showToast("Apariencia actualizada", "success");
+            saveToLocalStorage();
         }
 
-        // MOTOR DE EXPLOSIÓN DE CONFETI EN CSS PURO
         function triggerConfettiExplosion() {
             const wrapper = document.getElementById("canvas-area-wrapper");
-            const bounding = wrapper.getBoundingClientRect();
             
-            for (let i = 0; i < 45; i++) {
+            for (let i = 0; i < 50; i++) {
                 const particle = document.createElement("div");
                 particle.className = "confetti-particle";
                 
-                // Variedad cromática festiva
-                const colors = ['#F5A623', '#24A1DE', '#8a2be2', '#2ecc71', '#ff007f', '#ffff00'];
+                const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
                 
-                // Ubicación céntrica del canvas
                 particle.style.left = `50%`;
-                particle.style.top = `40%`;
+                particle.style.top = `50%`;
                 
-                // Coordenadas del vector de dispersión balística
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 120 + 40;
+                const velocity = Math.random() * 140 + 60;
                 particle.style.setProperty('--x', `${Math.cos(angle) * velocity}px`);
                 particle.style.setProperty('--y', `${Math.sin(angle) * velocity}px`);
                 
                 wrapper.appendChild(particle);
-                setTimeout(() => particle.remove(), 800);
+                setTimeout(() => particle.remove(), 900);
             }
+        }
+
+        // CONTROL DE MODALES AGREGADOS PARA LA SOLICITUD DE BAJA PRIVADA A TELEGRAM
+        function openDeleteModal(channelId, channelName) {
+            document.getElementById("delete-channel-id").value = channelId;
+            document.getElementById("delete-channel-name").value = channelName;
+            document.getElementById("delete-channel-reason").value = "";
+            document.getElementById("modal-delete-request").style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("modal-delete-request").style.display = "none";
+        }
+
+        // ENVÍO DE DATOS AUTOMÁTICOS AL CHAT PRIVADO A TRAVÉS DE TELEGRAM WEBAPP API
+        function sendDeleteRequestToTelegram() {
+            const chId = document.getElementById("delete-channel-id").value;
+            const chName = document.getElementById("delete-channel-name").value;
+            const reason = document.getElementById("delete-channel-reason").value.trim();
+
+            if(!reason) {
+                showToast("Por favor ingresa una razón", "error");
+                return;
+            }
+
+            const messagePayload = `🚨 SOLICITUD DE BAJA DE CANAL 🚨\n\n• Canal ID: ${chId}\n• Nombre: ${chName}\n• Solicitante: ${state.user.username}\n• Motivo: ${reason}`;
+
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                // Envía los datos de vuelta al bot de Telegram de manera segura
+                window.Telegram.WebApp.sendData(messagePayload);
+            } else {
+                // Fallback de desarrollo o visualización externa simulada
+                console.log("Datos enviados a Telegram Soporte Privado:", messagePayload);
+            }
+
+            closeDeleteModal();
+            showToast("Solicitud enviada a soporte privado", "gold");
+            registerActionToHistory("Solicitud de Baja", `Solicitaste remover del directorio a: ${chName}`, "info");
+            addLog(`Solicitud de baja para canal id ${chId} enviada.`);
         }
 
         function openLogsModal() { document.getElementById("modal-logs-view").style.display = "flex"; }

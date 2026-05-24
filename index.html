@@ -279,7 +279,6 @@
         }
         .ia-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Contenedor de equipamiento actual */
         .equipped-badges-container {
             display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px;
         }
@@ -294,7 +293,6 @@
             display: flex; align-items: center; padding: 2px;
         }
 
-        /* Menú de navegación de la tienda */
         .shop-nav-menu {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
             background: rgba(0,0,0,0.2); padding: 6px; border-radius: 14px;
@@ -311,7 +309,6 @@
             box-shadow: 0 4px 12px rgba(168,85,247,0.3);
         }
 
-        /* Paneles de Contenido */
         .shop-panel { display: none; animation: slideUpView 0.4s ease; }
         .shop-panel.active { display: block; }
 
@@ -344,7 +341,6 @@
         .btn-shop-buy.state-equipped { background: var(--mystic-purple); color: white; }
         .btn-shop-buy.state-unequipped { background: rgba(255,255,255,0.08); color: var(--text-main); border: 1px solid var(--border-color); }
 
-        /* Tarjeta de Combos Épicos */
         .epic-pack-card {
             background: linear-gradient(135deg, #1e1b4b 0%, #311042 50%, #1e293b 100%);
             border: 2px dashed var(--vip-gold); border-radius: 24px; padding: 20px;
@@ -380,11 +376,52 @@
             0% { transform: translate(0, 0) scale(1.5) rotate(0deg); opacity: 1; }
             100% { transform: translate(var(--x), var(--y)) scale(0.2) rotate(720deg); opacity: 0; }
         }
+
+        /* NÚCLEO NUEVO DE AGREGADOS */
+        .user-badge-status { display: inline-flex; padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 800; cursor: pointer; align-items: center; gap: 4px; margin-top: 4px; transition: var(--transition-smooth); }
+        .badge-free { background: #64748b; color: white; animation: pulseFree 2s infinite; }
+        .badge-vip { background: var(--vip-gold-gradient); color: #000; box-shadow: var(--shadow-gold); }
+        @keyframes pulseFree { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.6; } }
+
+        .hidden-benefits-panel { display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; margin-top: 10px; text-align: left; width: 100%; box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
+        .benefit-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; margin-bottom: 6px; color: var(--text-main); }
+        
+        .floating-congrats-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .congrats-card { background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 2px solid var(--vip-gold); box-shadow: var(--shadow-gold); padding: 32px; border-radius: 24px; text-align: center; max-width: 400px; animation: scaleUpPopup 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes scaleUpPopup { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .carousel-wrapper { margin-top: 15px; }
+        .carousel-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; text-align: left; letter-spacing: 0.5px; }
+        .carousel-track { display: flex; gap: 12px; overflow-x: auto; padding: 6px 2px; scrollbar-width: none; }
+        .carousel-track::-webkit-scrollbar { display: none; }
+        .carousel-item-avatar { min-width: 80px; background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 10px; text-align: center; cursor: pointer; transition: var(--transition-smooth); }
+        .carousel-item-avatar:hover { border-color: var(--mystic-purple); transform: translateY(-2px); }
+
+        .action-grid-buttons { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
+        .channels-control-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(0,0,0,0.2); border-radius: 12px; overflow: hidden; font-size: 0.8rem; }
+        .channels-control-table th { background: rgba(255,255,255,0.05); padding: 10px; text-align: left; color: var(--text-muted); }
+        .channels-control-table td { padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .badge-status-pill { padding: 3px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 800; display: inline-block; }
+        .status-review { background: #eab308; color: #000; }
+        .status-published { background: var(--success-green); color: #fff; }
+        
+        .action-row-buttons { display: flex; gap: 6px; margin-top: 4px; }
+        .mini-action-btn { background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.72rem; display: flex; align-items: center; gap: 4px; transition: var(--transition-smooth); }
+        .mini-action-btn:hover { background: var(--bg-tarjeta-hover); }
     </style>
 </head>
 <body>
 
     <div id="toast-container"></div>
+
+    <div id="premium-congrats-modal" class="floating-congrats-modal">
+        <div class="congrats-card">
+            <div style="font-size: 3.5rem; margin-bottom: 10px; animation: pulseGlow 1.5s infinite alternate;">👑</div>
+            <h2 style="color: var(--vip-gold); font-weight: 900; margin-bottom: 12px; font-size: 1.6rem;">¡ENHORABUENA!</h2>
+            <p style="color: #fff; font-size: 1rem; margin-bottom: 20px; line-height: 1.5;">Tu ID coincide con el registro interno.<br><strong style="color: var(--telegram-blue);">¡Ya eres miembro Premium!</strong></p>
+            <button class="btn-subscribe-trigger" style="background: var(--vip-gold-gradient); color: #000;" onclick="closeCongratsPremiumModal()">Comenzar Experiencia VIP</button>
+        </div>
+    </div>
 
     <header class="app-header">
         <div class="header-logo">CANALES TOP</div>
@@ -403,7 +440,32 @@
             </div>
             <div class="drawer-username-tag">
                 <span id="drawer-username">@Anónimo</span>
-                <span id="drawer-range" style="color: var(--vip-gold); font-size: 0.85rem; font-weight: 800;">[ Rango ]</span>
+                <div id="user-premium-tag" class="user-badge-status badge-free" onclick="toggleBenefitsSection()">
+                    <i data-lucide="award" style="width:14px; height:14px;"></i> <span id="tag-label-text">GRATIS</span>
+                </div>
+                
+                <div id="hidden-benefits-box" class="hidden-benefits-panel">
+                    <h5 style="color: var(--vip-gold); margin-bottom: 8px; font-size: 0.85rem;" id="benefits-box-title">Beneficios Premium:</h5>
+                    <div class="benefit-item">✨ <span>Pago único para siempre</span></div>
+                    <div class="benefit-item">🚀 <span>Publica hasta 3 canales</span></div>
+                    <div class="benefit-item">🗂️ <span>Tus canales en 3 categorías</span></div>
+                    <div class="benefit-item">⭐ <span>Destacado prioritario en el directorio</span></div>
+                    
+                    <div id="premium-order-form" style="margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+                        <div class="form-group" style="margin-bottom: 8px;">
+                            <label style="font-size: 0.65rem;">Método de Pago</label>
+                            <select id="pay-method" class="form-control" style="padding: 6px; font-size: 0.8rem;">
+                                <option value="PayPal">PayPal</option>
+                                <option value="USDT">USDT (Crypto)</option>
+                            </select>
+                        </div>
+                        <button class="btn-subscribe-trigger" style="padding: 6px; font-size: 0.8rem; background: var(--success-green);" onclick="sendOrderToTelegram()">
+                            Hacer Pedido 🛒
+                        </button>
+                    </div>
+                </div>
+
+                <span id="drawer-range" style="color: var(--vip-gold); font-size: 0.85rem; font-weight: 800; margin-top: 6px;">[ Rango ]</span>
             </div>
         </div>
 
@@ -548,8 +610,42 @@
 
     <main id="view-my-channels" class="app-view">
         <h2 class="view-title"><i data-lucide="folder-user" style="color:var(--telegram-blue)"></i> Mis Canales Guardados</h2>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Canales vinculados directamente a tu Telegram User ID de forma segura.</p>
-        <div id="my-owned-channels-list" class="directory-grid"></div>
+        
+        <div class="premium-balance-box" style="background: rgba(0,0,0,0.2); border-color: var(--border-color); display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px; box-shadow: none;">
+            <div>
+                <div style="font-size: 1.2rem; font-weight: 800;" id="panel-cnt-total">0</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted);">Total Canales</div>
+            </div>
+            <div>
+                <div style="font-size: 1.2rem; font-weight: 800; color: #eab308;" id="panel-cnt-review">0</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted);">En Revisión</div>
+            </div>
+            <div>
+                <div style="font-size: 1.2rem; font-weight: 800; color: var(--success-green);" id="panel-cnt-published">0</div>
+                <div style="font-size: 0.65rem; color: var(--text-muted);">Publicados</div>
+            </div>
+        </div>
+
+        <div class="action-grid-buttons">
+            <button class="btn-subscribe-trigger" style="background: var(--telegram-blue);" onclick="openAddChannelModal()">
+                <i data-lucide="plus-circle"></i> Enviar Nuevo Canal a Telegram
+            </button>
+        </div>
+
+        <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 8px;">📋 Estado Operativo de Canales</h3>
+        <table class="channels-control-table">
+            <thead>
+                <tr>
+                    <th>Canal / User</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="user-channels-table-body">
+                </tbody>
+        </table>
+
+        <div id="my-owned-channels-list" class="directory-grid" style="margin-top: 20px;"></div>
     </main>
 
     <main id="view-history" class="app-view">
@@ -567,8 +663,16 @@
                     <img id="shop-ia-avatar-preview" src="" alt="Preview Avatar">
                 </div>
                 <div style="font-weight:800; font-size:1.1rem; color:#fff; text-shadow:0 2px 4px rgba(0,0,0,0.5);">Tu Avatar Actual</div>
-                <div class="equipped-badges-container" id="equipped-items-list">
-                    </div>
+                <div class="equipped-badges-container" id="equipped-items-list"></div>
+
+                <div class="carousel-wrapper">
+                    <div class="carousel-title">🏃 Carrusel Personajes Exploradores</div>
+                    <div class="carousel-track" id="track-explorers"></div>
+                </div>
+                <div class="carousel-wrapper">
+                    <div class="carousel-title">👑 Carrusel Admin Owners</div>
+                    <div class="carousel-track" id="track-owners"></div>
+                </div>
             </div>
 
             <nav class="shop-nav-menu">
@@ -586,8 +690,7 @@
             </div>
 
             <div id="panel-shop-combos" class="shop-panel">
-                <div style="display:flex; flex-direction:column; gap:16px;" id="grid-combos">
-                    </div>
+                <div style="display:flex; flex-direction:column; gap:16px;" id="grid-combos"></div>
             </div>
 
             <div class="roulette-card" style="background: linear-gradient(135deg, #112c24 0%, #121824 100%); border-color: var(--success-green);">
@@ -616,6 +719,51 @@
             </tbody>
         </table>
     </main>
+
+    <div id="modal-add-channel" class="fullscreen-modal">
+        <div class="modal-body-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+                <h3 style="font-size:1.1rem; font-weight:800; color:var(--telegram-blue);">Formulario de Alta de Canal</h3>
+                <button style="background:none; border:none; color:var(--text-muted);" onclick="closeAddChannelModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="form-group">
+                <label>Nombre del Canal</label>
+                <input type="text" id="add-ch-name" class="form-control" placeholder="Ej: BetMasters VIP">
+            </div>
+            <div class="form-group">
+                <label>Usuario de Telegram (@)</label>
+                <input type="text" id="add-ch-user" class="form-control" placeholder="Ej: @MiCanalVIP">
+            </div>
+            <div class="form-group">
+                <label>Descripción Breve</label>
+                <textarea id="add-ch-desc" class="form-control" rows="2" placeholder="Describe los aportes del canal..."></textarea>
+            </div>
+            <button class="btn-subscribe-trigger" style="background: var(--telegram-blue);" onclick="submitChannelRegistrationForm()">
+                <i data-lucide="send"></i> Enviar Formulario a Soporte
+            </button>
+        </div>
+    </div>
+
+    <div id="modal-edit-channel" class="fullscreen-modal">
+        <div class="modal-body-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+                <h3 style="font-size:1.1rem; font-weight:800; color:var(--vip-gold);">Editar Datos del Canal</h3>
+                <button style="background:none; border:none; color:var(--text-muted);" onclick="closeEditChannelModal()"><i data-lucide="x"></i></button>
+            </div>
+            <input type="hidden" id="edit-ch-id">
+            <div class="form-group">
+                <label>Nombre del Canal</label>
+                <input type="text" id="edit-ch-name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea id="edit-ch-desc" class="form-control" rows="3"></textarea>
+            </div>
+            <button class="btn-subscribe-trigger" style="background: var(--success-green); color: white;" onclick="saveChannelEditionChanges()">
+                <i data-lucide="save"></i> Guardar Cambios y Re-Verificar
+            </button>
+        </div>
+    </div>
 
     <div id="modal-logs-view" class="fullscreen-modal">
         <div class="modal-body-box">
@@ -667,31 +815,28 @@
     </nav>
 
     <script>
+        // DATASET EXTENDIDO CON SOPORTE PARA ESTADOS OPERATIVOS
         const INITIAL_CHANNELS_DATASET = [
-            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 },
-            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
-            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 11112222 },
-            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, telegramUserId: 33334444 },
-            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, telegramUserId: 99999999 },
-            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 55556666 },
-            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 }
+            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Publicado", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 },
+            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "En Revisión", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
+            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Publicado", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 11112222 },
+            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Publicado", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, telegramUserId: 33334444 },
+            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Publicado", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, telegramUserId: 99999999 },
+            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "En Revisión", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 55556666 },
+            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Publicado", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 }
         ];
 
-        // DATOS DE ACCESORIOS DE DICEBEAR (Organizados por Tipo de Accesorio)
         const PREMIUM_SHOP_CATALOG = [
-            // CATEGORÍA: Ropa (clothing)
             { id: "cloth_1", name: "Sudadera Hoodie", cost: 15, minRange: 1, value: "hoodie", type: "clothing", previewSeed: "b6e3f4" },
             { id: "cloth_2", name: "Blazer & Camisa", cost: 25, minRange: 2, value: "blazerAndShirt", type: "clothing", previewSeed: "c0aede" },
             { id: "cloth_3", name: "Camiseta Gráfica", cost: 35, minRange: 3, value: "graphicShirt", type: "clothing", previewSeed: "ffdfbf" },
             { id: "cloth_4", name: "Traje Ejecutivo V", cost: 45, minRange: 4, value: "shirtVNeck", type: "clothing", previewSeed: "d1fae5" },
             
-            // CATEGORÍA: Gafas / Accesorios Faciales (glasses)
             { id: "glass_1", name: "Gafas de Lectura", cost: 10, minRange: 1, value: "prescription01", type: "glasses", previewSeed: "fef08a" },
             { id: "glass_2", name: "Gafas Redondas Hipster", cost: 20, minRange: 2, value: "round", type: "glasses", previewSeed: "fed7aa" },
             { id: "glass_3", name: "Gafas Wayfarer Classic", cost: 30, minRange: 3, value: "wayfarers", type: "glasses", previewSeed: "fbcfe8" },
             { id: "glass_4", name: "Gafas de Sol Premium", cost: 50, minRange: 4, value: "sunglasses", type: "glasses", previewSeed: "c7d2fe" },
 
-            // CATEGORÍA: COMBOS ESPECIALES (combos)
             { 
                 id: "combo_epic_1", 
                 name: "Pack Hacker Cyberpunk", 
@@ -720,6 +865,10 @@
             }
         ];
 
+        // MOCK BASE DE AVATARES ADICIONALES PARA CARRUSELES
+        const CAROUSEL_EXPLORERS_SEEDS = ["leo", "mia", "max", "zoe", "ian"];
+        const CAROUSEL_OWNERS_SEEDS = ["alex", "ruby", "sam", "eva", "boss"];
+
         let state = {
             user: { 
                 username: "Invitado Anónimo", 
@@ -728,12 +877,9 @@
                 role: "user", 
                 range: 1,
                 pointsProgress: 25,
-                seed: "carlos", // Seed base fija para el generador
-                // Almacenamos qué valor de accesorio tiene equipado por tipo
-                equipped: {
-                    clothing: "",
-                    glasses: ""
-                }
+                seed: "carlos",
+                isVipMember: false, 
+                equipped: { clothing: "", glasses: "" }
             },
             favorites: [], 
             history: [], 
@@ -756,10 +902,12 @@
         document.addEventListener("DOMContentLoaded", () => {
             loadFromLocalStorage();
             initTelegramContext();
+            checkVipInternalRegistration();
             executeDailyCheckIn();
             renderAppUiComponents();
             renderTopPodium();
-            updateAdminToggleUI(); // Sincronización del interruptor corregida
+            renderShopCarrousels();
+            updateAdminToggleUI();
             lucide.createIcons();
             addLog("Ecosistema unificado bajo ID único de Telegram.");
         });
@@ -790,6 +938,72 @@
             }
         }
 
+        // SISTEMA AUTOMÁTICO DE VERIFICACIÓN PREMIUM REQUERIDO
+        function checkVipInternalRegistration() {
+            // El ID interno registrado en el código es 12345678
+            if(state.user.idTelegram === 12345678) {
+                state.user.isVipMember = true;
+                
+                const alreadyShown = sessionStorage.getItem('premium_session_notified');
+                if(!alreadyShown) {
+                    sessionStorage.setItem('premium_session_notified', 'true');
+                    setTimeout(() => {
+                        document.getElementById("premium-congrats-modal").style.display = "flex";
+                        triggerConfettiExplosion();
+                    }, 1000);
+                }
+            }
+            updatePremiumTagUI();
+        }
+
+        function closeCongratsPremiumModal() {
+            document.getElementById("premium-congrats-modal").style.display = "none";
+        }
+
+        function updatePremiumTagUI() {
+            const tag = document.getElementById("user-premium-tag");
+            const label = document.getElementById("tag-label-text");
+            if(!tag) return;
+
+            if(state.user.isVipMember) {
+                tag.className = "user-badge-status badge-vip";
+                label.innerText = "VIP MEMBER";
+            } else {
+                tag.className = "user-badge-status badge-free";
+                label.innerText = "GRATIS";
+            }
+        }
+
+        function toggleBenefitsSection() {
+            const panel = document.getElementById("hidden-benefits-box");
+            const title = document.getElementById("benefits-box-title");
+            const form = document.getElementById("premium-order-form");
+
+            if(panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+                if(state.user.isVipMember) {
+                    title.innerText = "Tus Beneficios VIP Activos:";
+                    form.style.display = "none";
+                } else {
+                    title.innerText = "Beneficios de la Suscripción VIP:";
+                    form.style.display = "block";
+                }
+            }
+        }
+
+        function sendOrderToTelegram() {
+            const method = document.getElementById("pay-method").value;
+            const msg = `🛒 NUEVO PEDIDO VIP 🛒\n\n• Usuario: ${state.user.username}\n• ID Telegram: ${state.user.idTelegram}\n• Método Elegido: ${method}\n• Estado: Esperando Pago`;
+            
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                window.Telegram.WebApp.sendData(msg);
+            }
+            showToast("Pedido enviado a Telegram privado", "success");
+            toggleBenefitsSection();
+        }
+
         function initTelegramContext() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const webApp = window.Telegram.WebApp;
@@ -807,17 +1021,11 @@
             saveToLocalStorage();
         }
 
-        // FUNCIÓN CENTRALIZADA PARA RENDERIZAR AVATARES DINÁMICOS MEDIANTE DICEBEAR API
         function updateAvatarRenderers() {
-            // Construimos los parámetros URL query según el inventario equipado
             let queryParams = `?seed=${state.user.seed}&radius=50&backgroundColor=1e293b`;
             
-            if (state.user.equipped.clothing) {
-                queryParams += `&clothing=${state.user.equipped.clothing}`;
-            }
-            if (state.user.equipped.glasses) {
-                queryParams += `&accessoriesProbability=100&accessories=${state.user.equipped.glasses}`;
-            }
+            if (state.user.equipped.clothing) queryParams += `&clothing=${state.user.equipped.clothing}`;
+            if (state.user.equipped.glasses) queryParams += `&accessoriesProbability=100&accessories=${state.user.equipped.glasses}`;
 
             const finalUrl = `https://api.dicebear.com/9.x/avataaars/svg${queryParams}`;
             
@@ -828,7 +1036,32 @@
             renderEquippedChipsList();
         }
 
-        // Muestra la lista de accesorios que llevas puestos con opción de quitárselos
+        function renderShopCarrousels() {
+            const trackExplorers = document.getElementById("track-explorers");
+            const trackOwners = document.getElementById("track-owners");
+
+            trackExplorers.innerHTML = CAROUSEL_EXPLORERS_SEEDS.map(seed => `
+                <div class="carousel-item-avatar" onclick="selectCarouselSeed('${seed}')">
+                    <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=${seed}&radius=50" style="width: 50px; height: 50px;" />
+                    <div style="font-size: 0.65rem; margin-top: 4px; color: var(--text-muted); font-weight:bold;">${seed}</div>
+                </div>
+            `).join('');
+
+            trackOwners.innerHTML = CAROUSEL_OWNERS_SEEDS.map(seed => `
+                <div class="carousel-item-avatar" onclick="selectCarouselSeed('${seed}')" style="border-color: var(--vip-gold);">
+                    <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=${seed}&radius=50" style="width: 50px; height: 50px;" />
+                    <div style="font-size: 0.65rem; margin-top: 4px; color: var(--vip-gold); font-weight:bold;">${seed}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectCarouselSeed(seed) {
+            state.user.seed = seed;
+            showToast(`Avatar base cambiado a: ${seed}`, "info");
+            updateAvatarRenderers();
+            saveToLocalStorage();
+        }
+
         function renderEquippedChipsList() {
             const container = document.getElementById("equipped-items-list");
             if (!container) return;
@@ -988,7 +1221,6 @@
             }
         }
 
-        /* CORRECCIÓN ABSOLUTA DEL INTERRUPTOR DE ROL ADMINISTRADOR */
         function toggleAdminRole() {
             state.user.role = state.user.role === "admin" ? "user" : "admin";
             updateAdminToggleUI();
@@ -1016,14 +1248,12 @@
             }
         }
 
-        // MANEJO DE PANELES INTERNOS DE LA TIENDA DE RECOMPENSAS
         function switchShopPanel(panelId) {
             document.querySelectorAll(".shop-panel").forEach(p => p.classList.remove("active"));
             document.querySelectorAll(".shop-nav-btn").forEach(b => b.classList.remove("active"));
 
             document.getElementById(`panel-shop-${panelId}`).classList.add("active");
             
-            // Buscar botón activo de forma segura
             if(panelId === 'clothes') document.getElementById("shop-tab-clothes").classList.add("active");
             if(panelId === 'glasses') document.getElementById("shop-tab-glasses").classList.add("active");
             if(panelId === 'combos') document.getElementById("shop-tab-combos").classList.add("active");
@@ -1046,7 +1276,6 @@
                 const isPurchased = state.purchasedItems.includes(item.id);
 
                 if (item.isPack) {
-                    // Renderizado Especial de la Tarjeta de Combo / Pack Épico
                     let packButtonHtml = '';
                     if (isPurchased) {
                         packButtonHtml = `<button class="btn-shop-buy state-equipped" onclick="equipPack('${item.id}')">⚡ Re-Equipar Pack</button>`;
@@ -1077,7 +1306,6 @@
                         </div>
                     `;
                 } else {
-                    // Renderizado de Accesorios normales individuales
                     const isEquipped = state.user.equipped[item.type] === item.value;
                     let buttonHtml = '';
                     let cardClass = 'item-shop-card';
@@ -1137,7 +1365,6 @@
             state.user.balance -= cost;
             state.purchasedItems.push(id);
             
-            // Añade al inventario cada item del pack
             pack.itemsUnlocked.forEach(addon => {
                 state.user.equipped[addon.type] = addon.value;
             });
@@ -1270,12 +1497,6 @@
             const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
             const liveViews = getDynamicDailyViews(c.id);
             
-            const adminDeleteButton = (state.user.role === 'admin' && c.telegramUserId === state.user.idTelegram) ? `
-                <button class="btn-delete-channel" onclick="event.stopPropagation(); openDeleteModal(${c.id}, '${c.name}')">
-                    <i data-lucide="trash-2" style="width:14px; height:14px;"></i> Eliminar del Directorio
-                </button>
-            ` : '';
-            
             return `
                 <div class="channel-card ${c.isVip ? 'vip-border' : ''}">
                     <div class="card-main-row" onclick="toggleAccordionEffect(${c.id})">
@@ -1299,7 +1520,6 @@
                             <span>Subs: <strong>${c.subs.toLocaleString()}</strong></span>
                         </div>
                         <button class="btn-subscribe-trigger" onclick="registerChannelAccess(${c.id})">Visitar Canal en Telegram</button>
-                        ${adminDeleteButton}
                     </div>
                 </div>
             `;
@@ -1315,6 +1535,9 @@
 
             let filtered = INITIAL_CHANNELS_DATASET.filter(c => {
                 if (state.adminFilterOnly && c.telegramUserId !== state.user.idTelegram) return false;
+                
+                // Los canales en revisión no se listan en el directorio público
+                if (c.status === "En Revisión") return false;
 
                 const matchesCategory = (activeCategoryFilter === "all" || c.category === activeCategoryFilter);
                 const matchesQuery = (c.name.toLowerCase().includes(query) || c.user.toLowerCase().includes(query) || c.description.toLowerCase().includes(query));
@@ -1335,16 +1558,165 @@
             lucide.createIcons();
         }
 
+        // CONTROL EXCLUSIVO EN "MIS CANALES GUARDADOS"
         function renderMyOwnedChannelsList() {
             const container = document.getElementById("my-owned-channels-list");
-            if (!container) return;
+            const tableBody = document.getElementById("user-channels-table-body");
+            if (!container || !tableBody) return;
+
             const myOwned = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram);
+            
+            // Recalcular contadores del panel superior
+            const total = myOwned.length;
+            const review = myOwned.filter(c => c.status === "En Revisión").length;
+            const published = myOwned.filter(c => c.status === "Publicado").length;
+
+            document.getElementById("panel-cnt-total").innerText = total;
+            document.getElementById("panel-cnt-review").innerText = review;
+            document.getElementById("panel-cnt-published").innerText = published;
+
             if (myOwned.length === 0) {
-                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee ningún canal asociado.</div>`;
+                tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No posees canales registrados.</td></tr>`;
+                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee canales asociados.</div>`;
                 return;
             }
-            container.innerHTML = myOwned.map(c => buildChannelCardHtml(c)).join('');
+
+            // Renderizar la tabla de control operativo con las reglas solicitadas
+            tableBody.innerHTML = myOwned.map(c => {
+                const badgeClass = c.status === "En Revisión" ? "status-review" : "status-published";
+                return `
+                    <tr>
+                        <td><strong>${c.name}</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">${c.user}</span></td>
+                        <td><span class="badge-status-pill ${badgeClass}">${c.status}</span></td>
+                        <td>
+                            <div class="action-row-buttons">
+                                <button class="mini-action-btn" onclick="handleChannelEditAction(${c.id}, '${c.status}')">
+                                    <i data-lucide="edit-3" style="width:11px; height:11px;"></i> Editar
+                                </button>
+                                <button class="mini-action-btn" style="color:#ef4444;" onclick="handleChannelDeleteAction(${c.id}, '${c.name}', '${c.status}')">
+                                    <i data-lucide="trash-2" style="width:11px; height:11px;"></i> Borrar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Renderizar abajo las tarjetas de los canales ya publicados de forma estándar
+            const publishedOwned = myOwned.filter(c => c.status === "Publicado");
+            container.innerHTML = publishedOwned.map(c => buildChannelCardHtml(c)).join('');
             lucide.createIcons();
+        }
+
+        // LÓGICAS INTERNAS DE SEGURIDAD OPERATIVA PARA CANALES
+        function openAddChannelModal() {
+            const myOwned = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram);
+            
+            // Verificación del plan gratuito (Límite hasta 3 canales si es VIP)
+            if(!state.user.isVipMember && myOwned.length >= 1) {
+                showToast("Límite alcanzado. Plan GRATIS permite 1 canal. Compra VIP para expandir a 3.", "error");
+                return;
+            }
+            if(state.user.isVipMember && myOwned.length >= 3) {
+                showToast("Límite máximo alcanzado (3 Canales permitidos en VIP).", "error");
+                return;
+            }
+
+            document.getElementById("add-ch-name").value = "";
+            document.getElementById("add-ch-user").value = "";
+            document.getElementById("add-ch-desc").value = "";
+            document.getElementById("modal-add-channel").style.display = "flex";
+        }
+
+        function closeAddChannelModal() { document.getElementById("modal-add-channel").style.display = "none"; }
+
+        function submitChannelRegistrationForm() {
+            const name = document.getElementById("add-ch-name").value.trim();
+            const user = document.getElementById("add-ch-user").value.trim();
+            const desc = document.getElementById("add-ch-desc").value.trim();
+
+            if(!name || !user || !desc) {
+                showToast("Completa todos los campos obligatorios", "error");
+                return;
+            }
+
+            const nextId = INITIAL_CHANNELS_DATASET.length + 1;
+            const newChannelObj = {
+                id: nextId,
+                name: name,
+                user: user.startsWith("@") ? user : `@${user}`,
+                category: "tecnologia",
+                subs: 0,
+                lang: "Español",
+                status: "En Revisión", // Inicializado en revisión obligatoriamente
+                isVip: state.user.isVipMember,
+                logo: "📣",
+                description: desc,
+                isPopular: false, isNew: true, isTrending: false,
+                telegramUserId: state.user.idTelegram
+            };
+
+            INITIAL_CHANNELS_DATASET.push(newChannelObj);
+            
+            // Envío de Payload estructurado a Telegram Privado
+            const msgPayload = `📥 NUEVA SOLICITUD DE ALTA 📥\n\n• Canal ID: ${nextId}\n• Nombre: ${name}\n• User: ${user}\n• Creador ID: ${state.user.idTelegram}\n• Estado: En Revisión`;
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                window.Telegram.WebApp.sendData(msgPayload);
+            }
+
+            closeAddChannelModal();
+            showToast("Canal en revisión. Solicitud enviada a soporte.", "gold");
+            renderMyOwnedChannelsList();
+            saveToLocalStorage();
+        }
+
+        function handleChannelEditAction(id, currentStatus) {
+            if(currentStatus === "En Revisión") {
+                showToast("Aviso: No se puede editar un canal en estado EN REVISIÓN.", "error");
+                return;
+            }
+            
+            const targetChannel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
+            document.getElementById("edit-ch-id").value = targetChannel.id;
+            document.getElementById("edit-ch-name").value = targetChannel.name;
+            document.getElementById("edit-ch-desc").value = targetChannel.description;
+            document.getElementById("modal-edit-channel").style.display = "flex";
+        }
+
+        function closeEditChannelModal() { document.getElementById("modal-edit-channel").style.display = "none"; }
+
+        function saveChannelEditionChanges() {
+            const id = parseInt(document.getElementById("edit-ch-id").value);
+            const name = document.getElementById("edit-ch-name").value.trim();
+            const desc = document.getElementById("edit-ch-desc").value.trim();
+
+            if(!name || !desc) {
+                showToast("Los campos no pueden quedar vacíos", "error");
+                return;
+            }
+
+            const target = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
+            target.name = name;
+            target.description = desc;
+            target.status = "En Revisión"; // Regresa a revisión automáticamente al guardar
+
+            const msgPayload = `✏️ MODIFICACIÓN DE CANAL PUBLICADO ✏)\n\n• Canal ID: ${id}\n• Nuevo Nombre: ${name}\n• Estado: Regresa a Revisión`;
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                window.Telegram.WebApp.sendData(msgPayload);
+            }
+
+            closeEditChannelModal();
+            showToast("Cambios guardados. El canal regresó a Revisión.", "gold");
+            renderMyOwnedChannelsList();
+            saveToLocalStorage();
+        }
+
+        function handleChannelDeleteAction(id, name, currentStatus) {
+            if(currentStatus === "En Revisión") {
+                showToast("Aviso: No se puede eliminar un canal en estado EN REVISIÓN.", "error");
+                return;
+            }
+            openDeleteModal(id, name);
         }
 
         function renderFavoritesList() {

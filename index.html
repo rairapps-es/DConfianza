@@ -250,11 +250,29 @@
         .cat-chip.active-chip { background: var(--telegram-blue); color: #fff; border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
 
         .directory-grid { display: flex; flex-direction: column; gap: 14px; }
-        .channel-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; overflow: hidden; transition: var(--transition-smooth); position: relative; }
+                /* ==========================================================================
+           CORRECCIÓN DE TARJETA ADAPTATIVA (SÍGUEN EL MODO CLARO/OSCURO)
+           ========================================================================== */
+        .channel-card { 
+            background: var(--bg-tarjeta); /* Ahora cambia según el tema */
+            color: var(--text-main);        /* Obliga al texto a contrastar con el fondo */
+            border: 1px solid var(--border-color); 
+            border-radius: 20px; 
+            padding: 18px; 
+            overflow: hidden; 
+            transition: var(--transition-smooth); 
+            position: relative; 
+        }
         .channel-card:hover { border-color: var(--text-muted); }
-        .channel-card.vip-border { border: 1.5px solid var(--vip-gold); background: linear-gradient(180deg, rgba(18,24,36,1) 0%, rgba(245,158,11,0.03) 100%); box-shadow: 0 4px 15px rgba(245,158,11,0.05); }
-        .channel-card.vip-border:hover { box-shadow: var(--shadow-gold); }
         
+        .channel-card.vip-border { 
+            border: 1.5px solid var(--vip-gold); 
+            /* Quitamos el fondo negro fijo y usamos el fondo de tarjeta del tema mezclado con un toque dorado */
+            background: linear-gradient(180deg, var(--bg-tarjeta) 0%, rgba(245,158,11,0.05) 100%); 
+            box-shadow: 0 4px 15px rgba(245,158,11,0.05); 
+        }
+        .channel-card.vip-border:hover { box-shadow: var(--shadow-gold); }
+
         .card-main-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .card-identity-box { display: flex; align-items: center; gap: 14px; }
         .channel-thumb { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; background: rgba(36,161,222,0.08); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: var(--transition-smooth); }

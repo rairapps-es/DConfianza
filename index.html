@@ -11,52 +11,42 @@
            VARIABLES DE DISEÑO PREMIUM (TEMA OSCURO / CLARO FLUIDO)
            ========================================================================== */
         :root {
-    /* --- FONDOS OSCUROS PARA EL MODO POR DEFECTO --- */
-    --bg-principal: #0f172a;       /* Azul oscuro muy elegante (Slate 900) */
-    --bg-tarjeta: #1e293b;         /* Fondo de tarjeta oscuro (Slate 800) */
-    --bg-tarjeta-hover: #334155;   /* Hover ligeramente más claro */
-    --glass-bg: rgba(30, 41, 59, 0.7); /* Efecto cristal oscuro */
-    --border-color: #334155;       /* Bordes integrados con el fondo */
-    --glass-border: rgba(255, 255, 255, 0.08);
+            --bg-principal: #0f172a;       
+            --bg-tarjeta: #1e293b;         
+            --bg-tarjeta-hover: #334155;   
+            --glass-bg: rgba(30, 41, 59, 0.7); 
+            --border-color: #334155;       
+            --glass-border: rgba(255, 255, 255, 0.08);
 
-    /* --- COLORES DE MARCA Y DEGRADADOS --- */
-    --telegram-blue: #24A1DE;
-    --success-green: #2ecc71;
-    --mystic-purple: #a855f7;
-    --vip-gold: #f59e0b;
-    --vip-gold-gradient: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
-    --premium-gradient: linear-gradient(135deg, #24A1DE 0%, #a855f7 50%, #f59e0b 100%);
+            --telegram-blue: #24A1DE;
+            --success-green: #2ecc71;
+            --mystic-purple: #a855f7;
+            --vip-gold: #f59e0b;
+            --vip-gold-gradient: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+            --premium-gradient: linear-gradient(135deg, #24A1DE 0%, #a855f7 50%, #f59e0b 100%);
 
-    /* --- TEXTO CLARO (Ahora sí contrasta perfectamente) --- */
-    --text-main: #f8fafc;          /* Blanco tiza */
-    --text-muted: #94a3b8;         /* Gris suave para textos secundarios */
-    
-    /* --- EFECTOS NEÓN --- */
-    --shadow-neon: 0 0 25px rgba(36, 161, 222, 0.25);
-    --shadow-gold: 0 0 30px rgba(245, 158, 11, 0.35);
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+            --text-main: #f8fafc;          
+            --text-muted: #94a3b8;         
+            
+            --shadow-neon: 0 0 25px rgba(36, 161, 222, 0.25);
+            --shadow-gold: 0 0 30px rgba(245, 158, 11, 0.35);
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-[data-theme="light"] {
-    /* --- FONDOS CLAROS --- */
-    --bg-principal: #eeeeee;
-    --bg-tarjeta: #ffffff;
-    --bg-tarjeta-hover: #eeeeee;
-    --glass-bg: #eeeeee;
-    --border-color: #e2e8f0;
-    --glass-border: rgba(15, 23, 42, 0.05);
-
-    /* --- TEXTO OSCURO --- */
-    --text-main: #0f172a;          /* Azul oscuro casi negro */
-    --text-muted: #64748b;         /* Gris oscuro para secundario */
-    
-    /* --- EFECTOS REBAJADOS PARA MODO CLARO --- */
-    --shadow-neon: 0 8px 20px rgba(36, 161, 222, 0.1);
-}
+        [data-theme="light"] {
+            --bg-principal: #eeeeee;
+            --bg-tarjeta: #ffffff;
+            --bg-tarjeta-hover: #eeeeee;
+            --glass-bg: rgba(238, 238, 238, 0.85);
+            --border-color: #e2e8f0;
+            --glass-border: rgba(15, 23, 42, 0.05);
+            --text-main: #0f172a;          
+            --text-muted: #64748b;         
+            --shadow-neon: 0 8px 20px rgba(36, 161, 222, 0.1);
+        }
 
         * {
             margin: 0;
-    
             padding: 0;
             box-sizing: border-box;
             font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -64,7 +54,7 @@
         }
 
         body {
-            background-color: #ffffff;
+            background-color: var(--bg-principal);
             color: var(--text-main);
             overflow-x: hidden;
             padding-bottom: 90px;
@@ -74,7 +64,6 @@
             background-attachment: fixed;
         }
 
-        /* REGLAS DE VISIBILIDAD ADMIN SEGÚN EL ROL */
         body:not(.role-admin) .admin-only { display: none !important; }
         body.role-admin .user-only { display: none !important; }
 
@@ -82,7 +71,6 @@
         ::-webkit-scrollbar-track { background: var(--bg-principal); }
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-        /* CABECERA Y PANEL */
         .app-header {
             position: fixed; top: 0; left: 0; width: 100%; height: 65px;
             background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -109,19 +97,10 @@
         .avatar-container { width: 40px; height: 40px; position: relative; cursor: pointer; transition: var(--transition-smooth); }
         .avatar-container:hover { transform: scale(1.05); }
         .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid transparent; }
-        .avatar-container::after {
-            content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px;
-            border-radius: 50%; border: 2px solid var(--telegram-blue);
-            box-shadow: var(--shadow-neon); z-index: -1; pointer-events: none;
-            animation: rotateRing 6s linear infinite;
-        }
-
-        @keyframes rotateRing { 100% { transform: rotate(360deg); } }
-
-                .profile-drawer {
+        
+        .profile-drawer {
             position: fixed; top: -100%; left: 0; width: 100%; max-height: 95vh;
-            /* CORRECCIÓN: Ahora usa el fondo del tema (cristal con opacidad) */
-            background: var(--glass-bg); 
+            background: var(--bg-tarjeta); 
             backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             border-bottom: 1px solid var(--glass-border); z-index: 999; padding: 85px 20px 25px 20px;
             border-radius: 0 0 32px 32px; transition: top 0.6s cubic-bezier(0.19, 1, 0.22, 1);
@@ -129,10 +108,8 @@
         }
         .profile-drawer.open { top: 0; }
         .drawer-identity { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 15px; }
-        .drawer-avatar-big { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 3px solid var(--border-color); transition: var(--transition-smooth); box-shadow: var(--shadow-neon); }
         .drawer-username-tag { font-size: 1.2rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; flex-direction: column; }
 
-        /* BARRA PROGRESO RPG */
         .rpg-progress-container { width: 100%; margin: 5px 0 15px 0; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 12px; border-radius: 16px; }
         .rpg-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px; }
 
@@ -141,12 +118,6 @@
             border: 1px solid rgba(36, 161, 222, 0.4); box-shadow: var(--shadow-neon); border-radius: 16px; padding: 14px; text-align: center; margin-bottom: 15px;
             position: relative; overflow: hidden;
         }
-        .premium-balance-box::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
-            transform: rotate(45deg); animation: shineGlow 4s infinite linear;
-        }
-        @keyframes shineGlow { 0% { transform: translate(-50%,-50%) rotate(45deg); } 100% { transform: translate(50%,50%) rotate(45deg); } }
         
         .balance-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 5px; }
         .balance-amount { font-size: 1.8rem; font-weight: 900; color: #fff; display: flex; justify-content: center; align-items: center; gap: 8px; }
@@ -169,13 +140,11 @@
         .drawer-btn:hover { background: rgba(255,255,255,0.06); border-color: var(--text-muted); transform: translateX(4px); }
         .drawer-btn.locked { opacity: 0.5; background: rgba(0,0,0,0.4); border-color: transparent; cursor: not-allowed; }
 
-        /* VISTAS Y ANIMACIONES */
         .app-view { display: none; padding: 85px 16px 20px 16px; max-width: 600px; margin: 0 auto; }
         .app-view.active-view { display: block; animation: slideUpView 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUpView { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .view-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
 
-        /* TAB BAR INFERIOR */
         .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 72px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: grid; grid-template-columns: repeat(5, 1fr); z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.3); }
         .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); font-size: 0.7rem; font-weight: 600; gap: 5px; position: relative; }
         .tab-item.active-tab { color: var(--telegram-blue); }
@@ -183,81 +152,59 @@
         .tab-item i { width: 22px; height: 22px; transition: var(--transition-smooth); }
         .tab-item.active-tab i { transform: scale(1.15) translateY(-2px); }
 
-        /* TOASTS AVANZADOS Y LLAMATIVOS */
-        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 2200; width: calc(100% - 32px); max-width: 420px; pointer-events: none; display: flex; flex-direction: column; gap: 10px; }
-        .toast-card { background: rgba(18, 24, 36, 0.9); backdrop-filter: blur(12px); color: var(--text-main); border-left: 5px solid var(--telegram-blue); padding: 16px 20px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 14px; font-size: 0.9rem; font-weight: 600; pointer-events: auto; border: 1px solid var(--glass-border); animation: toastBounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .toast-card.error { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); }
-        .toast-card.success { border-left-color: var(--success-green); background: rgba(46, 204, 113, 0.1); border-color: rgba(46, 204, 113, 0.2); }
-        .toast-card.gold { border-left-color: var(--vip-gold); background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2); box-shadow: var(--shadow-gold); }
-        @keyframes toastBounceIn { from { opacity: 0; transform: translateY(-30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        /* TOASTS GIGANTES, MODERNOS Y VISTOSOS */
+        #toast-container { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 2200; width: calc(100% - 32px); max-width: 460px; pointer-events: none; display: flex; flex-direction: column; gap: 12px; }
+        .toast-card { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #ffffff; border-left: 6px solid var(--telegram-blue); padding: 20px 24px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5), var(--shadow-neon); display: flex; align-items: center; gap: 16px; font-size: 1.05rem; font-weight: 700; pointer-events: auto; border: 1px solid rgba(255,255,255,0.1); animation: toastBounceIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .toast-card i { width: 26px; height: 26px; flex-shrink: 0; }
+        .toast-card.error { border-left-color: #ef4444; box-shadow: 0 20px 40px rgba(239, 68, 68, 0.2); }
+        .toast-card.success { border-left-color: var(--success-green); box-shadow: 0 20px 40px rgba(46, 204, 113, 0.2); }
+        .toast-card.gold { border-left-color: var(--vip-gold); box-shadow: var(--shadow-gold); }
+        @keyframes toastBounceIn { from { opacity: 0; transform: translateY(40px) scale(0.85); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .toast-leave { animation: toastFadeOut 0.3s ease forwards; }
-        @keyframes toastFadeOut { to { opacity: 0; transform: scale(0.8); margin-top: -60px; } }
+        @keyframes toastFadeOut { to { opacity: 0; transform: scale(0.8) translateY(-20px); } }
 
-        /* SECCIÓN DE TOP 3 CANALES */
         .top-podium-section { margin-bottom: 28px; }
         .podium-grid { display: flex; flex-direction: column; gap: 14px; position: relative; }
         .podium-card { background: linear-gradient(145deg, #161f30 0%, var(--bg-tarjeta) 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 18px; position: relative; transition: var(--transition-smooth); overflow: hidden; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-        .podium-card:hover { transform: translateY(-4px) scale(1.02); border-color: rgba(255,255,255,0.15); }
         .podium-card.rank-1 { border: 1.5px solid var(--vip-gold); box-shadow: var(--shadow-gold); background: linear-gradient(145deg, #241a08 0%, var(--bg-tarjeta) 100%); }
-        .podium-card.rank-2 { border: 1.5px solid #cbd5e1; background: linear-gradient(145deg, #1e242e 0%, var(--bg-tarjeta) 100%); }
-        .podium-card.rank-3 { border: 1.5px solid #b45309; background: linear-gradient(145deg, #1c140e 0%, var(--bg-tarjeta) 100%); }
         .podium-badge { position: absolute; top: 12px; right: 16px; font-weight: 900; font-size: 1.8rem; opacity: 0.8; font-style: italic; }
         .rank-1 .podium-badge { color: var(--vip-gold); text-shadow: 0 0 10px rgba(245,158,11,0.5); }
-        .rank-2 .podium-badge { color: #cbd5e1; }
-        .rank-3 .podium-badge { color: #b45309; }
 
-        /* FILTROS AVANZADOS EN DIRECTORIO */
-        .directory-filters-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
-        .filter-select { background: rgba(0,0,0,0.3); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; font-size: 0.85rem; outline: none; width: 100%; transition: var(--transition-smooth); font-weight: 600; cursor: pointer; }
-        .filter-select:focus { border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
+        .directory-filters-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .filter-select { background: rgba(0,0,0,0.3); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 10px; padding: 10px; font-size: 0.85rem; outline: none; width: 100%; font-weight: 600; cursor: pointer; }
 
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
         .stat-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 16px; border-radius: 18px; display: flex; align-items: center; gap: 14px; transition: var(--transition-smooth); cursor: pointer; }
-        .stat-card:hover { transform: translateY(-4px); background: var(--bg-tarjeta-hover); border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
-        .stat-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(36, 161, 222, 0.1); color: var(--telegram-blue); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); }
-        .stat-card:hover .stat-icon { transform: scale(1.1) rotate(-5deg); }
-        .stat-info h4 { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; }
-        .stat-info p { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+        .stat-icon { width: 44px; height: 44px; border-radius: 14px; background: rgba(36, 161, 222, 0.1); color: var(--telegram-blue); display: flex; align-items: center; justify-content: center; }
 
-        /* VIP SLIDER */
         .slider-section { margin-bottom: 24px; }
         .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .slider-arrows { display: flex; gap: 8px; }
-        .arrow-btn { background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition-smooth); }
-        .arrow-btn:hover { background: var(--bg-tarjeta-hover); border-color: var(--text-main); }
+        .arrow-btn { background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .slider-container { display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; padding: 4px 4px 10px 4px; scrollbar-width: none; }
         .slider-container::-webkit-scrollbar { display: none; }
-        .vip-slide-card { min-width: 260px; max-width: 260px; background: linear-gradient(145deg, #182235 0%, #121824 100%); border: 1px solid var(--vip-gold); box-shadow: 0 6px 18px rgba(245, 158, 11, 0.12); border-radius: 18px; padding: 16px; cursor: pointer; transition: var(--transition-smooth); }
-        .vip-slide-card:hover { transform: scale(1.03); box-shadow: var(--shadow-gold); }
+        .vip-slide-card { min-width: 260px; max-width: 260px; background: linear-gradient(145deg, #182235 0%, #121824 100%); border: 1px solid var(--vip-gold); border-radius: 18px; padding: 16px; cursor: pointer; }
 
-        .roulette-card { background: linear-gradient(135deg, #2d124d 0%, #121824 100%); border: 1px solid var(--mystic-purple); border-radius: 24px; padding: 22px; text-align: center; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(168,85,247,0.15); }
-        .roulette-btn { background: var(--mystic-purple); color: white; border: none; padding: 14px 28px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth); margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(168,85,247,0.4); }
-        .roulette-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168,85,247,0.6); }
+        .roulette-card { background: linear-gradient(135deg, #2d124d 0%, #121824 100%); border: 1px solid var(--mystic-purple); border-radius: 24px; padding: 22px; text-align: center; margin-bottom: 24px; }
+        .roulette-btn { background: var(--mystic-purple); color: white; border: none; padding: 14px 28px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(168,85,247,0.4); }
         .shake-anim { animation: shake 0.5s ease-in-out; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
 
-        .creator-banner { background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%); border: 1.5px dashed var(--vip-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 24px; animation: pulseBorder 2s infinite alternate; }
-        @keyframes pulseBorder { from { border-color: var(--border-color); } to { border-color: var(--vip-gold); } }
+        .creator-banner { background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%); border: 1.5px dashed var(--vip-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 24px; }
 
-        /* CARDS Y CONTADOR DE VISITAS */
         .search-wrapper { position: relative; margin-bottom: 18px; }
-        .search-input { width: 100%; background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); padding: 15px 16px 15px 48px; border-radius: 16px; font-size: 1rem; transition: var(--transition-smooth); }
-        .search-input:focus { border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); outline: none; }
+        .search-input { width: 100%; background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); padding: 15px 16px 15px 48px; border-radius: 16px; font-size: 1rem; }
         .search-icon { position: absolute; top: 15px; left: 16px; color: var(--text-muted); pointer-events: none; }
 
         .categories-carousel { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 14px; margin-bottom: 12px; scrollbar-width: none; }
         .categories-carousel::-webkit-scrollbar { display: none; }
-        .cat-chip { white-space: nowrap; background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
-        .cat-chip:hover { color: var(--text-main); background: var(--bg-tarjeta-hover); }
+        .cat-chip { white-space: nowrap; background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer; }
         .cat-chip.active-chip { background: var(--telegram-blue); color: #fff; border-color: var(--telegram-blue); box-shadow: var(--shadow-neon); }
 
         .directory-grid { display: flex; flex-direction: column; gap: 14px; }
-                /* ==========================================================================
-           CORRECCIÓN DE TARJETA ADAPTATIVA (SÍGUEN EL MODO CLARO/OSCURO)
-           ========================================================================== */
         .channel-card { 
-            background: var(--bg-tarjeta); /* Ahora cambia según el tema */
-            color: var(--text-main);        /* Obliga al texto a contrastar con el fondo */
+            background: var(--bg-tarjeta); 
+            color: var(--text-main);        
             border: 1px solid var(--border-color); 
             border-radius: 20px; 
             padding: 18px; 
@@ -265,94 +212,77 @@
             transition: var(--transition-smooth); 
             position: relative; 
         }
-        .channel-card:hover { border-color: var(--text-muted); }
-        
         .channel-card.vip-border { 
             border: 1.5px solid var(--vip-gold); 
-            /* Quitamos el fondo negro fijo y usamos el fondo de tarjeta del tema mezclado con un toque dorado */
             background: linear-gradient(180deg, var(--bg-tarjeta) 0%, rgba(245,158,11,0.05) 100%); 
-            box-shadow: 0 4px 15px rgba(245,158,11,0.05); 
         }
-        .channel-card.vip-border:hover { box-shadow: var(--shadow-gold); }
 
         .card-main-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .card-identity-box { display: flex; align-items: center; gap: 14px; }
-        .channel-thumb { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; background: rgba(36,161,222,0.08); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: var(--transition-smooth); }
-        .channel-card:hover .channel-thumb { transform: scale(1.05); }
-        .channel-meta h4 { font-size: 1rem; font-weight: 800; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; letter-spacing: -0.3px; }
-        .channel-meta p { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+        .channel-thumb { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; background: rgba(36,161,222,0.08); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
         
-        /* BADGES */
         .live-traffic-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(36,161,222,0.08); color: var(--telegram-blue); font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; margin-top: 6px; border: 1px solid rgba(36,161,222,0.15); }
-        .animated-vip-badge { background: var(--vip-gold-gradient); color: #000; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 6px; box-shadow: 0 0 10px rgba(245,158,11,0.3); letter-spacing: 0.5px; }
+        .animated-vip-badge { background: var(--vip-gold-gradient); color: #000; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 6px; }
 
         .fav-star-icon { color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); padding: 5px; }
-        .fav-star-icon:hover { transform: scale(1.2); color: var(--vip-gold); }
-        .fav-star-icon.is-fav { color: var(--vip-gold); fill: var(--vip-gold); transform: scale(1.2); filter: drop-shadow(0 0 5px rgba(245,158,11,0.5)); }
+        .fav-star-icon.is-fav { color: var(--vip-gold); fill: var(--vip-gold); transform: scale(1.2); }
 
-        /* ACCORDION */
         .card-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s ease; margin-top: 0; }
         .channel-card.expanded .card-accordion-content { max-height: 380px; border-top: 1px solid var(--border-color); margin-top: 14px; padding-top: 14px; }
         .extended-data-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }
-        .extended-data-row span strong { color: var(--text-main); }
         
-        .btn-subscribe-trigger { width: 100%; background: var(--telegram-blue); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition-smooth); box-shadow: 0 4px 12px rgba(36,161,222,0.25); }
-        .btn-subscribe-trigger:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(36,161,222,0.4); }
-        .btn-delete-channel { width: 100%; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition-smooth); margin-top: 8px; }
-        .btn-delete-channel:hover { background: #ef4444; color: white; transform: translateY(-2px); }
+        .btn-subscribe-trigger { width: 100%; background: var(--telegram-blue); color: white; border: none; padding: 12px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
+        .btn-delete-channel { width: 100%; background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; margin-top: 8px; }
 
-        /* MODALES FORMULARIOS */
         .form-group { margin-bottom: 16px; text-align: left; }
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-control { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; color: var(--text-main); font-size: 0.9rem; transition: var(--transition-smooth); }
-        .form-control:focus { border-color: var(--telegram-blue); outline: none; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+        .form-control { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; color: var(--text-main); font-size: 0.9rem; }
 
-        /* SHOP */
         .shop-layout { display: flex; flex-direction: column; gap: 20px; }
-        .avatar-canvas-area { background: radial-gradient(circle, rgba(168,85,247,0.2) 0%, rgba(18,24,36,1) 100%); border: 2px solid var(--mystic-purple); border-radius: 24px; padding: 26px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(168,85,247,0.1); }
         
-        .bear-avatar-preview { width: 115px; height: 115px; margin: 0 auto 12px auto; background: var(--bg-tarjeta); border-radius: 50%; border: 3px solid var(--vip-gold); display: flex; align-items: center; justify-content: center; font-size: 3.8rem; position: relative; box-shadow: var(--shadow-gold); transition: var(--transition-smooth); }
-        .bear-accessory { position: absolute; top: -5px; right: -5px; font-size: 2rem; animation: pulseGacha 1.5s infinite alternate; }
-        @keyframes pulseGacha { from { transform: scale(0.9) rotate(-10deg); } to { transform: scale(1.1) rotate(10deg); } }
+        /* CONTENEDOR AVATAR API IA */
+        .avatar-canvas-area { background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(15,23,42,1) 100%); border: 2px solid var(--mystic-purple); border-radius: 24px; padding: 30px; text-align: center; position: relative; overflow: hidden; box-shadow: var(--shadow-neon); }
+        .ia-avatar-frame { width: 120px; height: 120px; margin: 0 auto 15px auto; border-radius: 50%; border: 4px solid var(--vip-gold); box-shadow: var(--shadow-gold); background: #1e293b; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .ia-avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
 
-        .shop-slider-label { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 6px 0; text-align: left; letter-spacing: 1px; }
+        .shop-slider-label { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin: 10px 0 6px 0; text-align: left; }
         .shop-carousel-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;}
         .shop-carousel-row::-webkit-scrollbar { display: none; }
         
-        .item-shop-card { min-width: 125px; max-width: 125px; background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 10px; text-align: center; cursor: pointer; transition: var(--transition-smooth); display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 6px; }
-        .item-shop-card:hover { transform: translateY(-4px); border-color: var(--text-muted); }
+        .item-shop-card { min-width: 135px; max-width: 135px; background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 10px; text-align: center; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 6px; }
         .item-shop-card.locked-item { opacity: 0.5; background: rgba(0,0,0,0.3); }
-        
-        .btn-shop-buy { width: 100%; border: none; padding: 9px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: var(--transition-smooth); }
+        .btn-shop-buy { width: 100%; border: none; padding: 9px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .btn-shop-buy.state-locked { background: #1e293b; color: var(--text-muted); }
         .btn-shop-buy.state-insufficient { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid #ef4444; }
-        .btn-shop-buy.state-ready { background: var(--vip-gold-gradient); color: #000; box-shadow: 0 4px 10px rgba(245,158,11,0.25); }
+        .btn-shop-buy.state-ready { background: var(--vip-gold-gradient); color: #000; font-weight: 800; }
 
-        /* CONFETTI BURST */
-        .confetti-particle { position: absolute; width: 9px; height: 9px; border-radius: 50%; pointer-events: none; animation: explodeConfetti 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 2500; }
+        /* CONFETTI GLOBAL MEJORADO */
+        .confetti-particle { position: fixed; width: 10px; height: 10px; border-radius: 30%; pointer-events: none; animation: explodeConfetti 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999; }
         @keyframes explodeConfetti {
-            0% { transform: translate(0, 0) scale(1.2); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(0.3) rotate(360deg); opacity: 0; }
+            0% { transform: translate(0, 0) scale(1.5) rotate(0deg); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0.2) rotate(720deg); opacity: 0; }
         }
 
-        .energy-table { width: 100%; border-collapse: collapse; background: var(--bg-tarjeta); border-radius: 18px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.85rem; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .energy-table { width: 100%; border-collapse: collapse; background: var(--bg-tarjeta); border-radius: 18px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.85rem; }
         .energy-table th, .energy-table td { padding: 14px 16px; text-align: left; }
-        .energy-table th { background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-weight: 700; }
+        .energy-table th { background: rgba(255,255,255,0.02); color: var(--text-muted); font-weight: 700; }
         .energy-table tr:not(:last-child) { border-bottom: 1px solid var(--border-color); }
 
-        /* MODALES */
         .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 7, 11, 0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-body-box { background: #ffffff; border: 1px solid var(--border-color); border-radius: 28px; padding: 26px; width: 100%; max-width: 440px; position: relative; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center; }
+        .modal-body-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 28px; padding: 26px; width: 100%; max-width: 440px; position: relative; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards; box-shadow: 0 25px 50px rgba(0,0,0,0.5); text-align: center; color: var(--text-main); }
         @keyframes modalPop { from { transform: scale(0.92) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
         
         .logs-terminal { background: #04060a; border: 1px solid #141b26; border-radius: 12px; padding: 14px; max-height: 250px; overflow-y: auto; font-family: monospace; font-size: 0.75rem; color: #4ade80; text-align: left; }
-        .log-line { padding: 5px 0; border-bottom: 1px solid rgba(74,222,128,0.05); line-height: 1.4; }
+        .log-line { padding: 5px 0; border-bottom: 1px solid rgba(74,222,128,0.05); }
 
         .history-item-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 14px 18px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
         .history-left-pane { display: flex; align-items: center; gap: 12px; }
-        .history-icon-badge { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: rgba(255,255,255,0.03); }
+        .history-icon-badge { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); }
         .history-timestamp { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
-        .empty-state-notice { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
+        .empty-state-notice { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.95rem; }
+        
+        .btn-history-loadmore { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 700; width: 100%; padding: 12px; border-radius: 12px; cursor: pointer; margin-top: 5px; transition: var(--transition-smooth); }
+        .btn-history-loadmore:hover { background: rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -371,7 +301,9 @@
 
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-identity">
-            <div id="drawer-avatar-render" class="bear-avatar-preview" style="width: 75px; height: 75px; font-size: 2.2rem; margin-bottom: 5px;">🐻</div>
+            <div class="ia-avatar-frame" style="width: 80px; height: 80px; margin-bottom: 8px;">
+                <img id="drawer-avatar-render" src="https://api.multiavatar.com/anon.svg" alt="Avatar IA">
+            </div>
             <div class="drawer-username-tag">
                 <span id="drawer-username">@Anónimo</span>
                 <span id="drawer-range" style="color: var(--vip-gold); font-size: 0.85rem; font-weight: 800;">[ Rango ]</span>
@@ -414,8 +346,11 @@
         </div>
 
         <div class="admin-only" style="margin-bottom: 12px;">
-            <button class="drawer-btn" style="border-color: var(--vip-gold); background: rgba(245,158,11,0.05);" onclick="toggleProfileDrawer(); switchView('directory'); filterByAdminChannels();">
-                <span>🗂️ Mis Canales en Directorio (<strong id="cnt-my-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
+            <button class="drawer-btn" style="border-color: var(--telegram-blue); background: rgba(36,161,222,0.05);" onclick="toggleProfileDrawer(); switchView('my-channels');">
+                <span>🗂️ Ver Mis Canales Creados (<strong id="cnt-my-owned-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
+            </button>
+            <button class="drawer-btn" style="border-color: var(--vip-gold); background: rgba(245,158,11,0.05); margin-top:8px;" onclick="toggleProfileDrawer(); switchView('directory'); filterByAdminChannels();">
+                <span>👑 Canales Globales Admin (<strong id="cnt-my-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
             </button>
         </div>
 
@@ -517,9 +452,16 @@
         <div id="favorites-list" class="directory-grid"></div>
     </main>
 
+    <main id="view-my-channels" class="app-view">
+        <h2 class="view-title"><i data-lucide="folder-user" style="color:var(--telegram-blue)"></i> Mis Canales Guardados</h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Canales vinculados directamente a tu Telegram User ID de forma segura.</p>
+        <div id="my-owned-channels-list" class="directory-grid"></div>
+    </main>
+
     <main id="view-history" class="app-view">
         <h2 class="view-title"><i data-lucide="history" style="color:var(--success-green)"></i> Historial de Compras y Accesos</h2>
         <div id="history-list" class="directory-grid"></div>
+        <div id="history-pagination-container"></div>
     </main>
 
     <main id="view-shop" class="app-view">
@@ -527,9 +469,11 @@
         <div class="shop-layout">
             
             <div class="avatar-canvas-area" id="canvas-area-wrapper">
-                <div class="bear-avatar-preview" id="shop-bear-avatar">🐻<span class="bear-accessory" id="active-acc"></span></div>
-                <div style="font-weight:700; font-size:0.95rem; color:#fff;">Constructor Personalizado por IA Bear</div>
-                <p style="font-size:0.75rem; color:var(--text-muted); max-width:280px; margin:0 auto 5px auto;">Forja trajes o reclama avatares premium usando tus puntos.</p>
+                <div class="ia-avatar-frame">
+                    <img id="shop-ia-avatar-preview" src="https://api.multiavatar.com/starbear.svg" alt="Preview IA">
+                </div>
+                <div style="font-weight:700; font-size:0.95rem; color:#fff;">Diseñador Modular por API IA</div>
+                <p style="font-size:0.75rem; color:var(--text-muted); max-width:280px; margin:0 auto 5px auto;">Adquiere accesorios en la API y genera avatares vectoriales instantáneos.</p>
             </div>
 
             <div class="shop-slider-label">Accesorios y Personajes Especiales</div>
@@ -612,35 +556,37 @@
     </nav>
 
     <script>
-        // BASE DE DATOS LOCAL AMPLIADA DE CANALES (CON ATRIBUTOS DE FILTRADO POPULARES, NUEVOS Y TENDENCIAS)
+        // DATASET CON VINCULACIÓN AL USER ID DE TELEGRAM (SIMULADO O REAL EN WEBAPP)
         const INITIAL_CHANNELS_DATASET = [
-            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true },
-            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: true },
-            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: false },
-            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, isAdminOwned: false },
-            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, isAdminOwned: false },
-            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: false },
-            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true }
+            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true, telegramUserId: 12345678 },
+            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: true, telegramUserId: 99999999 },
+            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: false, telegramUserId: 11112222 },
+            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, isAdminOwned: false, telegramUserId: 33334444 },
+            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, isAdminOwned: false, telegramUserId: 12345678 },
+            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, isAdminOwned: false, telegramUserId: 55556666 },
+            { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, isAdminOwned: true, telegramUserId: 12345678 }
         ];
 
+        // SE SELECCIONAN SEMILLAS DE TEXTO PARA PASAR COMO PARÁMETROS A LA API DE MULTIAVATAR
         const PREMIUM_SHOP_CATALOG = [
-            { id: "acc_1", name: "Corona Dorada IA", cost: 15, minRange: 1, visual: "👑", type: "accessory" },
-            { id: "acc_2", name: "Gafas Cyberpunk", cost: 30, minRange: 3, visual: "🕶️", type: "accessory" },
-            { id: "combo_1", name: "Combo Oso Astronauta", cost: 50, minRange: 5, visual: "👨‍🚀", type: "character" },
-            { id: "combo_2", name: "Avatar VIP Bear de Oro", cost: 85, minRange: 5, visual: "🏆", type: "character" }
+            { id: "acc_1", name: "Corona Dorada IA", cost: 15, minRange: 1, visual: "goldking", type: "accessory" },
+            { id: "acc_2", name: "Gafas Cyberpunk", cost: 30, minRange: 3, visual: "neoncyber", type: "accessory" },
+            { id: "combo_1", name: "Combo Oso Astronauta", cost: 50, minRange: 5, visual: "spacebear", type: "character" },
+            { id: "combo_2", name: "Avatar VIP Bear de Oro", cost: 85, minRange: 5, visual: "vipgoldbear", type: "character" }
         ];
 
-        // CONFIGURACIÓN DE DATOS PREDEFINIDOS PARA USUARIO ANÓNIMO
-        const ANONYMOUS_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2364748b'/><text x='50%' y='55%' font-size='40' font-weight='bold' fill='white' text-anchor='middle'>?</text></svg>";
+        const ANONYMOUS_AVATAR = "https://api.multiavatar.com/anonuser.svg";
 
         let state = {
             user: { 
                 username: "Invitado Anónimo", 
+                idTelegram: 12345678, // ID por defecto en desarrollo, se pisa con el de Telegram Real
                 balance: 25, 
                 role: "user", 
                 range: 1,
                 pointsProgress: 25,
-                photoUrl: ANONYMOUS_AVATAR
+                photoUrl: ANONYMOUS_AVATAR,
+                currentSeed: "default"
             },
             favorites: [], 
             history: [], 
@@ -648,6 +594,8 @@
             purchasedItems: [],
             adminFilterOnly: false
         };
+
+        let showFullHistory = false; // Estado para el paginador solicitado del historial
 
         const CATEGORIES = [
             { id: "all", name: "🌐 Todos" },
@@ -665,12 +613,11 @@
             renderAppUiComponents();
             renderTopPodium();
             lucide.createIcons();
-            addLog("Ecosistema Premium inicializado y sincronizado.");
+            addLog("Ecosistema Premium inicializado y sincronizado con API de Avatares.");
         });
 
-        // PERSISTENCIA ABSOLUTA EN LOCALSTORAGE
         function saveToLocalStorage() {
-            localStorage.setItem('canales_top_state', JSON.stringify({
+            localStorage.setItem('canales_top_state_v2', JSON.stringify({
                 user: state.user,
                 favorites: state.favorites,
                 history: state.history,
@@ -680,7 +627,7 @@
         }
 
         function loadFromLocalStorage() {
-            const saved = localStorage.getItem('canales_top_state');
+            const saved = localStorage.getItem('canales_top_state_v2');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -695,14 +642,12 @@
             }
         }
 
-        // CONTROL Y ACCESO AL CONTEXTO DE TELEGRAM (CON DATOS REALES VS PREDEFINIDOS)
         function initTelegramContext() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const webApp = window.Telegram.WebApp;
                 webApp.ready();
                 webApp.expand();
                 
-                // Aplicar colores nativos si están disponibles para mejorar inmersión elegante
                 if(webApp.colorScheme === 'light') {
                     document.documentElement.setAttribute('data-theme', 'light');
                 }
@@ -710,22 +655,21 @@
                 if (webApp.initDataUnsafe?.user) {
                     const tgUser = webApp.initDataUnsafe.user;
                     state.user.username = tgUser.username ? `@${tgUser.username}` : `${tgUser.first_name}`;
+                    state.user.idTelegram = tgUser.id; // Asignación del id real enviado por Telegram
                     
-                    // Sincronización real de la imagen de Telegram si existe
                     if (tgUser.photo_url) {
                         state.user.photoUrl = tgUser.photo_url;
                     } else {
-                        // Construcción elegante con su inicial real
-                        const letra = (tgUser.first_name || "U").charAt(0).toUpperCase();
-                        state.user.photoUrl = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2324A1DE'/><text x='50%' y='55%' font-size='40' font-weight='bold' fill='white' text-anchor='middle'>${letra}</text></svg>`;
+                        state.user.photoUrl = `https://api.multiavatar.com/${tgUser.id}.svg`;
                     }
                 } else {
-                    // Datos predefinidos si es un usuario completamente anónimo fuera de Telegram
                     state.user.username = "Invitado Anónimo";
-                    state.user.photoUrl = ANONYMOUS_AVATAR;
+                    state.user.photoUrl = `https://api.multiavatar.com/default.svg`;
                 }
             }
             document.getElementById("header-avatar").src = state.user.photoUrl;
+            document.getElementById("shop-ia-avatar-preview").src = `https://api.multiavatar.com/${state.user.currentSeed}.svg`;
+            document.getElementById("drawer-avatar-render").src = `https://api.multiavatar.com/${state.user.currentSeed}.svg`;
             saveToLocalStorage();
         }
 
@@ -752,7 +696,7 @@
             saveToLocalStorage();
         }
 
-        // NOTIFICACIONES TOAST MEJORADAS Y VISTOSAS CON CONTROL ANIMADO ANIMATIONEND
+        // REDISEÑO: TOASTS BIEN GRANDES, MODERNOS Y VISTOSOS
         function showToast(text, type = "info") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -770,14 +714,13 @@
             setTimeout(() => {
                 toast.classList.add("toast-leave");
                 toast.addEventListener("animationend", () => toast.remove());
-            }, 3500);
+            }, 3800);
         }
 
         function getDynamicDailyViews(channelId) {
             const todayTimestamp = Math.floor(new Date().setHours(0,0,0,0) / 86400000);
             const seed = (channelId * 31) + todayTimestamp;
-            const MathRandomFromSeed = Math.abs(Math.sin(seed));
-            return Math.floor(MathRandomFromSeed * (50 - 5 + 1)) + 5;
+            return Math.floor(Math.abs(Math.sin(seed)) * (50 - 5 + 1)) + 5;
         }
 
         function rewardPoints(amount, actionLabel) {
@@ -791,7 +734,8 @@
             
             if(state.user.range > oldRange) {
                 addLog(`✨ ¡Evolución RPG! Subiste al Rango ${state.user.range}`);
-                showToast(`¡Felicidades! Has alcanzado el Rango ${state.user.range}`, "gold");
+                triggerConfettiExplosion(); // EXPLOSIÓN DE CONFETTI AL DESBLOQUEAR LA TIENDA TOTALMENTE (Rango 5)
+                showToast(`¡Felicidades! Has alcanzado el Rango ${state.user.range}. ¡Tienda IA expandida!`, "gold");
                 registerActionToHistory("Evolución de Rango", `Alcanzaste el rango de usuario de nivel ${state.user.range}`, "gold");
             }
             
@@ -801,7 +745,6 @@
         }
 
         function executeDailyCheckIn() {
-            // Check-in diario solo una vez por fecha
             const today = new Date().toDateString();
             if(localStorage.getItem('last_checkin_date') !== today) {
                 localStorage.setItem('last_checkin_date', today);
@@ -823,7 +766,7 @@
         }
 
         function switchView(viewId) {
-            state.adminFilterOnly = false; // Resetear filtros especiales de vistas al navegar
+            state.adminFilterOnly = false; 
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active-tab'));
             
@@ -835,7 +778,8 @@
 
             if (viewId === 'directory') renderDirectoryList();
             if (viewId === 'favorites') renderFavoritesList();
-            if (viewId === 'history') renderHistoryList();
+            if (viewId === 'my-channels') renderMyOwnedChannelsList();
+            if (viewId === 'history') { showFullHistory = false; renderHistoryList(); }
             if (viewId === 'home') { renderVipSlider(); renderTopPodium(); }
             if (viewId === 'shop') renderShopCatalog();
             lucide.createIcons();
@@ -851,7 +795,7 @@
             } else {
                 toggleProfileDrawer();
                 switchView('shop');
-                showToast("Bienvenido al taller de IA premium de Bear", "gold");
+                showToast("Bienvenido al taller de IA premium modular", "gold");
             }
         }
 
@@ -862,7 +806,7 @@
             if(state.user.role === "admin") {
                 toggle.classList.add("active");
                 document.body.classList.add("role-admin");
-                showToast("Vista Administrador Activada", "gold");
+                showToast("Vista Administrador Activada - Sección Privada Desbloqueada", "gold");
             } else {
                 toggle.classList.remove("active");
                 document.body.classList.remove("role-admin");
@@ -875,12 +819,9 @@
             saveToLocalStorage();
         }
 
-        // SECCIÓN NUEVA: RENDER DEL TOP 3 DE CANALES EN EL HOME
         function renderTopPodium() {
             const container = document.getElementById("top-podium-container");
             if (!container) return;
-            
-            // Ordenamos los canales por mayor cantidad de suscriptores para el Top 3
             const sortedTop = [...INITIAL_CHANNELS_DATASET].sort((a, b) => b.subs - a.subs).slice(0, 3);
             
             container.innerHTML = sortedTop.map((c, index) => `
@@ -918,7 +859,10 @@
             }
             
             const myChannelsCount = INITIAL_CHANNELS_DATASET.filter(c => c.isAdminOwned).length;
+            const myOwnedIdCount = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram).length;
+            
             document.getElementById("cnt-my-channels").innerText = myChannelsCount;
+            document.getElementById("cnt-my-owned-channels").innerText = myOwnedIdCount;
             document.getElementById("cnt-channels").innerText = INITIAL_CHANNELS_DATASET.length;
             document.getElementById("stat-total-channels").innerText = INITIAL_CHANNELS_DATASET.length;
 
@@ -988,13 +932,11 @@
             renderDirectoryList();
         }
 
-        // AGREGADO EXTRACTO DE BOTÓN PARA ELIMINAR BAJO ROL DE ADMINISTRADOR
         function buildChannelCardHtml(c) {
             const isFav = state.favorites.includes(c.id);
             const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
             const liveViews = getDynamicDailyViews(c.id);
             
-            // Botón de eliminar visible solo para administradores si el canal es de su propiedad
             const adminDeleteButton = (state.user.role === 'admin' && c.isAdminOwned) ? `
                 <button class="btn-delete-channel" onclick="event.stopPropagation(); openDeleteModal(${c.id}, '${c.name}')">
                     <i data-lucide="trash-2" style="width:14px; height:14px;"></i> Eliminar del Directorio
@@ -1030,7 +972,6 @@
             `;
         }
 
-        // FILTRADO ROBUSTO: INCLUYE LOS NUEVOS CRITERIOS DE POPULARES, NUEVOS Y TENDENCIAS
         function renderDirectoryList() {
             const list = document.getElementById("directory-list");
             if (!list) return;
@@ -1061,6 +1002,22 @@
             lucide.createIcons();
         }
 
+        // LÓGICA DE LA SECCIÓN SOLICITADA: FILTRADO POR EL ID DE TELEGRAM DEL EMISOR CONECTADO
+        function renderMyOwnedChannelsList() {
+            const container = document.getElementById("my-owned-channels-list");
+            if (!container) return;
+            
+            // Filtra los canales de la BD cuyo telegramUserId coincida con el idTelegram del usuario logueado
+            const myOwned = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram);
+            
+            if (myOwned.length === 0) {
+                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee canales registrados en este directorio.</div>`;
+                return;
+            }
+            container.innerHTML = myOwned.map(c => buildChannelCardHtml(c)).join('');
+            lucide.createIcons();
+        }
+
         function renderFavoritesList() {
             const container = document.getElementById("favorites-list");
             if (!container) return;
@@ -1074,16 +1031,25 @@
             lucide.createIcons();
         }
 
+        // REDISEÑO SOLICITADO: DESPLEGABLE DESDE LAS 10 ACCIONES REGISTRADAS HASTA LAS 20 MÁXIMAS
         function renderHistoryList() {
             const container = document.getElementById("history-list");
+            const paginationContainer = document.getElementById("history-pagination-container");
             if (!container) return;
             
             if (state.history.length === 0) {
                 container.innerHTML = `<div class="empty-state-notice">Aún no hay transacciones registradas.</div>`;
+                if(paginationContainer) paginationContainer.innerHTML = "";
                 return;
             }
             
-            container.innerHTML = state.history.map(item => `
+            // Recortamos el historial completo a un máximo de 20 registros
+            const totalToConsider = state.history.slice(0, 20);
+            
+            // Si no se ha pulsado el desplegable, recortamos estrictamente a 10 elementos
+            const displayedItems = showFullHistory ? totalToConsider : totalToConsider.slice(0, 10);
+            
+            container.innerHTML = displayedItems.map(item => `
                 <div class="history-item-card">
                     <div class="history-left-pane">
                         <div class="history-icon-badge">
@@ -1097,7 +1063,28 @@
                     <div class="history-timestamp">${item.time}</div>
                 </div>
             `).join('');
+
+            // Construcción del botón desplegable interactivo
+            if (totalToConsider.length > 10) {
+                if (!showFullHistory) {
+                    paginationContainer.innerHTML = `<button class="btn-history-loadmore" onclick="expandHistoryView()">👇 Mostrar registros del 11 al ${totalToConsider.length}</button>`;
+                } else {
+                    paginationContainer.innerHTML = `<button class="btn-history-loadmore" onclick="collapseHistoryView()">👆 Ocultar y mostrar solo los primeros 10</button>`;
+                }
+            } else {
+                paginationContainer.innerHTML = "";
+            }
             lucide.createIcons();
+        }
+
+        function expandHistoryView() {
+            showFullHistory = true;
+            renderHistoryList();
+        }
+
+        function collapseHistoryView() {
+            showFullHistory = false;
+            renderHistoryList();
         }
 
         function toggleAccordionEffect(id) {
@@ -1170,7 +1157,9 @@
 
                 return `
                     <div class="${cardClass}">
-                        <span style="font-size:2.2rem; margin-bottom:4px;">${item.visual}</span>
+                        <div class="ia-avatar-frame" style="width:50px; height:50px; border-width:2px; margin-bottom:2px;">
+                            <img src="https://api.multiavatar.com/${item.visual}.svg" alt="Item">
+                        </div>
                         <div style="font-size:0.75rem; font-weight:700; min-height:32px; display:flex; align-items:center; justify-content:center;">${item.name}</div>
                         <div style="color:var(--vip-gold); font-size:0.8rem; font-weight:800; margin-bottom:6px;">${item.cost} ✨</div>
                         ${buttonHtml}
@@ -1190,10 +1179,10 @@
                 state.user.balance -= cost;
                 state.purchasedItems.push(itemId);
                 
-                triggerConfettiExplosion();
+                triggerConfettiExplosion(); // EXPLOSIÓN DE CONFETTI EN TODOS LOS BOTONES DE COMPRA EXITOSOS
                 equipAccessory(visual, itemType);
                 
-                showToast("¡Compra efectuada con éxito!", "gold");
+                showToast("¡Compra efectuada con éxito por API!", "gold");
                 registerActionToHistory("Compra Premium", `Adquiriste el artículo estético: ${visual}`, "gold");
                 
                 updateBalanceAndRpgUi();
@@ -1201,41 +1190,44 @@
             }
         }
 
-        function equipAccessory(visual, type) {
-            if (type === 'accessory') {
-                document.getElementById("active-acc").innerText = visual;
-            } else {
-                document.getElementById("shop-bear-avatar").innerHTML = `${visual}<span class="bear-accessory" id="active-acc"></span>`;
-                document.getElementById("drawer-avatar-render").innerText = visual;
-            }
-            showToast("Apariencia actualizada", "success");
+        function equipAccessory(seedName, type) {
+            state.user.currentSeed = seedName;
+            
+            // Actualización asíncrona de las llamadas a la API de Avatares gratuitos
+            document.getElementById("shop-ia-avatar-preview").src = `https://api.multiavatar.com/${seedName}.svg`;
+            document.getElementById("drawer-avatar-render").src = `https://api.multiavatar.com/${seedName}.svg`;
+            
+            showToast("Apariencia forjada por IA con éxito", "success");
             saveToLocalStorage();
         }
 
+        // EXPLOSIÓN DE CONFETTI REESTRUCTURADA (PUNTO CENTRAL FLUIDO A TODA LA PANTALLA)
         function triggerConfettiExplosion() {
-            const wrapper = document.getElementById("canvas-area-wrapper");
+            const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];
             
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 65; i++) {
                 const particle = document.createElement("div");
                 particle.className = "confetti-particle";
-                
-                const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];
                 particle.style.background = colors[Math.floor(Math.random() * colors.length)];
                 
+                // Lanzamiento desde el centro del viewport visible
                 particle.style.left = `50%`;
                 particle.style.top = `50%`;
                 
                 const angle = Math.random() * Math.PI * 2;
-                const velocity = Math.random() * 140 + 60;
+                // Velocidad explosiva masiva radial
+                const velocity = Math.random() * 260 + 80;
+                
                 particle.style.setProperty('--x', `${Math.cos(angle) * velocity}px`);
                 particle.style.setProperty('--y', `${Math.sin(angle) * velocity}px`);
                 
-                wrapper.appendChild(particle);
-                setTimeout(() => particle.remove(), 900);
+                document.body.appendChild(particle);
+                
+                // Limpieza del árbol DOM tras ejecución de la animación
+                setTimeout(() => particle.remove(), 1200);
             }
         }
 
-        // CONTROL DE MODALES AGREGADOS PARA LA SOLICITUD DE BAJA PRIVADA A TELEGRAM
         function openDeleteModal(channelId, channelName) {
             document.getElementById("delete-channel-id").value = channelId;
             document.getElementById("delete-channel-name").value = channelName;
@@ -1243,28 +1235,28 @@
             document.getElementById("modal-delete-request").style.display = "flex";
         }
 
+        document.getElementById("modal-delete-request").style.display = "none";
+        document.getElementById("modal-logs-view").style.display = "none";
+
         function closeDeleteModal() {
             document.getElementById("modal-delete-request").style.display = "none";
         }
 
-        // ENVÍO DE DATOS AUTOMÁTICOS AL CHAT PRIVADO A TRAVÉS DE TELEGRAM WEBAPP API
         function sendDeleteRequestToTelegram() {
             const chId = document.getElementById("delete-channel-id").value;
             const chName = document.getElementById("delete-channel-name").value;
             const reason = document.getElementById("delete-channel-reason").value.trim();
 
             if(!reason) {
-                showToast("Por favor ingresa una razón", "error");
+                showToast("Por favor ingresa una razón válida", "error");
                 return;
             }
 
             const messagePayload = `🚨 SOLICITUD DE BAJA DE CANAL 🚨\n\n• Canal ID: ${chId}\n• Nombre: ${chName}\n• Solicitante: ${state.user.username}\n• Motivo: ${reason}`;
 
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
-                // Envía los datos de vuelta al bot de Telegram de manera segura
                 window.Telegram.WebApp.sendData(messagePayload);
             } else {
-                // Fallback de desarrollo o visualización externa simulada
                 console.log("Datos enviados a Telegram Soporte Privado:", messagePayload);
             }
 

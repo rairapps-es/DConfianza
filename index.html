@@ -11,39 +11,52 @@
            VARIABLES DE DISEÑO PREMIUM (TEMA OSCURO / CLARO FLUIDO)
            ========================================================================== */
         :root {
-            --bg-principal: #ffffff;
-            --bg-tarjeta: #ffffff;
-            --bg-tarjeta-hover: #eeeeee;
-            --telegram-blue: #24A1DE;
-            --success-green: #2ecc71;
-            --mystic-purple: #a855f7;
-            --vip-gold: #f59e0b;
-            --vip-gold-gradient: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
-            --premium-gradient: linear-gradient(135deg, #24A1DE 0%, #a855f7 50%, #f59e0b 100%);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #1e293b;
-            --glass-bg: #eeeeee;
-            --glass-border: rgba(255, 255, 255, 0.05);
-            --shadow-neon: 0 0 25px rgba(36, 161, 222, 0.25);
-            --shadow-gold: 0 0 30px rgba(245, 158, 11, 0.35);
-            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    /* --- FONDOS OSCUROS PARA EL MODO POR DEFECTO --- */
+    --bg-principal: #0f172a;       /* Azul oscuro muy elegante (Slate 900) */
+    --bg-tarjeta: #1e293b;         /* Fondo de tarjeta oscuro (Slate 800) */
+    --bg-tarjeta-hover: #334155;   /* Hover ligeramente más claro */
+    --glass-bg: rgba(30, 41, 59, 0.7); /* Efecto cristal oscuro */
+    --border-color: #334155;       /* Bordes integrados con el fondo */
+    --glass-border: rgba(255, 255, 255, 0.08);
 
-        [data-theme="light"] {
-            --bg-principal: #ffffff;
-            --bg-tarjeta: #ffffff;
-            --bg-tarjeta-hover: #eeeeee;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --glass-bg: #eeeeee;
-            --glass-border: rgba(15, 23, 42, 0.05);
-            --shadow-neon: 0 8px 20px rgba(36, 161, 222, 0.1);
-        }
+    /* --- COLORES DE MARCA Y DEGRADADOS --- */
+    --telegram-blue: #24A1DE;
+    --success-green: #2ecc71;
+    --mystic-purple: #a855f7;
+    --vip-gold: #f59e0b;
+    --vip-gold-gradient: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+    --premium-gradient: linear-gradient(135deg, #24A1DE 0%, #a855f7 50%, #f59e0b 100%);
+
+    /* --- TEXTO CLARO (Ahora sí contrasta perfectamente) --- */
+    --text-main: #f8fafc;          /* Blanco tiza */
+    --text-muted: #94a3b8;         /* Gris suave para textos secundarios */
+    
+    /* --- EFECTOS NEÓN --- */
+    --shadow-neon: 0 0 25px rgba(36, 161, 222, 0.25);
+    --shadow-gold: 0 0 30px rgba(245, 158, 11, 0.35);
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+    /* --- FONDOS CLAROS --- */
+    --bg-principal: #f8fafc;
+    --bg-tarjeta: #ffffff;
+    --bg-tarjeta-hover: #f1f5f9;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --border-color: #e2e8f0;
+    --glass-border: rgba(15, 23, 42, 0.05);
+
+    /* --- TEXTO OSCURO --- */
+    --text-main: #0f172a;          /* Azul oscuro casi negro */
+    --text-muted: #64748b;         /* Gris oscuro para secundario */
+    
+    /* --- EFECTOS REBAJADOS PARA MODO CLARO --- */
+    --shadow-neon: 0 8px 20px rgba(36, 161, 222, 0.1);
+}
 
         * {
             margin: 0;
+    
             padding: 0;
             box-sizing: border-box;
             font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;

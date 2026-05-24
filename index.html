@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crypto Whale Simulator: El Despertar del Espécimen</title>
+    <!-- SDK Oficial de Telegram Mini Apps -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Iconos minimalistas premium de alto rendimiento -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* ==========================================================================
+           VARIABLES DE DISEÑO FOTÓNICO Y RESETEO ABSOLUTO
+           ========================================================================== */
+        :root {
+            --bg-deep: #06090e;
+            --bg-panel: #0d131f;
+            --bg-panel-light: #161f33;
+            --neon-green: #00ff88;
+            --neon-red: #ff2a5f;
+            --neon-gold: #ffb700;
+            --neon-blue: #00bfff;
+            --text-main: #ffffff;
+            --text-muted: #6c7d93;
+            --border-glow: #1a263d;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Elemento decorativo de grano de película de terminal Bloomberg */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 99999;
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           CANVAS LÍQUIDO DEL TANQUE (EL ESPÉCIMEN)
+           ========================================================================== */
+        #whale-tank-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           ESTRUCTURA SPA Y CONTENEDORES PRINCIPALES
+           ========================================================================== */
+        .app-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Panel Superior de Estado RPG */
+        .rpg-header {
+            padding: 16px;
+            background: linear-gradient(to bottom, rgba(13,19,31,0.95), rgba(13,19,31,0));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .identity-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-glow {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--neon-blue) 0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        .rank-badge {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            background: var(--neon-blue);
+            color: var(--bg-deep);
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .balance-box {
+            text-align: right;
+        }
+
+        .balance-box h2 {
+            font-family: var(--font-mono);
+            font-size: 1.6rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Zona Central Interactiva SPA */
+        .main-content-viewport {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 0 16px;
+            margin-bottom: 70px;
+        }
+
+        .view-panel {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+            animation: paneFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .view-panel.active {
+            display: flex;
+        }
+
+        /* Tarjetas de Estilo Bloomberg */
+        .terminal-card {
+            background: rgba(13, 19, 31, 0.85);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+        }
+
+        /* ==========================================================================
+           MONETIZACIÓN: PAYWALLS IMPRESIONANTES Y BOTONES DE COBRO
+           ========================================================================== */
+        .premium-paywall-lock {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(6, 9, 14, 0.92);
+            backdrop-filter: blur(6px);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .star-btn {
+            background: linear-gradient(135deg, #ffb700 0%, #ff8800 100%);
+            color: #000;
+            font-weight: 800;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-top: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 20px rgba(255, 183, 0, 0.4);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .star-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ==========================================================================
+           TAB BAR INFERIOR (NAVEGACIÓN SPA HÁPTICA)
+           ========================================================================== */
+        .navigation-tab-bar {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%;
+            height: 68px;
+            background: rgba(13, 19, 31, 0.95);
+            border-top: 1px solid var(--border-glow);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .tab-trigger {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            width: 20%;
+        }
+
+        .tab-trigger.active {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+        }
+
+        .tab-trigger i {
+            width: 22px;
+            height: 22px;
+            transition: transform 0.2s ease;
+        }
+
+        .tab-trigger.active i {
+            transform: translateY(-2px);
+            color: var(--neon-blue);
+        }
+
+        /* ==========================================================================
+           ANIMACIONES MAESTRAS POR HARDWARE (CSS)
+           ========================================================================== */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 191, 255, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(0, 191, 255, 0.7); border-color: var(--neon-green); }
+        }
+
+        @keyframes paneFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .shake-haptic {
+            animation: shakeKey 0.15s linear infinite;
+        }
+
+        @keyframes shakeKey {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 1px); }
+            75% { transform: translate(2px, -1px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Lienzo del espécimen y el simulador de fluidos metabólicos -->
+    <canvas id="whale-tank-canvas"></canvas>
+
+    <div class="app-container">
+        <!-- CABECERA RPG -->
+        <header class="rpg-header">
+            <div class="identity-box">
+                <div id="whale-avatar" class="avatar-glow">🦠</div>
+                <div>
+                    <h4 id="user-display-name" style="font-weight: 800; font-size: 0.95rem;">Cargando...</h4>
+                    <span id="whale-rank" class="rank-badge">Plankton</span>
+                </div>
+            </div>
+            <div class="balance-box">
+                <p style="font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; letter-spacing: 1px;">Patrimonio Neto Sim</p>
+                <h2 id="global-sim-balance">$100.00</h2>
+            </div>
+        </header>
+
+        <!-- CONTENEDOR MULTIVISTA SPA -->
+        <main class="main-content-viewport">
+            
+            <!-- VISTA 1: TERMINAL DE TRADING (HOME) -->
+            <section id="view-trading" class="view-panel active">
+                      <!-- ==========================================================================
+             📦 NUEVA VISTA: FORMULARIO DE PEDIDOS & HISTORIAL DE COMPRAS (SPA)
+             ========================================================================== -->
+        <div id="view-orders" class="view-panel" style="padding: 15px; overflow-y: auto; padding-bottom: 90px;">
+            
+            <!-- SECCIÓN A: FORMULARIO DE PEDIDO MANUAL -->
+            <div style="background: var(--bg-panel-dark); border: 1px solid var(--border-glow); border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                <h3 style="color: var(--neon-gold); font-size: 1.1rem; display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <i data-lucide="file-text" style="width:18px;"></i> Formulario de Pedido VIP
+                </h3>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4;">
+                    Selecciona tu artículo, el método de pago deseado y procesa tu orden. Se enviará una orden de compra directa a nuestro centro de control.
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <!-- Selector de Producto -->
+                    <div>
+                        <label style="font-size: 0.7rem; color: var(--neon-blue); font-weight: 700; display: block; margin-bottom: 4px;">ARTÍCULO A ADQUIRIR</label>
+                        <select id="order-item-select" style="width: 100%; background: var(--bg-panel-light); border: 1px solid var(--border-glow); color: #fff; padding: 10px; border-radius: 8px; font-size: 0.8rem; outline: none;">
+                            <option value="pack_plankton" data-price="5.00">📦 Pack Plankton (+$500 Balance) — $5.00</option>
+                            <option value="pack_shark" data-price="20.00">🦈 Pack Tiburón (+$2,500 Balance) — $20.00</option>
+                            <option value="insurance_policy" data-price="7.50">🛡️ Póliza de Seguro de Rescate — $7.50</option>
+                            <option value="intel_alpha" data-price="15.00">📡 Acceso Canal de Alertas Intel — $15.00</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Identificador Telegram -->
+                    <div>
+                        <label style="font-size: 0.7rem; color: var(--neon-blue); font-weight: 700; display: block; margin-bottom: 4px;">TU TELEGRAM ID / ALIAS</label>
+                        <input type="text" id="order-tg-identity" placeholder="Ej: @Usuario o 12345678" style="width: 100%; background: var(--bg-panel-light); border: 1px solid var(--border-glow); color: #fff; padding: 10px; border-radius: 8px; font-size: 0.8rem; outline: none;">
+                    </div>
+
+                    <!-- Selector Método de Pago -->
+                    <div>
+                        <label style="font-size: 0.7rem; color: var(--neon-blue); font-weight: 700; display: block; margin-bottom: 4px;">MÉTODO DE PAGO PREFERIDO</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                            <label style="background: var(--bg-panel-light); border: 1px solid var(--border-glow); border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.65rem; font-weight: bold;">
+                                <input type="radio" name="payment-method" value="PayPal" checked style="accent-color: var(--neon-blue);">
+                                💳 PayPal
+                            </label>
+                            <label style="background: var(--bg-panel-light); border: 1px solid var(--border-glow); border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.65rem; font-weight: bold;">
+                                <input type="radio" name="payment-method" value="USDT (TRC20)" style="accent-color: var(--neon-green);">
+                                🟢 USDT
+                            </label>
+                            <label style="background: var(--bg-panel-light); border: 1px solid var(--border-glow); border-radius: 8px; padding: 10px 4px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.65rem; font-weight: bold;">
+                                <input type="radio" name="payment-method" value="Telegram Stars" style="accent-color: var(--neon-gold);">
+                                🌟 Stars
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Botón Enviar Pedido -->
+                    <button onclick="processAndSendManualOrder()" style="background: linear-gradient(135deg, var(--neon-blue), #0055ff); border: none; color: white; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; margin-top: 5px; box-shadow: 0 0 12px rgba(0,191,255,0.4); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i data-lucide="send" style="width:16px;"></i> Enviar Pedido por Telegram
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECCIÓN B: HISTORIAL DE COMPRAS (TARJETAS MODERNAS) -->
+            <div style="margin-top: 10px;">
+                <h3 style="color: #fff; font-size: 1rem; font-family: var(--font-mono); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>📜 Historial de Compras</span>
+                    <span id="history-item-count" style="font-size: 0.75rem; color: var(--text-muted);">0 artículos</span>
+                </h3>
+                
+                <!-- Contenedor dinámico donde se inyectarán las tarjetas de compras -->
+                <div id="purchased-items-container" style="display: flex; flex-direction: column; gap: 12px;">
+                    <!-- El estado inicial vacío se maneja por JS en la parte 2 -->
+                </div>
+            </div>
+
+        </div>
+
+                <!-- PANEL GRÁFICO RESPLANDECIENTE -->
+                <div class="terminal-card" style="height: 220px; display: flex; flex-direction: column;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <h3 id="active-ticker-title" style="font-family:var(--font-mono); font-size: 1rem;">🎰 WHALE/USDT</h3>
+                        <span id="active-ticker-change" style="font-family:var(--font-mono); font-weight:900; color:var(--neon-green);">+0.00%</span>
+                    </div>
+                    <!-- Canvas de Gráfica de Velas Neón -->
+                    <canvas id="live-crypto-chart" style="flex-grow:1; width:100%; height:100px;"></canvas>
+                </div>
+
+                <!-- SELECTOR DE TOKENS DEL SIMULADOR -->
+                <div class="terminal-card" style="padding: 10px;">
+                    <div id="token-market-grid" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
+                        <!-- Inyectado Dinámicamente por JS -->
+                    </div>
+                </div>
+
+                <!-- CONSOLA DE ÓRDENES & APALANCAMIENTO -->
+                <div class="terminal-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:0.8rem;">
+                        <span style="color:var(--text-muted);">Apalancamiento Máx:</span>
+                        <span id="leverage-display-label" style="color:var(--neon-red); font-weight:900; font-family:var(--font-mono);">x1 (Plankton Mode)</span>
+                    </div>
+                    
+                    <div style="display:flex; gap:12px;">
+                        <button class="trade-action-btn buy" onclick="executeSimulatedOrder('BUY')" style="flex:1; background:var(--neon-green); color:#000; font-weight:900; border:none; padding:12px; border-radius:8px; font-size:1rem; cursor:pointer;">COMPRAR</button>
+                        <button class="trade-action-btn sell" onclick="executeSimulatedOrder('SELL')" style="flex:1; background:var(--neon-red); color:#fff; font-weight:900; border:none; padding:12px; border-radius:8px; font-size:1rem; cursor:pointer;">VENDER</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA 2: INSIDER ALERT ALPHA CHANNEL (PAGO PREMIUM) -->
+            <section id="view-alerts" class="view-panel">
+                <div class="terminal-card" style="min-height: 250px;">
+                    <!-- PAYWALL PREMIUM OBLIGATORIO -->
+                    <div class="premium-paywall-lock" id="alerts-paywall">
+                        <i data-lucide="shield-alert" style="width:40px; height:40px; color:var(--neon-gold); margin-bottom:10px;"></i>
+                        <h4 style="font-size:1.1rem; font-weight:900;">CANAL DEL ORÁCULO INTEL</h4>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px; line-height:1.4;">Accede a filtraciones algorítmicas de la red 3 segundos antes del Pump artificial del bot de la administración.</p>
+                        <button class="star-btn" onclick="unlockPremiumFeature('alerts', 150)">
+                            <i data-lucide="star"></i> Activar por 150 Stars
+                        </button>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                        <span style="color:var(--neon-gold);">📡</span>
+                        <h3 style="font-size:0.95rem;">FILTRACIONES DE ALTA PRIORIDAD</h3>
+                    </div>
+                    <div id="premium-alerts-feed-box" style="display:flex; flex-direction:column; gap:10px;">
+                        <!-- Contenido Premium Oculto -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA 3: TERMINAL DE SEGUROS & SALVACIÓN (SINK) -->
+            <section id="view-insurance" class="view-panel">
+                <div class="terminal-card">
+                    <h3 style="font-size:1rem; margin-bottom:6px; color:var(--neon-gold);">🛡️ FONDO DE RESCATE TOTAL DEL PLANKTON</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;">¿Fuiste liquidado por usar apalancamientos destructivos? La administración te ofrece un seguro para restaurar tu último portafolio de manera artificial.</p>
+                    <div style="background:rgba(0,0,0,0.2); padding:12px; border-radius:8px; margin-top:12px; border:1px dashed var(--border-glow); text-align:center;">
+                        <p style="font-size:0.7rem; color:var(--text-muted);">Estado del Seguro: <strong style="color:var(--neon-red);" id="insurance-status-label">INACTIVO</strong></p>
+                        <button class="star-btn" onclick="purchaseInsurancePolicy()" style="margin: 10px auto 0 auto;">
+                            <i data-lucide="star"></i> Contratar Póliza (75 Stars)
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA 4: MODO DE JUEGO MULTIJUGADOR (SINDICATOS) -->
+            <section id="view-clans" class="view-panel">
+                <div class="terminal-card" style="min-height: 250px;">
+                    <div class="premium-paywall-lock" id="clans-paywall">
+                        <i data-lucide="users" style="width:40px; height:40px; color:var(--neon-blue); margin-bottom:10px;"></i>
+                        <h4 style="font-size:1.1rem; font-weight:900;">SINDICATOS DE MANIPULACIÓN</h4>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px; line-height:1.4;">Agrupa tu capital con los canales de Telegram para reventar el precio de las Memecoins simuladas de forma masiva.</p>
+                        <button class="star-btn" onclick="unlockPremiumFeature('clans', 200)">
+                            <i data-lucide="star"></i> Crear Sindicato (200 Stars)
+                        </button>
+                    </div>
+                    <h3 style="font-size:0.95rem; margin-bottom:10px;">🏆 MEJORES CLANES DE LA RED</h3>
+                    <div id="clans-leaderboard-box" style="display:flex; flex-direction:column; gap:8px;"></div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- BARRA DE NAVEGACIÓN TAB BAR INFERIOR -->
+        <nav class="navigation-tab-bar">
+            <div id="tab-trading" class="tab-trigger active" onclick="navigateSpaViewport('trading')">
+                <i data-lucide="candlestick-chart"></i>
+                <span>Trading</span>
+            </div>
+            <div id="tab-alerts" class="tab-trigger" onclick="navigateSpaViewport('alerts')">
+                <i data-lucide="radio"></i>
+                <span>Intel</span>
+            </div>
+            <div id="tab-insurance" class="tab-trigger" onclick="navigateSpaViewport('insurance')">
+                <i data-lucide="shield-check"></i>
+                <span>Seguro</span>
+            </div>
+            <div id="tab-clans" class="tab-trigger" onclick="navigateSpaViewport('clans')">
+                <i data-lucide="boxes"></i>
+                <span>Sindicatos</span>
+            </div>
+                  <!-- ACCESO DIRECTO A COMPRAS CON CONTADOR DE PENDIENTES -->
+        <button id="tab-orders" class="tab-trigger" onclick="navigateSpaViewport('orders')" style="position: relative;">
+            <i data-lucide="shopping-bag"></i>
+            <span>Mis Compras</span>
+            <span id="unredeemed-counter" style="display: none; position: absolute; top: -4px; right: 12px; background: var(--neon-red); color: white; font-size: 0.65rem; font-family: var(--font-mono); padding: 2px 6px; border-radius: 10px; box-shadow: 0 0 8px var(--neon-red); font-weight: bold;">0</span>
+        </button>
+
+        </nav>
+    </div>
+    <!-- SCRIPT DE LOS MOTORES GRÁFICOS (PARTE 2) -->
+    <script>
+        /* ==========================================================================
+           ESTADO DEL MOTOR GRÁFICO Y SIMULACIÓN
+           ========================================================================== */
+        const canvasTank = document.getElementById('whale-tank-canvas');
+        const ctxTank = canvasTank?.getContext('2d');
+        const canvasChart = document.getElementById('live-crypto-chart');
+        const ctxChart = canvasChart?.getContext('2d');
+
+        let particlesArray = [];
+        let marketHistoryData = []; // Guarda estructuras de velas: {open, high, low, close, time}
+        let currentCandle = { open: 100, high: 100, low: 100, close: 100, count: 0 };
+        
+        // Configuración de dimensiones dinámicas para pantallas de alta densidad (Retina)
+        function resizeGraphicCanvas() {
+            if (canvasTank && canvasChart) {
+                const dpr = window.devicePixelRatio || 1;
+                
+                // Redimensionar Tanque Líquido
+                canvasTank.width = window.innerWidth * dpr;
+                canvasTank.height = (window.innerHeight * 0.45) * dpr;
+                canvasTank.style.width = window.innerWidth + 'px';
+                canvasTank.style.height = (window.innerHeight * 0.45) + 'px';
+                ctxTank?.scale(dpr, dpr);
+
+                // Redimensionar Gráfico de Trading
+                const chartBox = canvasChart.parentElement;
+                canvasChart.width = chartBox.clientWidth * dpr;
+                canvasChart.height = 140 * dpr;
+                canvasChart.style.width = chartBox.clientWidth + 'px';
+                canvasChart.style.height = '140px';
+                ctxChart?.scale(dpr, dpr);
+            }
+        }
+        window.addEventListener('resize', resizeGraphicCanvas);
+
+        /* ==========================================================================
+           🌊 MOTOR 1: CANVAS DE FLUIDOS METABÓLICOS DE LA BALLENA
+           ========================================================================== */
+        class MetabolicParticle {
+            constructor(width, height) {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 50;
+                this.size = Math.random() * 3 + 1;
+                this.speedY = Math.random() * 0.6 + 0.2;
+                this.speedX = Math.sin(Math.random() * 2) * 0.3;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+
+            update(trendColor) {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                
+                // Modificar el comportamiento físico si hay pérdidas o ganancias extremas
+                if (trendColor === 'green') {
+                    this.speedY = Math.random() * 1.2 + 0.6; // Suben más rápido (Evolución)
+                } else if (trendColor === 'red') {
+                    this.speedY = Math.random() * 0.3 + 0.1; // Se hunden ralentizadas (Asfixia)
+                }
+
+                if (this.y < 0) {
+                    this.y = (window.innerHeight * 0.45) + Math.random() * 20;
+                    this.x = Math.random() * window.innerWidth;
+                }
+            }
+
+            draw(trendColor) {
+                if (!ctxTank) return;
+                let colorGlow = '0, 191, 255'; // Blue por defecto
+                if (trendColor === 'green') colorGlow = '0, 255, 136';
+                if (trendColor === 'red') colorGlow = '255, 42, 95';
+
+                ctxTank.save();
+                ctxTank.beginPath();
+                ctxTank.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctxTank.fillStyle = `rgba(${colorGlow}, ${this.alpha})`;
+                ctxTank.shadowBlur = this.size * 3;
+                ctxTank.shadowColor = `rgba(${colorGlow}, 0.8)`;
+                ctxTank.fill();
+                ctxTank.restore();
+            }
+        }
+
+        function initMetabolicTank() {
+            particlesArray = [];
+            const w = window.innerWidth;
+            const h = window.innerHeight * 0.45;
+            for (let i = 0; i < 40; i++) {
+                particlesArray.push(new MetabolicParticle(w, h));
+            }
+        }
+
+        /* ==========================================================================
+           📊 MOTOR 2: RENDERIZADOR DE VELAS JAPONESAS NEÓN (60 FPS)
+           ========================================================================== */
+        function initMarketSeedHistory() {
+            let basePrice = 120;
+            // Pre-poblar el histórico con 24 velas simuladas para una visualización premium inmediata
+            for (let i = 0; i < 24; i++) {
+                let change = (Math.random() - 0.49) * 8;
+                let open = basePrice;
+                let close = basePrice + change;
+                let high = Math.max(open, close) + Math.random() * 4;
+                let low = Math.min(open, close) - Math.random() * 4;
+                
+                marketHistoryData.push({ open, high, low, close });
+                basePrice = close;
+            }
+            // Sincronizar vela actual
+            currentCandle = { open: basePrice, high: basePrice, low: basePrice, close: basePrice, count: 0 };
+        }
+
+        function drawNeonCandlestickChart(trendColor) {
+            if (!ctxChart || !canvasChart) return;
+            const w = canvasChart.width / (window.devicePixelRatio || 1);
+            const h = 140;
+
+            ctxChart.clearRect(0, 0, w, h);
+
+            // Añadir rejilla cibernética de fondo
+            ctxChart.strokeStyle = 'rgba(26, 38, 61, 0.25)';
+            ctxChart.lineWidth = 0.5;
+            for (let i = 0; i < w; i += 30) {
+                ctxChart.beginPath();
+                ctxChart.moveTo(i, 0);
+                ctxChart.lineTo(i, h);
+                ctxChart.stroke();
+            }
+            for (let j = 0; j < h; j += 25) {
+                ctxChart.beginPath();
+                ctxChart.moveTo(0, j);
+                ctxChart.lineTo(w, j);
+                ctxChart.stroke();
+            }
+
+            const allCandles = [...marketHistoryData, currentCandle];
+            const maxVisible = 20;
+            const displayCandles = allCandles.slice(-maxVisible);
+
+            // Calcular mínimos y máximos para auto-escalado vertical dinámico
+            let globalMax = Math.max(...displayCandles.map(c => c.high));
+            let globalMin = Math.min(...displayCandles.map(c => c.low));
+            let priceRange = (globalMax - globalMin) || 1;
+            
+            // Margen de amortiguación vertical
+            globalMax += priceRange * 0.1;
+            globalMin -= priceRange * 0.1;
+            priceRange = globalMax - globalMin;
+
+            const candleWidth = (w - 40) / maxVisible;
+            const paddingLeft = 10;
+
+            displayCandles.forEach((c, idx) => {
+                const x = paddingLeft + (idx * candleWidth) + (candleWidth * 0.15);
+                const wCandle = candleWidth * 0.7;
+
+                // Mapeo matemático a coordenadas del Canvas
+                const yOpen = h - ((c.open - globalMin) / priceRange) * h;
+                const yClose = h - ((c.close - globalMin) / priceRange) * h;
+                const yHigh = h - ((c.high - globalMin) / priceRange) * h;
+                const yLow = h - ((c.low - globalMin) / priceRange) * h;
+
+                const isBullish = c.close >= c.open;
+                const candleColor = isBullish ? '#00ff88' : '#ff2a5f';
+
+                ctxChart.save();
+                ctxChart.strokeStyle = candleColor;
+                ctxChart.fillStyle = candleColor;
+                ctxChart.lineWidth = 1.5;
+
+                // Efecto de resplandor Neón en la última vela activa
+                if (idx === displayCandles.length - 1) {
+                    ctxChart.shadowBlur = 8;
+                    ctxChart.shadowColor = candleColor;
+                }
+
+                // Dibujar mecha (Sombra superior/inferior)
+                ctxChart.beginPath();
+                ctxChart.moveTo(x + wCandle / 2, yHigh);
+                ctxChart.lineTo(x + wCandle / 2, yLow);
+                ctxChart.stroke();
+
+                // Dibujar cuerpo de la vela japonesa
+                const bodyHeight = Math.abs(yClose - yOpen) || 1;
+                const yTop = Math.min(yOpen, yClose);
+                
+                if (isBullish) {
+                    ctxChart.fillRect(x, yTop, wCandle, bodyHeight);
+                } else {
+                    // Velas bajistas con interior hueco estilo terminal Bloomberg Pro
+                    ctxChart.strokeRect(x, yTop, wCandle, bodyHeight);
+                    ctxChart.globalAlpha = 0.2;
+                    ctxChart.fillRect(x, yTop, wCandle, bodyHeight);
+                    ctxChart.globalAlpha = 1.0;
+                }
+                ctxChart.restore();
+            });
+
+            // Línea de precio actual parpadeante en el eje Y
+            if (displayCandles.length > 0) {
+                const lastCandle = displayCandles[displayCandles.length - 1];
+                const yCurrent = h - ((lastCandle.close - globalMin) / priceRange) * h;
+                
+                ctxChart.save();
+                ctxChart.strokeStyle = trendColor === 'green' ? 'rgba(0, 255, 136, 0.4)' : 'rgba(255, 42, 95, 0.4)';
+                ctxChart.setLineDash([4, 4]);
+                ctxChart.lineWidth = 1;
+                ctxChart.beginPath();
+                ctxChart.moveTo(0, yCurrent);
+                ctxChart.lineTo(w, yCurrent);
+                ctxChart.stroke();
+                ctxChart.restore();
+            }
+        }
+
+        /* ==========================================================================
+           BUCLE DE RENDERIZADO GLOBAL UNIFICADO (HEARTBEAT)
+           ========================================================================== */
+        let activeTrendContext = 'blue';
+
+        function globalGraphicHeartbeatLoop() {
+            if (ctxTank && canvasTank) {
+                ctxTank.clearRect(0, 0, window.innerWidth, window.innerHeight * 0.45);
+                particlesArray.forEach(p => {
+                    p.update(activeTrendContext);
+                    p.draw(activeTrendContext);
+                });
+            }
+
+            drawNeonCandlestickChart(activeTrendContext);
+            requestAnimationFrame(globalGraphicHeartbeatLoop);
+        }
+    </script>
+    <!-- SCRIPT DEL CEREBRO DE SIMULACIÓN Y TELEGRAM SDK (PARTE 3) -->
+    <script>
+        /* ==========================================================================
+           MÓDULO DE INICIALIZACIÓN SEGURO DEL SDK DE TELEGRAM
+           ========================================================================== */
+        let tg = window.Telegram.WebApp;
+        
+        // Estado de persistencia local del simulador
+        let state = {
+            user: {
+                username: "@User_Sandbox",
+                rank: "Plankton",
+                simBalance: 100.00,
+                leverageLimit: 1
+            },
+            activeAssetId: 'whale',
+            unlockedFeatures: {
+                alerts: false,
+                clans: false
+            },
+            insuranceActive: false,
+            inventory: {},
+            lastTickPrice: 120.00
+        };
+
+        // Dataset maestro de activos digitales del ecosistema
+        const SIMULATED_MARKET_DATASET = {
+            whale:  { id: 'whale',  name: 'WHALE/USDT',  logo: '🎰', basePrice: 120.00, volatility: 0.015, currentPrice: 120.00, change: 0 },
+            shiba:  { id: 'shiba',  name: 'SHIBA/SHARK', logo: '🐕', basePrice: 0.045,  volatility: 0.045, currentPrice: 0.045,  change: 0 },
+            tonvip: { id: 'tonvip', name: 'TON/GOLDEN',  logo: '💎', basePrice: 6.50,   volatility: 0.008, currentPrice: 6.50,   change: 0 }
+        };
+
+        function bootstrapTelegramMiniApp() {
+            try {
+                tg.ready();
+                tg.expand();
+                
+                // Forzar retroalimentación háptica ligera de bienvenida si está disponible
+                if (tg.HapticFeedback) {
+                    tg.HapticFeedback.impactOccurred('medium');
+                }
+
+                // Extraer metadatos reales de la API de Telegram de forma segura
+                if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                    const u = tg.initDataUnsafe.user;
+                    state.user.username = u.username ? `@${u.username}` : `${u.first_name} ${u.last_name || ''}`;
+                }
+            } catch (e) {
+                console.warn("Telegram SDK aislado. Corriendo en entorno Sandbox local controlado.");
+            }
+
+            // Cargar datos locales previos si existen
+            const localSaved = localStorage.getItem('crypto_whale_sim_save');
+            if (localSaved) {
+                const parsed = JSON.parse(localSaved);
+                // Evitar perder balance si quedó en bancarrota absoluta antes de reiniciar
+                if (parsed.user && parsed.user.simBalance > 0) state = parsed;
+            }
+
+            // Lanzar e inyectar configuraciones iniciales
+            document.getElementById("user-display-name").innerText = state.user.username;
+            resizeGraphicCanvas();
+            initMetabolicTank();
+            initMarketSeedHistory();
+            renderTokenMarketGrid();
+            updateGlobalBalanceUiContainers();
+            
+            // Arrancar ciclos paralelos
+            setInterval(executeMarketQuantumTickAlgorithm, 1500); // Latido de precios cada 1.5s
+            globalGraphicHeartbeatLoop();
+        }
+
+        /* ==========================================================================
+           📊 ALGORITMO CUÁNTICO: SIMULADOR DE FLUCTUACIÓN EN TIEMPO REAL
+           ========================================================================== */
+        function executeMarketQuantumTickAlgorithm() {
+            let activeAsset = SIMULATED_MARKET_DATASET[state.activeAssetId];
+            
+            // Generador pseudoaleatorio de caminata aleatoria (Random Walk + Sesgo de mercado)
+            let randSeed = Math.random();
+            let bias = 0.002; // Pequeño sesgo alcista natural para dar jugabilidad
+            let percentChange = (randSeed - 0.49 + bias) * activeAsset.volatility;
+            
+            let previousPrice = activeAsset.currentPrice;
+            activeAsset.currentPrice = previousPrice * (1 + percentChange);
+            activeAsset.change = ((activeAsset.currentPrice - activeAsset.basePrice) / activeAsset.basePrice) * 100;
+
+            // Sincronizar estado visual de la tendencia para el Tanque de Partículas
+            if (activeAsset.currentPrice > previousPrice) {
+                activeTrendContext = 'green';
+            } else {
+                activeTrendContext = 'red';
+            }
+
+            // Actualizar estructura de la vela japonesa actual en curso
+            currentDropPrice = activeAsset.currentPrice;
+            currentCandle.close = currentDropPrice;
+            if (currentDropPrice > currentCandle.high) currentCandle.high = currentDropPrice;
+            if (currentDropPrice < currentCandle.low) currentCandle.low = currentDropPrice;
+            
+            currentCandle.count++;
+            
+            // Cada 6 ciclos (9 segundos) cerramos la vela e iniciamos una nueva en la terminal
+            if (currentCandle.count >= 6) {
+                marketHistoryData.push({ ...currentCandle });
+                if (marketHistoryData.length > 30) marketHistoryData.shift();
+                
+                currentCandle = { 
+                    open: currentDropPrice, 
+                    high: currentDropPrice, 
+                    low: currentDropPrice, 
+                    close: currentDropPrice, 
+                    count: 0 
+                };
+            }
+
+            // Sincronizar etiquetas de texto de la terminal activa si estamos en la vista de trading
+            const tickerLabel = document.getElementById("active-ticker-change");
+            if (tickerLabel) {
+                tickerLabel.innerText = `${activeAsset.change >= 0 ? '+' : ''}${activeAsset.change.toFixed(2)}%`;
+                tickerLabel.style.color = activeAsset.change >= 0 ? 'var(--neon-green)' : 'var(--neon-red)';
+            }
+            
+            // Actualizar microvalores de la rejilla de selección
+            renderTokenMarketGridValuesOnly();
+            evalPositionsLiquidationEngines();
+        }
+
+        /* ==========================================================================
+           🛒 MOTOR DE TRADING ELECTRIZANTE & APALANCAMIENTOS RPG
+           ========================================================================== */
+        function renderTokenMarketGrid() {
+            const container = document.getElementById("token-market-grid");
+            if (!container) return;
+
+            container.innerHTML = Object.values(SIMULATED_MARKET_DATASET).map(t => `
+                <div id="grid-token-${t.id}" class="token-select-item" onclick="switchActiveTradingAsset('${t.id}')" style="background:var(--bg-panel-light); border:1px solid var(--border-glow); border-radius:8px; padding:8px; text-align:center; cursor:pointer;">
+                    <div style="font-size:1.2rem;">${t.logo}</div>
+                    <div style="font-size:0.7rem; font-weight:700; margin:2px 0;">${t.id.toUpperCase()}</div>
+                    <div id="grid-price-${t.id}" style="font-family:var(--font-mono); font-size:0.75rem; font-weight:bold;">$0.00</div>
+                </div>
+            `).join('');
+            
+            highlightActiveTokenGridItem();
+        }
+
+        function renderTokenMarketGridValuesOnly() {
+            Object.values(SIMULATED_MARKET_DATASET).forEach(t => {
+                const el = document.getElementById(`grid-price-${t.id}`);
+                if (el) el.innerText = `$${t.currentPrice.toFixed(t.id === 'shiba' ? 4 : 2)}`;
+            });
+        }
+
+        function switchActiveTradingAsset(assetId) {
+            triggerNativeHapticFeedback('light');
+            state.activeAssetId = assetId;
+            highlightActiveTokenGridItem();
+            
+            document.getElementById("active-ticker-title").innerText = SIMULATED_MARKET_DATASET[assetId].name;
+            
+            // Resetear el histórico visual para la nueva gráfica
+            marketHistoryData = [];
+            initMarketSeedHistory();
+        }
+
+        function highlightActiveTokenGridItem() {
+            Object.keys(SIMULATED_MARKET_DATASET).forEach(id => {
+                const card = document.getElementById(`grid-token-${id}`);
+                if (card) {
+                    if (id === state.activeAssetId) {
+                        card.style.borderColor = 'var(--neon-blue)';
+                        card.style.boxShadow = '0 0 10px rgba(0, 191, 255, 0.2)';
+                    } else {
+                        card.style.borderColor = 'var(--border-glow)';
+                        card.style.boxShadow = 'none';
+                    }
+                }
+            });
+        }
+
+        function executeSimulatedOrder(type) {
+            triggerNativeHapticFeedback('heavy');
+            let asset = SIMULATED_MARKET_DATASET[state.activeAssetId];
+            
+            // Lógica de coste de Gas simulado
+            let gasCost = 0.50; 
+            if (state.user.simBalance < gasCost) {
+                showVisualFloatingToast("Gas de red insuficiente para procesar la transacción.", "red");
+                return;
+            }
+            state.user.simBalance -= gasCost;
+
+            let tradeSizePercentage = 0.35; // Opera con el 35% del capital por click
+            let allocatedCapital = state.user.simBalance * tradeSizePercentage;
+            let effectivePower = allocatedCapital * state.user.leverageLimit;
+
+            if (type === 'BUY') {
+                // Registrar posición larga simulada
+                if (!state.inventory[state.activeAssetId]) {
+                    state.inventory[state.activeAssetId] = { qty: 0, entryPrice: 0 };
+                }
+                let currentQty = effectivePower / asset.currentPrice;
+                state.inventory[state.activeAssetId].entryPrice = asset.currentPrice;
+                state.inventory[state.activeAssetId].qty += currentQty;
+                
+                showVisualFloatingToast(`COMPRA Ejecutada: +${currentQty.toFixed(2)} ${state.activeAssetId.toUpperCase()}`, "green");
+            } else {
+                // VENDER / Cierre de posición simulada con ganancias o pérdidas inmediatas
+                let position = state.inventory[state.activeAssetId];
+                if (!position || position.qty <= 0) {
+                    showVisualFloatingToast("No posees inventario de este espécimen para liquidar.", "red");
+                    return;
+                }
+                
+                let revenue = position.qty * asset.currentPrice;
+                let profitOrLoss = revenue - (position.qty * position.entryPrice);
+                
+                state.user.simBalance += (allocatedCapital + profitOrLoss);
+                position.qty = 0; // Vaciar bolsa
+                
+                showVisualFloatingToast(`VENTA: ${profitOrLoss >= 0 ? '+' : ''}$${profitOrLoss.toFixed(2)} USD`, profitOrLoss >= 0 ? "green" : "red");
+            }
+
+            evaluateUserEvolutionRank();
+            updateGlobalBalanceUiContainers();
+            saveCurrentSimulationState();
+        }
+
+        function evalPositionsLiquidationEngines() {
+            // Si el usuario usa apalancamiento alto y su capital cae por debajo de cero, es liquidado
+            if (state.user.simBalance <= 0) {
+                triggerNativeHapticFeedback('warning');
+                state.user.simBalance = 0;
+                
+                if (state.insuranceActive) {
+                    state.user.simBalance = 50.00; // El seguro te rescata inyectando capital de emergencia
+                    state.insuranceActive = false;
+                    document.getElementById("insurance-status-label").innerText = "INACTIVO";
+                    document.getElementById("insurance-status-label").style.color = "var(--neon-red)";
+                    showVisualFloatingToast("💥 ¡LIQUIDADO! Tu Póliza de Seguro te ha rescatado con $50 USD.", "green");
+                } else {
+                    state.user.simBalance = 5.00; // Kit de supervivencia para no congelar la app
+                    showVisualFloatingToast("💥 ¡BANCARROTA TOTAL! Fuiste liquidado por el mercado.", "red");
+                }
+                
+                updateGlobalBalanceUiContainers();
+                saveCurrentSimulationState();
+            }
+        }
+
+        function evaluateUserEvolutionRank() {
+            let b = state.user.simBalance;
+            let oldRank = state.user.rank;
+
+            if (b < 300) { state.user.rank = "Plankton"; state.user.leverageLimit = 1; }
+            else if (b >= 300 && b < 1500) { state.user.rank = "Camarón"; state.user.leverageLimit = 5; }
+            else if (b >= 1500 && b < 10000) { state.user.rank = "Tiburón"; state.user.leverageLimit = 25; }
+            else if (b >= 10000) { state.user.rank = "⚠️ Ballena"; state.user.leverageLimit = 100; }
+
+            if (oldRank !== state.user.rank) {
+                showVisualFloatingToast(`🧬 EVOLUCIÓN: ¡Has mutado a rango ${state.user.rank}!`, "gold");
+                document.getElementById("whale-rank").innerText = state.user.rank;
+                document.getElementById("whale-avatar").innerText = state.user.rank === 'Plankton' ? '🦠' : (state.user.rank === 'Camarón' ? '🦐' : (state.user.rank === 'Tiburón' ? '🦈' : '🐳'));
+                document.getElementById("leverage-display-label").innerText = `x${state.user.leverageLimit} (${state.user.rank} Mode)`;
+            }
+        }
+
+        function updateGlobalBalanceUiContainers() {
+            document.getElementById("global-sim-balance").innerText = `$${state.user.simBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        function saveCurrentSimulationState() {
+            localStorage.setItem('crypto_whale_sim_save', JSON.stringify(state));
+        }
+
+        function triggerNativeHapticFeedback(style) {
+            try {
+                if (tg && tg.HapticFeedback) {
+                    if (style === 'light') tg.HapticFeedback.impactOccurred('light');
+                    if (style === 'heavy') tg.HapticFeedback.impactOccurred('heavy');
+                    if (style === 'warning') tg.HapticFeedback.notificationOccurred('error');
+                }
+            } catch (e) {}
+        }
+    </script>
+    

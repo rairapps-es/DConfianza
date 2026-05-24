@@ -31,6 +31,18 @@
             --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        [data-theme="light"] {
+            --bg-principal: #f4f6f9;
+            --bg-tarjeta: #ffffff;
+            --bg-tarjeta-hover: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --shadow-neon: 0 4px 12px rgba(36, 161, 222, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -44,7 +56,12 @@
             color: var(--text-main);
             overflow-x: hidden;
             padding-bottom: 90px;
+            transition: var(--transition-smooth);
         }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-principal); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
         /* CABECERA Y PANEL */
         .app-header {
@@ -60,19 +77,27 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
+        .header-center-icon { cursor: pointer; color: var(--text-muted); transition: var(--transition-smooth); display: flex; align-items: center; }
+        .header-center-icon:hover { color: var(--vip-gold); transform: scale(1.1); }
+
         .avatar-container { width: 40px; height: 40px; position: relative; cursor: pointer; }
-        .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--telegram-blue); }
+        .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid transparent; }
+        .avatar-container::after {
+            content: ''; position: absolute; top: -3px; left: -3px; right: -3px; bottom: -3px;
+            border-radius: 50%; border: 2px solid var(--ring-color, var(--telegram-blue));
+            box-shadow: 0 0 10px var(--ring-color, var(--telegram-blue)); z-index: -1; pointer-events: none;
+        }
 
         .profile-drawer {
             position: fixed; top: -100%; left: 0; width: 100%; max-height: 85vh;
             background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--glass-border); z-index: 999; padding: 85px 20px 25px 20px;
-            border-radius: 0 0 24px 24px; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            border-radius: 0 0 24px 24px; transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .profile-drawer.open { top: 0; }
         .drawer-identity { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 20px; }
-        .drawer-avatar-big { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; object-fit: cover; border: 3px solid var(--border-color); }
+        .drawer-avatar-big { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 3px solid var(--border-color); }
         .drawer-username-tag { font-size: 1.1rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
 
         .premium-balance-box {
@@ -83,63 +108,177 @@
         .balance-amount { font-size: 1.8rem; font-weight: 800; color: #fff; display: flex; justify-content: center; align-items: center; gap: 8px; }
 
         .role-switch-container { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .switch-label { font-size: 0.9rem; font-weight: 500; }
         .toggle-btn { position: relative; width: 50px; height: 26px; background-color: var(--border-color); border-radius: 50px; cursor: pointer; transition: var(--transition-smooth); }
         .toggle-btn::after { content: ''; position: absolute; width: 20px; height: 20px; border-radius: 50%; background-color: #fff; top: 3px; left: 3px; transition: var(--transition-smooth); }
         .toggle-btn.active { background-color: var(--telegram-blue); }
         .toggle-btn.active::after { left: 27px; }
 
         .status-counters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .counter-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 8px; text-align: center; }
-        .counter-card span { display: block; }
-        .counter-card span:first-child { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+        .counter-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 8px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+        .counter-card span:first-child { font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
         .counter-card span:last-child { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
 
         .drawer-links { display: flex; flex-direction: column; gap: 10px; }
         .drawer-btn { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: var(--transition-smooth); }
+        .drawer-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--text-muted); }
+        .drawer-btn.locked { opacity: 0.6; cursor: not-allowed; background: rgba(0,0,0,0.3); }
 
-        /* VISTAS */
-        .app-view { display: none; padding: 85px 16px 20px 16px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.3s ease-out forwards; }
+        .app-view { display: none; padding: 85px 16px 20px 16px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.4s ease-out forwards; }
         .app-view.active-view { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .view-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
 
-        /* TOASTS */
+        /* TAB BAR INFERIOR */
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-top: 1px solid var(--glass-border); display: grid; grid-template-columns: repeat(5, 1fr); z-index: 1000; }
+        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); font-size: 0.65rem; font-weight: 500; gap: 4px; }
+        .tab-item.active-tab { color: var(--telegram-blue); }
+        .tab-item i { width: 22px; height: 22px; }
+
+        /* TOASTS AND GRID MÓDULO 3 */
         #toast-container { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1100; width: calc(100% - 32px); max-width: 400px; pointer-events: none; display: flex; flex-direction: column; gap: 10px; }
-        .toast-card { background: var(--bg-tarjeta); color: var(--text-main); border-left: 4px solid var(--telegram-blue); padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); font-size: 0.85rem; font-weight: 500; animation: slideInToast 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25) forwards; }
-        .toast-card.success { border-left-color: var(--success-green); }
+        .toast-card { background: var(--bg-tarjeta); color: var(--text-main); border-left: 4px solid var(--telegram-blue); padding: 14px 18px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 12px; font-size: 0.85rem; font-weight: 500; pointer-events: auto; border: 1px solid var(--glass-border); animation: slideInToast 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25) forwards; }
         .toast-card.error { border-left-color: #e74c3c; }
+        .toast-card.success { border-left-color: var(--success-green); }
         .toast-card.gold { border-left-color: var(--vip-gold); }
+        @keyframes slideInToast { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* LISTAS Y TARJETAS */
-        .directory-grid { display: flex; flex-direction: column; gap: 14px; }
-        .channel-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; transition: var(--transition-smooth); }
-        .channel-card.vip-border { border: 1.5px solid var(--vip-gold); }
-        .card-main-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .card-identity-box { display: flex; align-items: center; gap: 12px; }
-        .channel-thumb { width: 44px; height: 44px; border-radius: 12px; background: rgba(36, 161, 222, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-        .fav-star-icon { color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
-        .fav-star-icon.is-fav { color: var(--vip-gold); fill: var(--vip-gold); }
-
-        .card-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-        .channel-card.expanded .card-accordion-content { max-height: 150px; border-top: 1px solid var(--border-color); margin-top: 14px; padding-top: 14px; }
-        .btn-subscribe-trigger { width: 100%; background: var(--telegram-blue); color: white; border: none; padding: 10px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; margin-top: 8px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .stat-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px; display: flex; align-items: center; gap: 12px; transition: var(--transition-smooth); cursor: pointer; }
+        .stat-card:hover { transform: translateY(-3px); background: var(--bg-tarjeta-hover); border-color: var(--telegram-blue); }
+        .stat-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(36, 161, 222, 0.1); color: var(--telegram-blue); display: flex; align-items: center; justify-content: center; }
+        .stat-info h4 { font-size: 1.1rem; font-weight: 700; }
+        .stat-info p { font-size: 0.75rem; color: var(--text-muted); }
 
         /* SLIDER VIP */
-        .slider-container { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
-        .vip-slide-card { min-width: 220px; background: #1d2430; border: 1px solid var(--vip-gold); border-radius: 16px; padding: 14px; cursor: pointer; }
+        .slider-section { margin-bottom: 24px; }
+        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .slider-arrows { display: flex; gap: 8px; }
+        .arrow-btn { background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition-smooth); }
+        .arrow-btn:hover { background: var(--telegram-blue); border-color: var(--telegram-blue); }
+        .slider-container { display: flex; gap: 14px; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 8px; scrollbar-width: none; }
+        .slider-container::-webkit-scrollbar { display: none; }
+        
+        .vip-slide-card { min-width: 260px; max-width: 260px; background: linear-gradient(145deg, #1d2430 0%, #161b22 100%); border: 1px solid var(--vip-gold); box-shadow: 0 4px 15px rgba(245, 166, 35, 0.1); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; }
+        .vip-slide-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); transform: skewX(-25deg); animation: shimmer 3s infinite; }
+        @keyframes shimmer { 100% { left: 250%; } }
 
-        /* TAB BAR */
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: var(--glass-bg); backdrop-filter: blur(15px); border-top: 1px solid var(--glass-border); display: grid; grid-template-columns: repeat(5, 1fr); z-index: 1000; }
-        .tab-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; font-size: 0.65rem; gap: 4px; }
-        .tab-item.active-tab { color: var(--telegram-blue); }
+        .featured-card { background: radial-gradient(circle at top right, rgba(138,43,226,0.15), var(--bg-tarjeta)); border: 2px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 24px; position: relative; }
+        .badge-premium { background: var(--vip-gold-gradient); color: #000; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px; position: absolute; top: -10px; left: 20px; letter-spacing: 0.5px; box-shadow: var(--shadow-gold); }
 
-        /* ROULETTE & GACHA */
-        .roulette-card { background: #1f1b2e; border: 1px solid var(--mystic-purple); border-radius: 20px; padding: 20px; text-align: center; margin-top: 20px; }
-        .gacha-wrapper { background: #221c16; border: 1px dashed var(--vip-gold); border-radius: 16px; padding: 20px; text-align: center; }
+        .roulette-card { background: linear-gradient(135deg, #2c1a4d 0%, #161b22 100%); border: 1px solid var(--mystic-purple); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 24px; position: relative; overflow: hidden; }
+        .roulette-btn { background: var(--mystic-purple); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: var(--transition-smooth); margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; }
+        .roulette-btn:hover { transform: scale(1.03); box-shadow: 0 0 15px rgba(138,43,226,0.5); }
+        .shake-anim { animation: shake 0.4s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+
+        .creator-banner { background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%); border: 1px dashed var(--vip-gold); border-radius: 16px; padding: 18px; text-align: center; margin-bottom: 24px; display: none; }
+
+        /* DIRECTORIO & CARDS */
+        .search-wrapper { position: relative; margin-bottom: 16px; }
+        .search-input { width: 100%; background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); padding: 14px 16px 14px 46px; border-radius: 14px; font-size: 0.95rem; transition: var(--transition-smooth); }
+        .search-input:focus { border-color: var(--telegram-blue); outline: none; box-shadow: var(--shadow-neon); }
+        .search-icon { position: absolute; top: 14px; left: 16px; color: var(--text-muted); pointer-events: none; }
+
+        .categories-carousel { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 14px; margin-bottom: 16px; scrollbar-width: none; }
+        .categories-carousel::-webkit-scrollbar { display: none; }
+        .cat-chip { white-space: nowrap; background: var(--bg-tarjeta); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
+        .cat-chip.active-chip { background: var(--telegram-blue); color: #fff; border-color: var(--telegram-blue); }
+
+        .directory-grid { display: flex; flex-direction: column; gap: 14px; transition: var(--transition-smooth); }
+        .directory-grid.grid-mosaic { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .directory-grid.grid-compact .channel-card { padding: 10px 14px; }
+
+        .channel-card { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; overflow: hidden; transition: var(--transition-smooth); position: relative; }
+        .channel-card.vip-border { border: 1.5px solid var(--vip-gold); background: linear-gradient(180deg, rgba(22,27,34,1) 0%, rgba(35,30,22,0.4) 100%); }
+        
+        /* Efecto de brillo animado en tarjeta VIP */
+        .channel-card.vip-border::after {
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245, 166, 35, 0.08), transparent);
+            transform: skewX(-20deg); animation: loop-shimmer 4s infinite ease-in-out; pointer-events: none;
+        }
+        @keyframes loop-shimmer { 0% { left: -150%; } 30% { left: 150%; } 100% { left: 150%; } }
+
+        .card-main-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .card-identity-box { display: flex; align-items: center; gap: 12px; }
+        .channel-thumb { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; background: #24a2de1a; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+        .channel-meta h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+        .channel-meta p { font-size: 0.75rem; color: var(--text-muted); }
+        
+        /* Badge animado para Destacados */
+        .animated-vip-badge {
+            background: var(--vip-gold-gradient); color: #000; font-size: 0.6rem; font-weight: 800;
+            padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px;
+            animation: pulse-badge 1.5s infinite alternate; box-shadow: 0 0 8px rgba(245,166,35,0.4);
+        }
+        @keyframes pulse-badge { from { transform: scale(1); opacity: 0.9; } to { transform: scale(1.05); opacity: 1; } }
+
+        .card-actions { display: flex; align-items: center; gap: 12px; }
+        .fav-star-icon { color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
+        .fav-star-icon.is-fav { color: var(--vip-gold); fill: var(--vip-gold); transform: scale(1.15); }
+
+        /* ACCORDION EFFECT FIX */
+        .card-accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; border-top: 0 solid var(--border-color); margin-top: 0; }
+        .channel-card.expanded .card-accordion-content { max-height: 300px; border-top: 1px solid var(--border-color); margin-top: 14px; padding-top: 14px; }
+        .extended-data-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; }
+        .extended-data-row span strong { color: var(--text-main); }
+        .btn-subscribe-trigger { width: 100%; background: var(--telegram-blue); color: white; border: none; padding: 10px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: var(--transition-smooth); }
+        .btn-subscribe-trigger.already-subscribed { background: rgba(46,204,113,0.15); color: var(--success-green); cursor: default; }
+
+        /* SHOP & ENERGY TABLES */
+        .shop-layout { display: flex; flex-direction: column; gap: 20px; }
+        .avatar-canvas-area { background: radial-gradient(circle, rgba(36,161,222,0.1) 0%, rgba(11,14,20,1) 100%); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; text-align: center; position: relative; }
+        .canvas-preview-holder { width: 130px; height: 130px; margin: 0 auto 14px auto; background: rgba(255,255,255,0.02); border-radius: 50%; border: 2px dashed var(--telegram-blue); display: flex; align-items: center; justify-content: center; }
+        .canvas-preview-holder svg, .canvas-preview-holder img { width: 100%; height: 100%; border-radius: 50%; }
+        
+        .shop-slider-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin: 12px 0 6px 0; text-align: left;}
+        .shop-carousel-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none;}
+        .shop-carousel-row::-webkit-scrollbar { display: none; }
+        
+        .item-shop-card { min-width: 105px; max-width: 105px; background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px; text-align: center; cursor: pointer; transition: var(--transition-smooth); }
+        .item-shop-card.selected-item { border-color: var(--telegram-blue); background: rgba(36,161,222,0.05); }
+        
+        .checkout-bar-shop { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .epic-space-card { background: linear-gradient(135deg, #2a2010 0%, #161b22 100%); border: 2px solid var(--vip-gold); border-radius: 20px; padding: 20px; display: none; }
+        .gacha-wrapper { background: linear-gradient(145deg, #161b22 0%, #201a10 100%); border: 1px dashed var(--vip-gold); border-radius: 16px; padding: 20px; text-align: center; }
+        .gacha-box-visual { font-size: 3rem; margin-bottom: 10px; animation: pulseGacha 2s infinite alternate; }
+        @keyframes pulseGacha { from { transform: scale(1); } to { transform: scale(1.08); } }
+
+        .energy-table { width: 100%; border-collapse: collapse; background: var(--bg-tarjeta); border-radius: 14px; overflow: hidden; border: 1px solid var(--border-color); font-size: 0.82rem; }
+        .energy-table th, .energy-table td { padding: 12px 14px; text-align: left; }
+        .energy-table th { background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-color); color: var(--text-muted); }
+
+        /* MODALES */
+        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 10, 15, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-body-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 24px; padding: 24px; width: 100%; max-width: 440px; position: relative; animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards; }
+        @keyframes modalPop { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        
+        .progress-bar-track { width: 100%; height: 6px; background: var(--border-color); border-radius: 10px; overflow: hidden; margin-top: 14px; }
+        .progress-bar-fill { width: 100%; height: 100%; background: var(--telegram-blue); transform-origin: left; }
+        .form-group { margin-bottom: 14px; }
+        .form-ctrl { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; color: white; font-size: 0.9rem; }
+        .pay-methods-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+        .pay-method-card { border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; text-align: center; cursor: pointer; transition: var(--transition-smooth); }
+        .pay-method-card.active-pay { border-color: var(--telegram-blue); background: rgba(36,161,222,0.05); }
 
         .logs-terminal { background: #05070a; border: 1px solid #1f242c; border-radius: 10px; padding: 12px; max-height: 250px; overflow-y: auto; font-family: monospace; font-size: 0.72rem; color: #39ff14; }
-        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(7, 10, 15, 0.85); backdrop-filter: blur(15px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .modal-body-box { background: var(--bg-tarjeta); border: 1px solid var(--border-color); border-radius: 24px; padding: 24px; width: 100%; max-width: 440px; }
+        .log-line { padding: 4px 0; border-bottom: 1px solid rgba(57,255,20,0.05); line-height: 1.4; }
+
+        /* HISTORIAL DE ACCIONES TERMINAL STYLE */
+        .history-item-card {
+            background: var(--bg-tarjeta); border: 1px solid var(--border-color);
+            padding: 12px 16px; border-radius: 12px; display: flex; align-items: center;
+            justify-content: space-between; gap: 12px; animation: fadeIn 0.3s ease-out;
+        }
+        .history-left-pane { display: flex; align-items: center; gap: 12px; }
+        .history-icon-badge {
+            width: 32px; height: 32px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; background: rgba(255,255,255,0.04);
+        }
+        .history-timestamp { font-size: 0.72rem; color: var(--text-muted); font-family: monospace; }
+        .empty-state-notice { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -148,151 +287,272 @@
 
     <header class="app-header">
         <div class="header-logo">GOLDEN ADS</div>
+        <div class="header-center-icon" onclick="switchView('shop')">
+            <i data-lucide="shopping-bag"></i>
+        </div>
         <div class="avatar-container" onclick="toggleProfileDrawer()">
-            <img src="" id="header-avatar" class="avatar-img" alt="Avatar">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2324A1DE'/><text x='50%' y='55%' font-size='40' font-weight='bold' fill='white' text-anchor='middle'>G</text></svg>" id="header-avatar" class="avatar-img" alt="Avatar">
         </div>
     </header>
 
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-identity">
-            <img src="" id="drawer-avatar" class="drawer-avatar-big" alt="Perfil">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%238a2be2'/><text x='50%' y='55%' font-size='40' fill='white' text-anchor='middle'>G</text></svg>" id="drawer-avatar" class="drawer-avatar-big" alt="Perfil">
             <div class="drawer-username-tag">
-                <span id="drawer-username">@Invitado</span>
-                <span id="drawer-range" style="color: var(--telegram-blue); font-size: 0.85rem;">[Rango 1]</span>
+                <span id="drawer-username">@Explorador_Golden</span>
+                <span id="drawer-range" style="color: var(--telegram-blue); font-size: 0.85rem;">[ Rango ]</span>
             </div>
         </div>
+
         <div class="premium-balance-box">
             <div class="balance-title">Saldo Acumulado</div>
             <div class="balance-amount"><span id="profile-balance">0</span> <span style="color: var(--vip-gold)">✨</span></div>
         </div>
-        <div class="status-counters">
-            <div class="counter-card"><span id="cnt-subs">0</span><span>Vistas</span></div>
-            <div class="counter-card"><span id="cnt-favs">0</span><span>Favoritos ⭐</span></div>
-            <div class="counter-card"><span id="cnt-hist">0</span><span>Historial</span></div>
+
+        <div class="role-switch-container">
+            <div class="switch-label">Modo Vista Administrador</div>
+            <div id="role-toggle" class="toggle-btn" onclick="toggleAdminRole()"></div>
         </div>
+
+        <div class="status-counters">
+            <div class="counter-card">
+                <span id="cnt-channels">0 / 1</span>
+                <span>Mis Canales</span>
+            </div>
+            <div class="counter-card">
+                <span id="cnt-subs">0</span>
+                <span>Suscripciones</span>
+            </div>
+            <div class="counter-card">
+                <span id="cnt-favs">0</span>
+                <span>Favoritos ⭐</span>
+            </div>
+        </div>
+
         <div class="drawer-links">
+            <button class="drawer-btn" onclick="toggleProfileDrawer(); switchView('shop')">
+                <span>🛍️ Tienda de Recompensas</span> <i data-lucide="chevron-right"></i>
+            </button>
+            <button class="drawer-btn" onclick="toggleProfileDrawer(); switchView('energy')">
+                <span>⚡ Cómo Ganar Puntos</span> <i data-lucide="chevron-right"></i>
+            </button>
+            <button id="epic-avatar-link" class="drawer-btn locked">
+                <span>🔒 Mi Avatar Épico (Rango 5)</span> <i data-lucide="lock"></i>
+            </button>
             <button class="drawer-btn" onclick="toggleProfileDrawer(); openLogsModal()">
-                <span>📊 Ver Logs Técnicos</span> <i data-lucide="file-text"></i>
+                <span>📊 Historial de Logs</span> <i data-lucide="file-text"></i>
             </button>
         </div>
     </div>
 
-    <!-- HOME -->
+    <!-- PESTAÑA 1: HOME VISTA -->
     <main id="view-home" class="app-view active-view">
+        <div class="stats-grid">
+            <div class="stat-card" onclick="switchView('directory')">
+                <div class="stat-icon"><i data-lucide="layers"></i></div>
+                <div class="stat-info"><h4 id="stat-total-channels">38</h4><p>Canales Activos</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="color:var(--success-green); background:rgba(46,204,113,0.1);"><i data-lucide="users"></i></div>
+                <div class="stat-info"><h4>1,240</h4><p>Usuarios Online</p></div>
+            </div>
+        </div>
+
         <section class="slider-section">
-            <h3 style="font-size:1rem; margin-bottom:12px;">⭐ Canales Destacados VIP</h3>
+            <div class="slider-header">
+                <h3 style="font-size:1rem; font-weight:800; display:flex; align-items:center; gap:6px;"><span style="color:var(--vip-gold)">🚀</span> Canales Destacados VIP</h3>
+                <div class="slider-arrows">
+                    <button class="arrow-btn" onclick="scrollSlider(-1)"><i data-lucide="chevron-left" style="width:16px;height:16px;"></i></button>
+                    <button class="arrow-btn" onclick="scrollSlider(1)"><i data-lucide="chevron-right" style="width:16px;height:16px;"></i></button>
+                </div>
+            </div>
             <div id="vip-slider" class="slider-container"></div>
         </section>
-        <section class="roulette-card">
-            <h3>🎰 Ruleta Aleatoria</h3>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin: 6px 0;">Descubre un canal aleatorio.</p>
-            <div id="roulette-display" style="margin: 12px 0; font-size:1.2rem; font-weight:bold; color:var(--vip-gold);">- - -</div>
-            <button class="btn-subscribe-trigger" style="background:var(--mystic-purple);" onclick="spinRoulette()">Girar Ruleta (-5 Pts)</button>
+
+        <section class="featured-card">
+            <div class="badge-premium">⭐ RECOMENDACIÓN DE HOY</div>
+            <div id="daily-recommendation-box" style="margin-top:8px;"></div>
         </section>
+
+        <section class="roulette-card">
+            <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:4px;">🎰 Ruleta Sorpresa Aleatoria</h3>
+            <p style="font-size:0.78rem; color:var(--text-muted);">¿No sabes qué leer? Descubre un canal al azar del directorio completo.</p>
+            <div id="roulette-display" style="margin: 12px 0; font-size:1.2rem; font-weight:bold;">- - -</div>
+            <button class="roulette-btn" onclick="spinRoulette()">
+                <i data-lucide="dices" style="width:18px; height:18px;"></i> Probar Suerte [-5 Pts]
+            </button>
+        </section>
+
+        <div id="creator-ad-banner" class="creator-banner">
+            <h4 style="color:var(--vip-gold); font-size:0.95rem; font-weight:800; margin-bottom:4px;">📣 ¡Multiplica la audiencia de tu canal!</h4>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">Consigue tráfico real masivo de Telegram activando el plan premium exclusivo.</p>
+            <button class="btn-subscribe-trigger" style="background:var(--vip-gold); color:black; width:auto; margin:0 auto; padding:8px 16px;" onclick="openVipForm()">Contratar Espacio VIP</button>
+        </div>
     </main>
 
-    <!-- EXPLORAR -->
+    <!-- PESTAÑA 2: DIRECTORIO -->
     <main id="view-directory" class="app-view">
-        <h2 class="view-title"><i data-lucide="compass"></i> Explorar Directorio</h2>
+        <h2 class="view-title"><i data-lucide="compass" style="color:var(--telegram-blue)"></i> Explorar Directorio</h2>
+        <div class="search-wrapper">
+            <i data-lucide="search" class="search-icon"></i>
+            <input type="text" id="directory-search" class="search-input" placeholder="Buscar por palabra clave..." oninput="filterDirectory()">
+        </div>
+        <div id="categories-bar" class="categories-carousel"></div>
         <div id="directory-list" class="directory-grid"></div>
     </main>
 
-    <!-- FAVORITOS -->
+    <!-- PESTAÑA 3: FAVORITOS -->
     <main id="view-favorites" class="app-view">
         <h2 class="view-title"><i data-lucide="star" style="color:var(--vip-gold)"></i> Mis Favoritos</h2>
         <div id="favorites-list" class="directory-grid"></div>
     </main>
 
-    <!-- HISTORIAL -->
+    <!-- PESTAÑA 4: HISTORIAL -->
     <main id="view-history" class="app-view">
-        <h2 class="view-title"><i data-lucide="history" style="color:var(--success-green)"></i> Mi Historial</h2>
+        <h2 class="view-title"><i data-lucide="history" style="color:var(--success-green)"></i> Historial de Accesos</h2>
         <div id="history-list" class="directory-grid"></div>
     </main>
 
-    <!-- RECOMPENSAS / GACHA -->
+    <!-- PESTAÑA 5: SHOP -->
     <main id="view-shop" class="app-view">
-        <h2 class="view-title"><i data-lucide="shopping-bag"></i> Recompensas</h2>
-        <div class="gacha-wrapper">
-            <div style="font-size:3rem; margin-bottom:10px;">🎁</div>
-            <h3>Caja de Regalo Diario</h3>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Reclama tus puntos gratis cada 24 horas.</p>
-            <button class="btn-subscribe-trigger" style="background:var(--vip-gold); color:black;" onclick="claimDailyGacha()">Reclamar Recompensa</button>
+        <h2 class="view-title"><i data-lucide="shopping-bag" style="color:var(--mystic-purple)"></i> Tienda RPG</h2>
+        <div class="shop-layout">
+            <div class="avatar-canvas-area">
+                <div id="canvas-preview" class="canvas-preview-holder">🔮</div>
+                <div style="font-weight:700; font-size:0.9rem;">Taller de Sastrería Digital</div>
+                <p style="font-size:0.75rem; color:var(--text-muted);">Forja tu identidad virtual única.</p>
+            </div>
+            <div class="gacha-wrapper">
+                <div class="gacha-box-visual">🎁</div>
+                <h3 style="font-size:1rem; font-weight:800; margin-bottom:4px;">Caja de Regalo Diario</h3>
+                <button id="gacha-trigger-btn" class="btn-subscribe-trigger" style="background:var(--vip-gold); color:black; width:auto; margin:0 auto; padding:10px 24px;" onclick="claimDailyGacha()">Reclamar Regalo</button>
+            </div>
         </div>
+    </main>
+
+    <!-- PESTAÑA 6: ZONA ENERGÍA -->
+    <main id="view-energy" class="app-view">
+        <h2 class="view-title"><i data-lucide="zap" style="color:var(--vip-gold)"></i> Zona de Energía</h2>
+        <table class="energy-table">
+            <thead><tr><th>Acción</th><th>Monto</th><th>Regla</th></tr></thead>
+            <tbody>
+                <tr><td>Check-In Diario</td><td style="color:var(--success-green);">+5 Pts</td><td>Automático</td></tr>
+                <tr><td>Ruleta Aleatoria</td><td style="color:#e74c3c;">-5 Pts</td><td>Por intento</td></tr>
+            </tbody>
+        </table>
     </main>
 
     <!-- MODAL LOGS -->
     <div id="modal-logs-view" class="fullscreen-modal">
         <div class="modal-body-box">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                <h3>Logs del Sistema</h3>
-                <button style="background:none; border:none; color:white;" onclick="closeLogsModal()"><i data-lucide="x"></i></button>
+                <h3 style="font-size:1rem; font-weight:800;">Historial Local de Logs</h3>
+                <button style="background:none; border:none; color:var(--text-muted);" onclick="closeLogsModal()"><i data-lucide="x"></i></button>
             </div>
             <div id="logs-terminal-box" class="logs-terminal"></div>
         </div>
     </div>
 
-    <!-- NAV BAR -->
+    <!-- NAV BAR BOTTOM -->
     <nav class="tab-bar">
-        <div class="tab-item active-tab" id="tab-home" onclick="switchView('home')"><i data-lucide="home"></i><span>Inicio</span></div>
-        <div class="tab-item" id="tab-directory" onclick="switchView('directory')"><i data-lucide="compass"></i><span>Explorar</span></div>
-        <div class="tab-item" id="tab-favorites" onclick="switchView('favorites')"><i data-lucide="star"></i><span>Favoritos</span></div>
-        <div class="tab-item" id="tab-history" onclick="switchView('history')"><i data-lucide="history"></i><span>Historial</span></div>
-        <div class="tab-item" id="tab-shop" onclick="switchView('shop')"><i data-lucide="shopping-bag"></i><span>Regalos</span></div>
+        <div class="tab-item active-tab" id="tab-home" onclick="switchView('home')">
+            <i data-lucide="home"></i><span>Inicio</span>
+        </div>
+        <div class="tab-item" id="tab-directory" onclick="switchView('directory')">
+            <i data-lucide="compass"></i><span>Explorar</span>
+        </div>
+        <div class="tab-item" id="tab-favorites" onclick="switchView('favorites')">
+            <i data-lucide="star"></i><span>Favoritos</span>
+        </div>
+        <div class="tab-item" id="tab-history" onclick="switchView('history')">
+            <i data-lucide="history"></i><span>Historial</span>
+        </div>
+        <div class="tab-item" onclick="window.open('https://t.me/ListaGolden','_blank')">
+            <i data-lucide="message-circle"></i><span>Soporte</span>
+        </div>
     </nav>
 
     <script>
-        const CHANNELS_DATASET = [
-            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", subs: "45K", isVip: true, logo: "🎯", link: "https://t.me/ListaGolden" },
-            { id: 2, name: "Green Pickers", user: "@GreenPickers", subs: "18K", isVip: false, logo: "⚽", link: "https://t.me/ListaGolden" },
-            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", subs: "89K", isVip: true, logo: "💼", link: "https://t.me/ListaGolden" },
-            { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", subs: "112K", isVip: true, logo: "🐋", link: "https://t.me/ListaGolden" },
-            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", subs: "67K", isVip: false, logo: "🧠", link: "https://t.me/ListaGolden" }
+        const INITIAL_CHANNELS_DATASET = [
+            { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subcategory: "premium", subs: 45200, lang: "Español", status: "Público", isVip: true, logo: "🎯" },
+            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subcategory: "futbol", subs: 18400, lang: "Español", status: "Público", isVip: false, logo: "⚽" },
+            { id: 6, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subcategory: "negocios", subs: 89600, lang: "Español", status: "Público", isVip: true, logo: "💼" },
+            { id: 11, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subcategory: "trading", subs: 112000, lang: "Inglés", status: "Público", isVip: true, logo: "🐋" },
+            { id: 16, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subcategory: "ia", subs: 67400, lang: "Español", status: "Público", isVip: true, logo: "🧠" }
         ];
 
-        // Estado del usuario con persistencia LocalStorage
         let state = {
-            username: "@Invitado_Golden",
-            avatar: "",
-            balance: parseInt(localStorage.getItem("golden_balance")) || 50,
-            favorites: JSON.parse(localStorage.getItem("golden_favs")) || [],
-            history: JSON.parse(localStorage.getItem("golden_hist")) || [],
-            logs: []
+            user: { username: "Invitado_Golden", avatarSeed: "G", balance: 20, role: "user", range: 1, activeChannelsCount: 0, maxChannelsLimit: 1 },
+            subscriptions: [], favorites: [], history: [], systemLogs: []
         };
 
+        const CATEGORIES = [
+            { id: "all", name: "🌐 Todos" },
+            { id: "apuestas", name: "🎯 Apuestas" },
+            { id: "marketing", name: "💼 Negocios" },
+            { id: "cripto", name: "🪙 Cripto" },
+            { id: "tecnologia", name: "🧠 IA & Tec" }
+        ];
+        let activeCategoryFilter = "all";
+
         document.addEventListener("DOMContentLoaded", () => {
-            window.Telegram?.WebApp?.ready();
-            initTelegramUser();
-            renderAll();
-            lucide.createIcons();
-            addLog("MiniApp cargada y sincronizada.");
+            initTelegramContext();
+            calculateDailyCheckIn();
+            // Cargar los canales dinámicos de la API de Telegram simulada antes de renderizar
+            fetchTelegramChannelsData().then(() => {
+                renderAppUiComponents();
+                lucide.createIcons();
+                addLog("Sistema inicializado correctamente.");
+            });
         });
 
-        // 1. Sincronización Avanzada con Telegram
-        function initTelegramUser() {
-            if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                const tg = window.Telegram.WebApp.initDataUnsafe.user;
-                state.username = tg.username ? `@${tg.username}` : `${tg.first_name}`;
-                
-                if (tg.photo_url) {
-                    state.avatar = tg.photo_url;
-                } else {
-                    const inicial = (tg.first_name ? tg.first_name.charAt(0) : "G").toUpperCase();
-                    state.avatar = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2324A1DE'/><text x='50%' y='55%' font-size='40' font-weight='bold' fill='white' text-anchor='middle'>${inicial}</text></svg>`;
-                }
-            } else {
-                state.avatar = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%238a2be2'/><text x='50%' y='55%' font-size='40' fill='white' text-anchor='middle'>G</text></svg>`;
+        function initTelegramContext() {
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe?.user) {
+                const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+                state.user.username = tgUser.username ? `@${tgUser.username}` : `@tg_${tgUser.id}`;
+                state.user.avatarSeed = (tgUser.first_name ? tgUser.first_name.charAt(0) : "G").toUpperCase();
             }
+        }
+
+        /* SIMULADOR DE EXTRACCIÓN AUTOMÁTICA DE INFORMACIÓN DE TELEGRAM (API SCRAPER) */
+        async function fetchTelegramChannelsData() {
+            addLog("Extrayendo datos dinámicos de los canales de referencia de Telegram...");
             
-            document.getElementById("header-avatar").src = state.avatar;
-            document.getElementById("drawer-avatar").src = state.avatar;
-            document.getElementById("drawer-username").innerText = state.username;
+            const scrapedChannels = [
+                { id: 101, name: "Crecegram", user: "@Crecegram", category: "marketing", subcategory: "crecimiento", subs: 14500, lang: "Español", status: "Público", isVip: true, logo: "🚀", description: "Comunidad líder para potenciar canales y monetizar audiencias en Telegram." },
+                { id: 102, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subcategory: "diseño", subs: 32100, lang: "Español", status: "Público", isVip: false, logo: "🎨", description: "Libros para colorear listos para descargar e imprimir en formato PDF de alta calidad." },
+                { id: 103, name: "Lista Golden", user: "@ListaGolden", category: "marketing", subcategory: "ads", subs: 68400, lang: "Español", status: "Público", isVip: true, logo: "👑", description: "El directorio publicitario oficial y definitivo de canales premium anglo/hispanos." }
+            ];
+
+            scrapedChannels.forEach(channel => {
+                if(!INITIAL_CHANNELS_DATASET.some(c => c.user === channel.user)) {
+                    INITIAL_CHANNELS_DATASET.push(channel);
+                }
+            });
+            
+            document.getElementById("stat-total-channels").innerText = INITIAL_CHANNELS_DATASET.length;
+            addLog("Sincronización con canales de Telegram completada exitosamente.");
         }
 
         function addLog(msg) {
-            const time = new Date().toLocaleTimeString();
-            state.logs.unshift(`[${time}] ${msg}`);
-            const box = document.getElementById("logs-terminal-box");
-            if (box) box.innerHTML = state.logs.map(l => `<div>${l}</div>`).join('');
+            const timestamp = new Date().toLocaleTimeString();
+            state.systemLogs.unshift(`[${timestamp}] ${msg}`);
+            const container = document.getElementById("logs-terminal-box");
+            if (container) container.innerHTML = state.systemLogs.map(l => `<div class="log-line">${l}</div>`).join('');
+        }
+
+        /* REGISTRO DE ACCIONES EN HISTORIAL GENERAL */
+        function registerActionToHistory(title, detail, type = "info") {
+            const icons = { info: "info", success: "check-circle", gold: "star", error: "alert-triangle" };
+            const actionIcon = icons[type] || "activity";
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            state.history.unshift({ title, detail, time: timeString, icon: actionIcon, type });
+            
+            if (document.getElementById("view-history").classList.contains("active-view")) {
+                renderHistoryList();
+            }
         }
 
         function showToast(text, type = "info") {
@@ -304,120 +564,244 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        // 2. Lógica de Puntos e Historiales con Guardado Real (localStorage)
-        function updatePoints(amount, actionName) {
-            state.balance += amount;
-            localStorage.setItem("golden_balance", state.balance);
-            document.getElementById("profile-balance").innerText = state.balance;
-            addLog(`${actionName}: ${amount > 0 ? '+' : ''}${amount} Pts. Nuevo saldo: ${state.balance}`);
-        }
-
-        function toggleFavorite(id) {
-            const idx = state.favorites.indexOf(id);
-            if (idx > -1) {
-                state.favorites.splice(idx, 1);
-                showToast("Eliminado de Favoritos", "info");
-            } else {
-                state.favorites.push(id);
-                showToast("¡Añadido a Favoritos!", "success");
-            }
-            localStorage.setItem("golden_favs", JSON.stringify(state.favorites));
-            renderAll();
-        }
-
-        function visitChannel(id, link) {
-            if (!state.history.includes(id)) {
-                state.history.push(id);
-                localStorage.setItem("golden_hist", JSON.stringify(state.history));
-            }
-            updatePoints(2, "Visita de canal"); // Regala 2 puntos por explorar canales
-            addLog(`Acceso al canal ID: ${id}`);
-            renderAll();
-            window.open(link, '_blank');
-        }
-
-        function spinRoulette() {
-            if (state.balance < 5) {
-                showToast("No tienes puntos suficientes", "error");
-                return;
-            }
-            updatePoints(-5, "Uso de Ruleta");
-            const item = CHANNELS_DATASET[Math.floor(Math.random() * CHANNELS_DATASET.length)];
-            document.getElementById("roulette-display").innerText = item.name;
-            showToast(`Resultado: ${item.name}`, "gold");
-        }
-
-        function claimDailyGacha() {
-            updatePoints(15, "Premio Caja Diaria");
-            showToast("¡Reclamaste +15 Puntos Gratis!", "success");
-        }
-
-        // 3. Renderizado Condicional Correcto de las Pestañas
-        function renderAll() {
-            document.getElementById("profile-balance").innerText = state.balance;
-            document.getElementById("cnt-favs").innerText = state.favorites.length;
-            document.getElementById("cnt-hist").innerText = state.history.length;
-
-            // Render VIP Slider (Home)
-            const vipSlider = document.getElementById("vip-slider");
-            vipSlider.innerHTML = CHANNELS_DATASET.filter(c => c.isVip).map(c => `
-                <div class="vip-slide-card" onclick="visitChannel(${c.id}, '${c.link}')">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <span>${c.logo}</span>
-                        <div><h4 style="font-size:0.85rem;">${c.name}</h4><p style="font-size:0.7rem; color:var(--text-muted);">${c.user}</p></div>
-                    </div>
-                </div>
-            `).join('');
-
-            // Render Directorio Global
-            renderGenericGrid("directory-list", CHANNELS_DATASET);
-
-            // Render Pestaña de Favoritos
-            const favChannels = CHANNELS_DATASET.filter(c => state.favorites.includes(c.id));
-            renderGenericGrid("favorites-list", favChannels, "No tienes canales marcados como favoritos aún.");
-
-            // Render Pestaña de Historial
-            const histChannels = state.history.map(id => CHANNELS_DATASET.find(c => c.id === id)).filter(Boolean);
-            renderGenericGrid("history-list", histChannels, "Tu historial de accesos está vacío.");
-        }
-
-        function renderGenericGrid(targetId, dataset, emptyMsg = "No hay canales disponibles.") {
-            const grid = document.getElementById(targetId);
-            if (!grid) return;
-            if (dataset.length === 0) {
-                grid.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:20px;">${emptyMsg}</p>`;
-                return;
-            }
-            grid.innerHTML = dataset.map(c => `
-                <div class="channel-card ${c.isVip ? 'vip-border' : ''}" id="card-${targetId}-${c.id}">
-                    <div class="card-main-row" onclick="document.getElementById('card-${targetId}-${c.id}').classList.toggle('expanded')">
-                        <div class="card-identity-box">
-                            <div class="channel-thumb">${c.logo}</div>
-                            <div><h4>${c.name}</h4><p style="font-size:0.75rem; color:var(--text-muted);">${c.user}</p></div>
-                        </div>
-                        <i data-lucide="star" class="fav-star-icon ${state.favorites.includes(c.id) ? 'is-fav' : ''}" onclick="event.stopPropagation(); toggleFavorite(${c.id})"></i>
-                    </div>
-                    <div class="card-accordion-content">
-                        <p style="font-size:0.8rem; color:var(--text-muted);">Audiencia estimada: ${c.subs} suscriptores.</p>
-                        <button class="btn-subscribe-trigger" onclick="visitChannel(${c.id}, '${c.link}')">Ir al Canal</button>
-                    </div>
-                </div>
-            `).join('');
-            lucide.createIcons();
+        function calculateDailyCheckIn() {
+            state.user.balance += 5;
+            addLog("Check-In Diario: +5 Puntos.");
+            registerActionToHistory("Check-In Diario", "Recibiste +5 puntos de energía por inicio de sesión.", "success");
         }
 
         function switchView(viewId) {
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active-view'));
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active-tab'));
-            document.getElementById(`view-${viewId}`).classList.add('active-view');
-            const tab = document.getElementById(`tab-${viewId}`);
-            if (tab) tab.classList.add('active-tab');
-            renderAll();
+            
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) targetView.classList.add('active-view');
+            
+            const targetTab = document.getElementById(`tab-${viewId}`);
+            if (targetTab) targetTab.classList.add('active-tab');
+
+            if (viewId === 'directory') renderDirectoryList();
+            if (viewId === 'favorites') renderFavoritesList();
+            if (viewId === 'history') renderHistoryList();
+            if (viewId === 'home') renderVipSlider();
+            lucide.createIcons();
         }
 
-        function toggleProfileDrawer() { document.getElementById("profile-drawer").classList.toggle("open"); }
+        function toggleProfileDrawer() {
+            document.getElementById("profile-drawer").classList.toggle("open");
+        }
+
+        function toggleAdminRole() {
+            state.user.role = state.user.role === "admin" ? "user" : "admin";
+            document.getElementById("role-toggle").classList.toggle("active");
+            document.getElementById("creator-ad-banner").style.display = state.user.role === "admin" ? "block" : "none";
+            addLog(`Rol cambiado a: ${state.user.role}`);
+            registerActionToHistory("Cambio de Rol", `Modo de vista cambiado a: ${state.user.role.toUpperCase()}`, "info");
+        }
+
+        function renderAppUiComponents() {
+            document.getElementById("drawer-username").innerText = state.user.username;
+            const catBar = document.getElementById("categories-bar");
+            if (catBar) {
+                catBar.innerHTML = CATEGORIES.map(c => `
+                    <div class="cat-chip ${activeCategoryFilter === c.id ? 'active-chip' : ''}" onclick="selectCategoryFilter('${c.id}')">
+                        ${c.name}
+                    </div>
+                `).join('');
+            }
+            renderVipSlider();
+            renderDirectoryList();
+            renderFavoritesList();
+            renderHistoryList();
+            updateBalanceUi();
+        }
+
+        function updateBalanceUi() {
+            document.getElementById("profile-balance").innerText = state.user.balance;
+            document.getElementById("drawer-range").innerText = `[Rango RPG ${state.user.range}]`;
+            document.getElementById("cnt-favs").innerText = state.favorites.length;
+        }
+
+        function renderVipSlider() {
+            const container = document.getElementById("vip-slider");
+            if (!container) return;
+            const vips = INITIAL_CHANNELS_DATASET.filter(c => c.isVip);
+            container.innerHTML = vips.map(c => `
+                <div class="vip-slide-card" onclick="registerChannelAccess(${c.id})">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span class="channel-thumb" style="border:none; background:none;">${c.logo}</span>
+                        <div><h4>${c.name}</h4><p>${c.user}</p></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function scrollSlider(dir) {
+            document.getElementById("vip-slider").scrollLeft += (dir * 200);
+        }
+
+        function selectCategoryFilter(catId) {
+            activeCategoryFilter = catId;
+            renderAppUiComponents();
+        }
+
+        function filterDirectory() {
+            renderDirectoryList();
+        }
+
+        /* FUNCIÓN AUXILIAR PARA RENDERIZAR ESTRUCTURA DE TARJETAS */
+        function buildChannelCardHtml(c) {
+            const isFav = state.favorites.includes(c.id);
+            const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
+            const descriptionHtml = c.description ? `<p style="font-size:0.8rem; color:var(--text-muted); margin: 6px 0 10px 0; line-height: 1.3;">${c.description}</p>` : '';
+            
+            return `
+                <div class="channel-card ${c.isVip ? 'vip-border' : ''}">
+                    <div class="card-main-row" onclick="toggleAccordionEffect(${c.id})">
+                        <div class="card-identity-box">
+                            <div class="channel-thumb">${c.logo}</div>
+                            <div class="channel-meta">
+                                <h4>${c.name} ${badgeVip}</h4>
+                                <p>${c.user}</p>
+                            </div>
+                        </div>
+                        <i data-lucide="star" class="fav-star-icon ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation(); toggleFavoriteChannel(${c.id})"></i>
+                    </div>
+                    <div id="accordion-${c.id}" class="card-accordion-content">
+                        ${descriptionHtml}
+                        <div class="extended-data-row">
+                            <span>Idioma: <strong>${c.lang}</strong></span>
+                            <span>Subs: <strong>${c.subs.toLocaleString()}</strong></span>
+                        </div>
+                        <button class="btn-subscribe-trigger" onclick="registerChannelAccess(${c.id})">Visitar Canal</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDirectoryList() {
+            const list = document.getElementById("directory-list");
+            if (!list) return;
+            const query = document.getElementById("directory-search")?.value.toLowerCase() || "";
+
+            let filtered = INITIAL_CHANNELS_DATASET.filter(c => {
+                return (activeCategoryFilter === "all" || c.category === activeCategoryFilter) && 
+                       (c.name.toLowerCase().includes(query) || c.user.toLowerCase().includes(query) || (c.description && c.description.toLowerCase().includes(query)));
+            });
+
+            list.innerHTML = filtered.map(c => buildChannelCardHtml(c)).join('');
+            lucide.createIcons();
+        }
+
+        /* RENDERS ESPECÍFICOS REQUERIDOS */
+        function renderFavoritesList() {
+            const favListContainer = document.getElementById("favorites-list");
+            if (!favListContainer) return;
+            
+            const favChannels = INITIAL_CHANNELS_DATASET.filter(c => state.favorites.includes(c.id));
+            
+            if (favChannels.length === 0) {
+                favListContainer.innerHTML = `<div class="empty-state-notice">Aún no tienes canales añadidos a tus favoritos. ¡Explora el directorio!</div>`;
+                return;
+            }
+            
+            favListContainer.innerHTML = favChannels.map(c => buildChannelCardHtml(c)).join('');
+            lucide.createIcons();
+        }
+
+        function renderHistoryList() {
+            const historyContainer = document.getElementById("history-list");
+            if (!historyContainer) return;
+            
+            if (state.history.length === 0) {
+                historyContainer.innerHTML = `<div class="empty-state-notice">No hay acciones recientes registradas en el historial.</div>`;
+                return;
+            }
+            
+            historyContainer.innerHTML = state.history.map(item => `
+                <div class="history-item-card">
+                    <div class="history-left-pane">
+                        <div class="history-icon-badge">
+                            <i data-lucide="${item.icon}" style="width:16px; height:16px; color: ${item.type === 'gold' ? 'var(--vip-gold)' : item.type === 'success' ? 'var(--success-green)' : 'var(--telegram-blue)'}"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-size:0.88rem; font-weight:700;">${item.title}</h4>
+                            <p style="font-size:0.75rem; color:var(--text-muted);">${item.detail}</p>
+                        </div>
+                    </div>
+                    <div class="history-timestamp">${item.time}</div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function toggleAccordionEffect(id) {
+            const element = document.getElementById(`accordion-${id}`);
+            if(element) {
+                const card = element.parentElement;
+                card.classList.toggle("expanded");
+            }
+        }
+
+        function toggleFavoriteChannel(id) {
+            const index = state.favorites.indexOf(id);
+            const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
+            const channelName = channel ? channel.name : `ID: ${id}`;
+            
+            if (index > -1) {
+                state.favorites.splice(index, 1);
+                showToast("Quitado de favoritos", "info");
+                registerActionToHistory("Quitar Favorito", `Eliminaste ${channelName} de tu lista personal.`, "info");
+            } else {
+                state.favorites.push(id);
+                showToast("Añadido a favoritos", "success");
+                registerActionToHistory("Añadir Favorito", `Guardaste ${channelName} en tu sección de favoritos.`, "gold");
+            }
+            
+            updateBalanceUi();
+            renderDirectoryList();
+            renderFavoritesList();
+        }
+
+        function registerChannelAccess(id) {
+            const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
+            const channelName = channel ? channel.name : `ID: ${id}`;
+            
+            addLog(`Canal visitado ID: ${id}`);
+            registerActionToHistory("Acceso a Canal", `Te redirigiste al canal de Telegram: ${channelName}`, "success");
+            showToast("Redirigiendo a Telegram...", "success");
+        }
+
+        function spinRoulette() {
+            if (state.user.balance < 5) {
+                showToast("Saldo insuficiente", "error");
+                registerActionToHistory("Fallo en Ruleta", "Intento fallido de girar la ruleta por saldo insuficiente.", "error");
+                return;
+            }
+            state.user.balance -= 5;
+            const rand = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
+            
+            const display = document.getElementById("roulette-display");
+            display.innerText = rand.name;
+            display.classList.add("shake-anim");
+            setTimeout(() => display.classList.remove("shake-anim"), 400);
+            
+            updateBalanceUi();
+            showToast(`¡Canal obtenido: ${rand.name}!`, "gold");
+            registerActionToHistory("Giro de Ruleta", `Gastaste 5 Pts y obtuviste el canal: ${rand.name}`, "gold");
+        }
+
+        function claimDailyGacha() {
+            const prize = Math.floor(Math.random() * 50) + 1;
+            state.user.balance += prize;
+            updateBalanceUi();
+            showToast(`¡Has ganado ${prize} Pts!`, "success");
+            registerActionToHistory("Caja Diaria Gacha", `Abriste el cofre y reclamaste +${prize} puntos de energía.`, "success");
+        }
+
         function openLogsModal() { document.getElementById("modal-logs-view").style.display = "flex"; }
         function closeLogsModal() { document.getElementById("modal-logs-view").style.display = "none"; }
+        function openVipForm() { showToast("Abriendo formulario VIP de Adquisición...", "info"); }
     </script>
 </body>
 </html>

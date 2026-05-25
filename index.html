@@ -1927,29 +1927,34 @@ function toggleFavoriteChannel(id, event) {
         return;
     }
 
-    // PROTECCIÓN: Buscamos el canal de forma segura. Si falla la conversión a entero, probamos con el ID tal cual.
     let targetChannel = INITIAL_CHANNELS_DATASET.find(c => c.id === parseInt(chId));
     if (!targetChannel) {
         targetChannel = INITIAL_CHANNELS_DATASET.find(c => c.id == chId);
     }
 
-    // Si aun así no existe el canal, evitamos que la app se rompa usando un operador seguro
     const chUser = targetChannel ? targetChannel.user : "@Desconocido";
-
-    // Extraemos de forma segura los datos del usuario firmante
     const usernameText = (state.user && state.user.username) ? state.user.username : "@Usuario";
     const userIdText = (state.user && state.user.idTelegram) ? state.user.idTelegram : "No Detectado";
 
-    // Construimos el mensaje con la misma estructura exacta que te funcionó antes
+    // 1. Construimos el mensaje predefinido
     const messagePayload = `🚨 SOLICITUD DE BAJA DE CANAL 🚨\n\n• Canal ID: ${chId}\n• Nombre Canal: ${chName}\n• Usuario Canal: ${chUser}\n\n• Solicitante: ${usernameText}\n• ID Telegram Solicitante: ${userIdText}\n• Motivo: ${reason}`;
     
-    // Enviamos los datos de vuelta de forma nativa tal y como lo haces al agregar
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
-        window.Telegram.WebApp.sendData(messagePayload);
+    // 2. Lo codificamos para que sea una URL válida
+    const textEncoded = encodeURIComponent(messagePayload);
+    
+    // 3. CAMBIA ESTO: Pon tu alias de Telegram personal o el de tu Bot (sin el @)
+    const TU_USUARIO_O_BOT = "TuAliasDeTelegramAqui"; 
+    const telegramUrl = `https://t.me/${TU_USUARIO_O_BOT}?text=${textEncoded}`;
+
+    // 4. Forzamos la apertura real del chat con el texto ya escrito abajo
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+        window.Telegram.WebApp.openTelegramLink(telegramUrl);
+    } else {
+        window.open(telegramUrl, "_blank");
     }
     
     closeDeleteModal();
-    showToast("Solicitud enviada a soporte privado", "gold");
+    showToast("Abriendo soporte privado...", "success");
 }
     </script>
 </body>

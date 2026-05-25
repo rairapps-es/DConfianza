@@ -1913,6 +1913,13 @@ function toggleFavoriteChannel(id, event) {
             document.getElementById("modal-delete-request").style.display = "flex";
         }
 
+        function openDeleteModal(channelId, channelName) {
+            document.getElementById("delete-channel-id").value = channelId;
+            document.getElementById("delete-channel-name").value = channelName;
+            document.getElementById("delete-channel-reason").value = "";
+            document.getElementById("modal-delete-request").style.display = "flex";
+        }
+
         function closeDeleteModal() { document.getElementById("modal-delete-request").style.display = "none"; }
         function openLogsModal() { document.getElementById("modal-logs-view").style.display = "flex"; }
         function closeLogsModal() { document.getElementById("modal-logs-view").style.display = "none"; }

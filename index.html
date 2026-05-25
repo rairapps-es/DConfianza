@@ -1796,12 +1796,42 @@ function handleReSendChannel(id) {
         }
 
         function handleChannelDeleteAction(id, name, currentStatus) {
-            if(currentStatus === "En Revisión") {
-                showToast("Aviso: No se puede eliminar un canal en estado EN REVISIÓN.", "error");
-                return;
+    if(currentStatus === "En Revisión") {
+        showToast("Aviso: No se puede eliminar un canal en estado EN REVISIÓN.", "error");
+        return;
+    }
+
+    // Buscamos el canal en tu dataset para comprobar si tiene la solicitud de baja activa
+    const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
+    
+    // Si ya se solicitó la baja o está en estado "Sin Publicar", activamos el borrado definitivo con confirmación
+    if (channel && (channel.deleteRequested || currentStatus === "Sin Publicar")) {
+        
+        // Ventana de confirmación nativa (Aceptar = true / Cancelar = false)
+        const confirmDelete = confirm(`⚠️ ALERTA DE SEGURIDAD ⚠️\n\n¿Estás completamente seguro de que deseas eliminar permanentemente el canal "${name}" de tus registros? Esta acción borrará todos tus datos guardados.\n\nPresiona 'Aceptar' para eliminar o 'Cancelar' para cerrar el aviso.`);
+        
+        if (confirmDelete) {
+            // Eliminamos el canal por completo de la lista
+            const index = INITIAL_CHANNELS_DATASET.findIndex(c => c.id === id);
+            if (index > -1) {
+                INITIAL_CHANNELS_DATASET.splice(index, 1);
+                showToast("Canal eliminado definitivamente", "error");
+                
+                // Refrescamos tus listas y almacenamiento al instante
+                renderMyOwnedChannelsList();
+                if (typeof renderDirectoryList === "function") renderDirectoryList();
+                if (typeof saveToLocalStorage === "function") saveToLocalStorage();
             }
-            openDeleteModal(id, name);
+        } else {
+            // Si pulsa cancelar, se cierra el aviso automáticamente sin alterar nada
+            showToast("Eliminación cancelada", "info");
         }
+        
+    } else {
+        // Si el canal está publicado de forma normal, abre tu modal habitual para rellenar la baja
+        openDeleteModal(id, name);
+    }
+}
 
         function renderFavoritesList() {
     const container = document.getElementById("favorites-list");

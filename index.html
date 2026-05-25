@@ -2357,37 +2357,48 @@ function sendOrderToTelegram() {
         showToast("Pedido enviado a soporte privado", "success");
     }, 1500);
 } 
-        // OBJETO DE ALMACENAMIENTO TEMPORAL
+        // ====================================================================
+// MÓDULO DE COMPARTICIÓN GLOBAL DE CANALES
+// ====================================================================
+
+// OBJETO DE ALMACENAMIENTO TEMPORAL
 let activeShareData = { id: null, name: "", user: "" };
 
+/**
+ * Abre el modal flotante y asigna los datos del canal seleccionado
+ */
 function openShareModal(id, name, user) {
-    console.log("-> Ejecutando openShareModal para el ID:", id); // Control interno
+    console.log("-> Enrutando openShareModal para el ID:", id);
     
-    // Guardamos los datos de forma segura
+    // Guardamos los datos de forma segura en el estado temporal
     activeShareData.id = id;
     activeShareData.name = name || "Canal Recomendado";
     activeShareData.user = user || "@Telegram";
     
-    // Localizamos los elementos en el documento
+    // Localizamos los elementos estructurales en el documento
     const overlay = document.getElementById("share-modal-overlay");
     const subtitle = document.getElementById("share-modal-subtitle");
     
+    // Alerta de prevención por si el HTML se desubica
     if (!overlay) {
         console.error("❌ ERROR CRÍTICO: No se encontró el elemento con ID 'share-modal-overlay' en tu HTML.");
         alert("Error: El contenedor del diseño de compartir no está colocado en el HTML.");
         return;
     }
 
-    // Forzamos el renderizado del texto y la visualización directa en pantalla
+    // Inyectamos de forma dinámica el nombre y alias en la cabecera del modal
     if (subtitle) {
         subtitle.innerText = `${activeShareData.name} (${activeShareData.user})`;
     }
     
-    // Cambiamos el estilo a flex de forma prioritaria usando JS nativo
+    // Forzamos la apertura en modo Flex para centrar la tarjeta flotante
     overlay.style.setProperty("display", "flex", "important");
     console.log("-> ¡Modal abierto con éxito!");
 }
 
+/**
+ * Cierra la ventana flotante de compartición
+ */
 function closeShareModal() {
     const overlay = document.getElementById("share-modal-overlay");
     if (overlay) {
@@ -2395,10 +2406,17 @@ function closeShareModal() {
     }
 }
 
+/**
+ * Ejecuta la API de redirección o copia en base a la red social elegida
+ */
 function executeShareAction(network) {
+    // Detectamos la URL exacta en la que corre la aplicación actual
     const webAppUrl = window.location.origin + window.location.pathname;
+    
+    // Plantilla de mensaje predefinido con saltos de línea limpios
     const messageText = `¡Mira este canal de Telegram en el Directorio! 🚀\n\n• Canal: ${activeShareData.name}\n• Alias: ${activeShareData.user}\n\nEncuentra más canales recomendados aquí 👇`;
     
+    // Codificación segura para URLs
     const textEncoded = encodeURIComponent(messageText);
     const urlEncoded = encodeURIComponent(webAppUrl);
 
@@ -2422,6 +2440,7 @@ function executeShareAction(network) {
             window.open(`mailto:?subject=${encodeURIComponent("Recomendación de Canal: " + activeShareData.name)}&body=${encodeURIComponent(messageText + "\n\n" + webAppUrl)}`, '_self');
             break;
         case 'copy':
+            // Método Primario: API Portapapeles asíncrona moderna
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(webAppUrl).then(() => {
                     showToast("¡Enlace copiado al portapapeles!", "success");
@@ -2429,8 +2448,11 @@ function executeShareAction(network) {
                     showToast("Error al copiar el enlace", "error");
                 });
             } else {
+                // Método Secundario (Fallback): Creación de Textarea fantasma para entornos Webview
                 const textArea = document.createElement("textarea");
                 textArea.value = webAppUrl;
+                textArea.style.position = 'fixed'; // Evita scroll abrupto en la pantalla
+                textArea.style.opacity = '0';
                 document.body.appendChild(textArea);
                 textArea.select();
                 try {
@@ -2444,15 +2466,40 @@ function executeShareAction(network) {
             break;
     }
 
+    // Cerramos el panel automáticamente en todas las redes para agilizar el flujo,
+    // excepto en "copiar enlace", manteniendo el modal abierto para que luzca el Toast de éxito.
     if (network !== 'copy') {
         closeShareModal();
     }
 }
     </script>
     
-<div id="share-modal-overlay" class="share-overlay" style="display: none !important;" onclick="closeShareModal()">
-        <div class="share-modal-card" onclick="event.stopPropagation();">
-            </div>
+<div id="share-modal-overlay" class="share-overlay" style="display: none !important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 15, 26, 0.85); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 10000; padding: 16px;" onclick="closeShareModal()">
+    
+    <div class="share-modal-card" style="background: #182232 !important; border: 1px solid #2d3748 !important; border-radius: 20px !important; width: 100% !important; max-width: 320px !important; padding: 24px !important; position: relative !important; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important; display: block !important;" onclick="event.stopPropagation();">
+        
+        <button class="share-close-btn" style="position: absolute; top: 12px; right: 16px; background: none; border: none; color: #718096; font-size: 1.6rem; cursor: pointer; line-height: 1;" onclick="closeShareModal()">&times;</button>
+        
+        <div class="share-modal-header" style="margin-bottom: 16px;">
+            <h3 id="share-modal-title" style="margin: 0 !important; color: #ffffff !important; font-size: 1.2rem !important; font-weight: bold !important;">Compartir Canal</h3>
+            <p id="share-modal-subtitle" style="font-size: 0.75rem !important; color: #a0aec0 !important; margin-top: 4px !important; margin-bottom: 0 !important; font-weight: normal !important;"></p>
+        </div>
+
+        <div class="share-grid-networks" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; margin: 16px 0 !important;">
+            <button class="share-net-btn telegram" style="background: #24a1de; color: white; border: none; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="executeShareAction('telegram')">✈️ Telegram</button>
+            <button class="share-net-btn whatsapp" style="background: #22c55e; color: white; border: none; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="executeShareAction('whatsapp')">💬 WhatsApp</button>
+            <button class="share-net-btn x-twitter" style="background: #0f1419; color: white; border: 1px solid #2d3748; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="executeShareAction('x')">🐦 X / Twitter</button>
+            <button class="share-net-btn facebook" style="background: #1877f2; color: white; border: none; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="executeShareAction('facebook')">📘 Facebook</button>
+            <button class="share-net-btn reddit" style="background: #ff4500; color: white; border: none; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="executeShareAction('reddit')">🧡 Reddit</button>
+            <button class="share-net-btn email" style="background: #4a5568; color: white; border: none; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="executeShareAction('email')">✉️ Correo</button>
+        </div>
+
+        <div class="share-modal-footer" style="margin-top: 14px; border-top: 1px solid #2d3748; padding-top: 14px;">
+            <button class="share-copy-link-btn" style="width: 100%; background: #2d3748; border: 1px solid #4a5568; color: #edf2f7; padding: 10px; font-size: 0.8rem; font-weight: bold; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="executeShareAction('copy')">
+                📋 Copiar Enlace de la App
+            </button>
+        </div>
     </div>
+</div>
 </body>
 </html>

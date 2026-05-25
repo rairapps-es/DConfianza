@@ -1769,15 +1769,31 @@ function checkVipInternalRegistration() {
                 <div class="card-actions-column" onclick="event.stopPropagation();">
                     <i data-lucide="star" class="fav-star-icon ${isFav ? 'is-fav' : ''}" onclick="toggleFavoriteChannel(${c.id})"></i>
                     
-                    <div class="share-channel-icon" style="cursor: pointer; display: flex; align-items: center; justify-content: center;" onclick="openShareModal(${c.id}, '${safeName}', '${safeUser}')">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="18" cy="5" r="3"></circle>
-                            <circle cx="6" cy="12" r="3"></circle>
-                            <circle cx="18" cy="19" r="3"></circle>
-                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                        </svg>
-                    </div>
+                    <div id="share-modal-overlay" class="share-overlay" style="display: none !important;" onclick="closeShareModal()">
+    <div class="share-modal-card" onclick="event.stopPropagation();">
+        <button class="share-close-btn" onclick="closeShareModal()">&times;</button>
+        
+        <div class="share-modal-header">
+            <h3 id="share-modal-title" style="margin:0; color:#fff; font-size:1.2rem;">Compartir Canal</h3>
+            <p id="share-modal-subtitle" style="font-size: 0.75rem; color: #718096; margin-top: 4px; margin-bottom:0;"></p>
+        </div>
+
+        <div class="share-grid-networks">
+            <button class="share-net-btn telegram" onclick="executeShareAction('telegram')">✈️ Telegram</button>
+            <button class="share-net-btn whatsapp" onclick="executeShareAction('whatsapp')">💬 WhatsApp</button>
+            <button class="share-net-btn x-twitter" onclick="executeShareAction('x')">🐦 X / Twitter</button>
+            <button class="share-net-btn facebook" onclick="executeShareAction('facebook')">📘 Facebook</button>
+            <button class="share-net-btn reddit" onclick="executeShareAction('reddit')">🧡 Reddit</button>
+            <button class="share-net-btn email" onclick="executeShareAction('email')">✉️ Correo</button>
+        </div>
+
+        <div class="share-modal-footer" style="margin-top:14px; border-top:1px solid #2d3748; padding-top:14px;">
+            <button class="share-copy-link-btn" onclick="executeShareAction('copy')">
+                📋 Copiar Enlace al Portapapeles
+            </button>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
             <div id="accordion-${c.id}" class="card-accordion-content">
@@ -2449,5 +2465,9 @@ function executeShareAction(network) {
     }
 }
     </script>
+    
+<div id="share-modal-overlay" class="share-overlay" style="display: none !important;" onclick="closeShareModal()">
+        </div>
+
 </body>
 </html>

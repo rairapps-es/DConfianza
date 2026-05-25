@@ -1743,7 +1743,6 @@ function checkVipInternalRegistration() {
         }
 
         function buildChannelCardHtml(c) {
-    consfunction buildChannelCardHtml(c) {
     const isFav = state.favorites.includes(c.id);
     const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
     const liveViews = getDynamicDailyViews(c.id);
@@ -1781,17 +1780,6 @@ function checkVipInternalRegistration() {
                     </div>
                 </div>
             </div>
-            <div id="accordion-${c.id}" class="card-accordion-content">
-                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">${c.description}</p>
-                <div class="extended-data-row">
-                    <span>Idioma: <strong>${c.lang}</strong></span>
-                    <span>Subs: <strong>${c.subs.toLocaleString()}</strong></span>
-                </div>
-                <button class="btn-subscribe-trigger" onclick="registerChannelAccess(${c.id})">Visitar Canal en Telegram</button>
-            </div>
-        </div>
-    `;
-} </div></div></div>
             <div id="accordion-${c.id}" class="card-accordion-content">
                 <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">${c.description}</p>
                 <div class="extended-data-row">

@@ -491,6 +491,130 @@
     animation: rotation 1s linear infinite;
 }
 @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+       /* AJUSTES DE MAQUETACIÓN EN LA TARJETA */
+.card-actions-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px; /* Separación vertical idónea */
+    padding-left: 10px;
+}
+.share-channel-icon {
+    width: 18px;
+    height: 18px;
+    color: #a0aec0;
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+}
+.share-channel-icon:hover {
+    color: var(--telegram-blue, #24a1de);
+    transform: scale(1.15);
+}
+
+/* OVERLAY CON DESFOCADO */
+.share-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 15, 26, 0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 16px;
+}
+
+/* TARJETA DEL MODAL CON REBOTE */
+.share-modal-card {
+    background: #182232;
+    border: 1px solid #2d3748;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 320px;
+    padding: 24px;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    animation: sharePopupEntrance 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes sharePopupEntrance {
+    0% { transform: scale(0.6) translateY(30px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.share-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: #718096;
+    font-size: 1.6rem;
+    cursor: pointer;
+    line-height: 1;
+}
+.share-close-btn:hover { color: #fff; }
+
+.share-modal-header h3 { font-size: 1.15rem; font-weight: bold; color: #fff; }
+
+/* REJILLA DINÁMICA */
+.share-grid-networks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 20px 0 16px 0;
+}
+
+.share-net-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+}
+.share-net-btn:hover { transform: translateY(-2px); filter: brightness(1.15); }
+.net-icon { font-size: 1rem; }
+
+/* PALETA DE REDES */
+.share-net-btn.telegram { background: #24a1de; }
+.share-net-btn.whatsapp { background: #22c55e; }
+.share-net-btn.x-twitter { background: #0f1419; border: 1px solid #2d3748; }
+.share-net-btn.facebook { background: #1877f2; }
+.share-net-btn.reddit { background: #ff4500; }
+.share-net-btn.email { background: #4a5568; }
+
+.share-modal-footer {
+    border-top: 1px solid #2d3748;
+    padding-top: 14px;
+}
+.share-copy-link-btn {
+    width: 100%;
+    background: #2d3748;
+    border: 1px solid #4a5568;
+    color: #edf2f7;
+    padding: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+.share-copy-link-btn:hover { background: #3a4a63; color: #fff; } 
     </style>
 </head>
 <body>
@@ -1619,37 +1743,46 @@ function checkVipInternalRegistration() {
         }
 
         function buildChannelCardHtml(c) {
-            const isFav = state.favorites.includes(c.id);
-            const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
-            const liveViews = getDynamicDailyViews(c.id);
-            
-            return `
-                <div class="channel-card ${c.isVip ? 'vip-border' : ''}">
-                    <div class="card-main-row" onclick="toggleAccordionEffect(${c.id})">
-                        <div class="card-identity-box">
-                            <div class="channel-thumb">${c.logo}</div>
-                            <div class="channel-meta">
-                                <h4>${c.name} ${badgeVip}</h4>
-                                <p>${c.user}</p>
-                                <div class="live-traffic-badge">
-                                    <i data-lucide="eye" style="width:12px; height:12px;"></i>
-                                    <span>${liveViews} visitas hoy</span>
-                                </div>
-                            </div>
+    const isFav = state.favorites.includes(c.id);
+    const badgeVip = c.isVip ? `<span class="animated-vip-badge">DESTACADO</span>` : '';
+    const liveViews = getDynamicDailyViews(c.id);
+    
+    return `
+        <div class="channel-card ${c.isVip ? 'vip-border' : ''}">
+            <div class="card-main-row" onclick="toggleAccordionEffect(${c.id})">
+                <div class="card-identity-box">
+                    <div class="channel-thumb">${c.logo}</div>
+                    <div class="channel-meta">
+                        <h4>${c.name} ${badgeVip}</h4>
+                        <p style="margin: 2px 0;">${c.user}</p>
+                        <div class="live-traffic-badge">
+                            <i data-lucide="eye" style="width:12px; height:12px;"></i>
+                            <span>${liveViews} visitas hoy</span>
                         </div>
-                        <i data-lucide="star" class="fav-star-icon ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation(); toggleFavoriteChannel(${c.id})"></i>
-                    </div>
-                    <div id="accordion-${c.id}" class="card-accordion-content">
-                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">${c.description}</p>
-                        <div class="extended-data-row">
-                            <span>Idioma: <strong>${c.lang}</strong></span>
-                            <span>Subs: <strong>${c.subs.toLocaleString()}</strong></span>
-                        </div>
-                        <button class="btn-subscribe-trigger" onclick="registerChannelAccess(${c.id})">Visitar Canal en Telegram</button>
                     </div>
                 </div>
-            `;
-        }
+                
+                <div class="card-actions-column" onclick="event.stopPropagation();">
+                    <i data-lucide="star" class="fav-star-icon ${isFav ? 'is-fav' : ''}" onclick="toggleFavoriteChannel(${c.id})"></i>
+                    <i data-lucide="share-2" class="share-channel-icon" onclick="openShareModal(${c.id}, '${escapeHtml(c.name)}', '${escapeHtml(c.user)}')"></i>
+                </div>
+            </div>
+            <div id="accordion-${c.id}" class="card-accordion-content">
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">${c.description}</p>
+                <div class="extended-data-row">
+                    <span>Idioma: <strong>${c.lang}</strong></span>
+                    <span>Subs: <strong>${c.subs.toLocaleString()}</strong></span>
+                </div>
+                <button class="btn-subscribe-trigger" onclick="registerChannelAccess(${c.id})">Visitar Canal en Telegram</button>
+            </div>
+        </div>
+    `;
+}
+
+// Función auxiliar de seguridad obligatoria para limpiar comillas o caracteres extraños en los parámetros inline
+function escapeHtml(text) {
+    return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
 
         function renderDirectoryList() {
             const list = document.getElementById("directory-list");
@@ -2212,6 +2345,88 @@ function sendOrderToTelegram() {
         showToast("Pedido enviado a soporte privado", "success");
     }, 1500);
 } 
+        // OBJETO DE ALMACENAMIENTO TEMPORAL DE DATOS DEL CANAL ACTIVO A COMPARTIR
+let activeShareData = { id: null, name: "", user: "" };
+
+function openShareModal(id, name, user) {
+    activeShareData = { id, name, user };
+    
+    const overlay = document.getElementById("share-modal-overlay");
+    const subtitle = document.getElementById("share-modal-subtitle");
+    
+    if (overlay && subtitle) {
+        subtitle.innerText = `${name} (${user})`;
+        overlay.style.display = "flex";
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function closeShareModal() {
+    const overlay = document.getElementById("share-modal-overlay");
+    if (overlay) overlay.style.display = "none";
+}
+
+function executeShareAction(network) {
+    // 1. Generamos la URL de la Mini App. Si estás local o en producción se ajusta de forma automatizada
+    const webAppUrl = window.location.origin + window.location.pathname;
+    
+    // 2. Construimos el texto predefinido llamativo
+    const messageText = `¡Mira este canal de Telegram en el Directorio! 🚀\n\n• Canal: ${activeShareData.name}\n• Alias: ${activeShareData.user}\n\nEncuentra más canales recomendados aquí 👇`;
+    
+    const textEncoded = encodeURIComponent(messageText);
+    const urlEncoded = encodeURIComponent(webAppUrl);
+
+    // 3. Matriz de enrutadores según red elegida
+    switch (network) {
+        case 'telegram':
+            // Envío preferencial optimizado para la aplicación móvil o de escritorio
+            window.open(`https://t.me/share/url?url=${urlEncoded}&text=${textEncoded}`, '_blank');
+            break;
+        case 'whatsapp':
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(messageText + "\n" + webAppUrl)}`, '_blank');
+            break;
+        case 'x':
+            window.open(`https://twitter.com/intent/tweet?text=${textEncoded}&url=${urlEncoded}`, '_blank');
+            break;
+        case 'facebook':
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${urlEncoded}`, '_blank');
+            break;
+        case 'reddit':
+            window.open(`https://www.reddit.com/submit?url=${urlEncoded}&title=${encodeURIComponent("Canal Recomendado: " + activeShareData.name)}`, '_blank');
+            break;
+        case 'email':
+            window.open(`mailto:?subject=${encodeURIComponent("Recomendación de Canal: " + activeShareData.name)}&body=${encodeURIComponent(messageText + "\n\n" + webAppUrl)}`, '_self');
+            break;
+        case 'copy':
+            // API Clipboard nativa moderna con fallback reactivo de seguridad
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(webAppUrl).then(() => {
+                    showToast("¡Enlace copiado al portapapeles!", "success");
+                }).catch(() => {
+                    showToast("Error al copiar el enlace", "error");
+                });
+            } else {
+                // Alternativa antigua para compatibilidad completa en navegadores de WebView limitados
+                const textArea = document.createElement("textarea");
+                textArea.value = webAppUrl;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast("¡Enlace copiado al portapapeles!", "success");
+                } catch (err) {
+                    showToast("No se pudo copiar el enlace", "error");
+                }
+                document.body.removeChild(textArea);
+            }
+            break;
+    }
+
+    // Cerramos el panel flotante tras la redirección (salvo si es copiar enlace para que el usuario aprecie el toast)
+    if (network !== 'copy') {
+        closeShareModal();
+    }
+}
     </script>
 </body>
 </html>

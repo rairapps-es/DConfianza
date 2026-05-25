@@ -1843,11 +1843,34 @@ function toggleFavoriteChannel(id, event) {
 }
 
         function registerChannelAccess(id) {
-            const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
-            rewardPoints(2, `Visita a canal: ${channel.name}`);
-            registerActionToHistory("Acceso Canal", `Entraste a la comunidad ${channel.name}`, "info");
-            showToast("Abriendo chat en Telegram...", "success");
-        }
+    // Buscamos el canal correspondiente en tu dataset original
+    const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
+    
+    if (!channel || !channel.user) {
+        showToast("No se pudo encontrar el alias de este canal", "error");
+        return;
+    }
+
+    // Limpiamos el '@' por si acaso viene con él, para formar un enlace limpio
+    const cleanUser = channel.user.replace('@', '');
+    const telegramUrl = `https://t.me/${cleanUser}`;
+
+    // Mostramos tu aviso original
+    showToast("Abriendo comunidad en Telegram...", "success");
+
+    // EJECUCIÓN REQUERIDA: Forzar la apertura del canal de forma nativa en Telegram
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+        // Método oficial y seguro dentro de las MiniApps
+        window.Telegram.WebApp.openTelegramLink(telegramUrl);
+    } else {
+        // Respaldo por si pruebas la app desde un navegador web común
+        window.open(telegramUrl, "_blank");
+    }
+
+    // Si manejas sistema RPG o de historial (como en los fragmentos anteriores), puedes dejar esto:
+    if (typeof rewardPoints === "function") rewardPoints(2, `Visitaste el canal: ${channel.name}`);
+    if (typeof registerActionToHistory === "function") registerActionToHistory("ACCIÓN", `Visitaste el canal ${channel.name}`, "info");
+}
 
         function spinRoulette() {
             if (state.user.balance < 5) {

@@ -1939,18 +1939,25 @@ function toggleFavoriteChannel(id, event) {
     // 1. Construimos el mensaje predefinido
     const messagePayload = `🚨 SOLICITUD DE BAJA DE CANAL 🚨\n\n• Canal ID: ${chId}\n• Nombre Canal: ${chName}\n• Usuario Canal: ${chUser}\n\n• Solicitante: ${usernameText}\n• ID Telegram Solicitante: ${userIdText}\n• Motivo: ${reason}`;
     
-    // 2. Lo codificamos para que sea una URL válida
+    // 2. Codificamos el mensaje para URL
     const textEncoded = encodeURIComponent(messagePayload);
     
-    // 3. CAMBIA ESTO: Pon tu alias de Telegram personal o el de tu Bot (sin el @)
-    const TU_USUARIO_O_BOT = "TuAliasDeTelegramAqui"; 
-    const telegramUrl = `https://t.me/${TU_USUARIO_O_BOT}?text=${textEncoded}`;
+    // =========================================================================
+    // ⚠️ REVISIÓN CRÍTICA AQUÍ: 
+    // Cambia "TuAliasDeTelegram" por tu @usuario real de Telegram (SIN el @)
+    // Ejemplo si eres @SoporteApp: const TU_USUARIO_O_BOT = "SoporteApp";
+    // =========================================================================
+    const TU_USUARIO_O_BOT = "Airdayz"; 
 
-    // 4. Forzamos la apertura real del chat con el texto ya escrito abajo
+    // Usamos el protocolo interno nativo 'tg://' que la app de Telegram entiende directamente
+    const telegramUrl = `tg://resolve?domain=${TU_USUARIO_O_BOT}&text=${textEncoded}`;
+
+    // 3. Forzamos la apertura directa usando el sistema de enlaces de la WebApp
     if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
-        window.Telegram.WebApp.openTelegramLink(telegramUrl);
+        window.Telegram.WebApp.openTelegramLink(`https://t.me/${TU_USUARIO_O_BOT}?text=${textEncoded}`);
     } else {
-        window.open(telegramUrl, "_blank");
+        // Si falla el método nativo, el protocolo 'tg://' obligará a Telegram a reaccionar
+        window.location.href = telegramUrl;
     }
     
     closeDeleteModal();

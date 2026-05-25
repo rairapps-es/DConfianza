@@ -939,22 +939,25 @@
         }
 
         // SISTEMA AUTOMÁTICO DE VERIFICACIÓN PREMIUM REQUERIDO
-        function checkVipInternalRegistration() {
-            // El ID interno registrado en el código es 12345678
-            if(state.user.idTelegram === 12345678) {
-                state.user.isVipMember = true;
-                
-                const alreadyShown = sessionStorage.getItem('premium_session_notified');
-                if(!alreadyShown) {
-                    sessionStorage.setItem('premium_session_notified', 'true');
-                    setTimeout(() => {
-                        document.getElementById("premium-congrats-modal").style.display = "flex";
-                        triggerConfettiExplosion();
-                    }, 1000);
-                }
-            }
-            updatePremiumTagUI();
+function checkVipInternalRegistration() {
+    // Lista de IDs de Telegram autorizados como VIP
+    const vipTelegramIds = [12345678, 87654321, 55442211]; 
+    
+    // Si el id del usuario coincide con alguno de la lista, se activa VIP
+    if(vipTelegramIds.includes(state.user.idTelegram)) {
+        state.user.isVipMember = true;
+        
+        const alreadyShown = sessionStorage.getItem('premium_session_notified');
+        if(!alreadyShown) {
+            sessionStorage.setItem('premium_session_notified', 'true');
+            setTimeout(() => {
+                document.getElementById("premium-congrats-modal").style.display = "flex";
+                triggerConfettiExplosion();
+            }, 1000);
         }
+    }
+    updatePremiumTagUI();
+}
 
         function closeCongratsPremiumModal() {
             document.getElementById("premium-congrats-modal").style.display = "none";
@@ -993,16 +996,46 @@
             }
         }
 
-        function sendOrderToTelegram() {
-            const method = document.getElementById("pay-method").value;
-            const msg = `🛒 NUEVO PEDIDO VIP 🛒\n\n• Usuario: ${state.user.username}\n• ID Telegram: ${state.user.idTelegram}\n• Método Elegido: ${method}\n• Estado: Esperando Pago`;
-            
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
-                window.Telegram.WebApp.sendData(msg);
+        function toggleBenefitsSection() {
+            const panel = document.getElementById("hidden-benefits-box");
+            const title = document.getElementById("benefits-box-title");
+            const form = document.getElementById("premium-order-form");
+
+            if(panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+                if(state.user.isVipMember) {
+                    title.innerText = "Tus Beneficios VIP Activos:";
+                    form.style.display = "none";
+                } else {
+                    title.innerText = "Beneficios de la Suscripción VIP:";
+                    form.style.display = "block";
+                }
             }
-            showToast("Pedido enviado a Telegram privado", "success");
-            toggleBenefitsSection();
         }
+
+        function sendOrderToTelegram() {
+    const method = document.getElementById("pay-method").value;
+    const msg = `🛒 NUEVO PEDIDO VIP 🛒\n\n• Usuario: ${state.user.username}\n• ID Telegram: ${state.user.idTelegram}\n• Método Elegido: ${method}\n• Estado: Esperando Pago`;
+    
+    // Codificamos el mensaje para que sea válido dentro de una URL
+    const textEncoded = encodeURIComponent(msg);
+    
+    // REEMPLAZA "Airdayz" por tu nombre de usuario de Telegram (sin el @) o el alias de tu Bot
+    const telegramUrl = `https://t.me/Airdayz?text=${textEncoded}`;
+    
+    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+        // Abre el chat privado directamente con el mensaje predefinido en la barra de texto
+        window.Telegram.WebApp.openTelegramLink(telegramUrl);
+    } else {
+        // Alternativa de respaldo por si se prueba fuera de Telegram (navegador estándar)
+        window.open(telegramUrl, "_blank");
+    }
+    
+    showToast("Pedido enviado a Telegram privado", "success");
+    toggleBenefitsSection();
+}
 
         function initTelegramContext() {
             if (window.Telegram && window.Telegram.WebApp) {

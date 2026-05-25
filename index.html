@@ -1753,16 +1753,19 @@ function checkVipInternalRegistration() {
         }
 
         function renderFavoritesList() {
-            const container = document.getElementById("favorites-list");
-            if (!container) return;
-            const favs = INITIAL_CHANNELS_DATASET.filter(c => state.favorites.includes(c.id));
-            if (favs.length === 0) {
-                container.innerHTML = `<div class="empty-state-notice">No tienes canales guardados como favoritos todavía.</div>`;
-                return;
-            }
-            container.innerHTML = favs.map(c => buildChannelCardHtml(c)).join('');
-            lucide.createIcons();
-        }
+    const container = document.getElementById("favorites-list");
+    if (!container) return;
+    
+    const favs = INITIAL_CHANNELS_DATASET.filter(c => state.favorites.includes(c.id));
+    
+    if (favs.length === 0) {
+        container.innerHTML = `<div class="empty-state-notice">No tienes canales guardados como favoritos todavía.</div>`;
+        return;
+    }
+    
+    container.innerHTML = favs.map(c => buildChannelCardHtml(c)).join('');
+    lucide.createIcons();
+}
 
         function renderHistoryList() {
             const container = document.getElementById("history-list");
@@ -1812,21 +1815,32 @@ function checkVipInternalRegistration() {
             document.getElementById(`accordion-${id}`)?.parentElement.classList.toggle("expanded");
         }
 
-        function toggleFavoriteChannel(id) {
-            const index = state.favorites.indexOf(id);
-            const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
-            
-            if (index > -1) {
-                state.favorites.splice(index, 1);
-                showToast("Quitado de favoritos", "info");
-            } else {
-                state.favorites.push(id);
-                showToast("¡Añadido! +5 Puntos", "success");
-                rewardPoints(5, `Añadir favorito: ${channel.name}`);
-            }
-            updateBalanceAndRpgUi();
-            renderDirectoryList();
-        }
+        // BUSCA EN TU CÓDIGO la función que se ejecuta al pulsar la estrella. 
+// Debe ser muy parecida a esta. Asegúrate de agregar la línea que refresca la lista:
+function toggleFavoriteChannel(id, event) {
+    if (event) event.stopPropagation(); // Evita que se abra el acordeón
+    
+    const index = state.favorites.indexOf(id);
+    if (index > -1) {
+        state.favorites.splice(index, 1); // Aquí lo elimina del array
+        showToast("Quitado de tus favoritos", "info");
+    } else {
+        state.favorites.push(id);
+        showToast("¡Añadido a Favoritos!", "success");
+    }
+    
+    // ========================================================
+    // LA SOLUCIÓN: Agrega estas líneas al final de esa función
+    // ========================================================
+    if (typeof saveToLocalStorage === "function") saveToLocalStorage();
+    if (typeof updateBalanceAndRpgUi === "function") updateBalanceAndRpgUi();
+    
+    // Esto es lo que hace que la estrella desaparezca o la tarjeta se borre al instante:
+    renderFavoritesList(); 
+    
+    // Si también muestras los canales en la pestaña Directorio, re-renderízalo por si acaso:
+    if (typeof renderDirectoryList === "function") renderDirectoryList();
+}
 
         function registerChannelAccess(id) {
             const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);

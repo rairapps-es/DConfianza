@@ -1592,54 +1592,105 @@ function checkVipInternalRegistration() {
         }
 
         // CONTROL EXCLUSIVO EN "MIS CANALES GUARDADOS"
-        function renderMyOwnedChannelsList() {
-            const container = document.getElementById("my-owned-channels-list");
-            const tableBody = document.getElementById("user-channels-table-body");
-            if (!container || !tableBody) return;
+function renderMyOwnedChannelsList() {
+    const container = document.getElementById("my-owned-channels-list");
+    const tableBody = document.getElementById("user-channels-table-body");
+    if (!container || !tableBody) return;
 
-            const myOwned = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram);
-            
-            // Recalcular contadores del panel superior
-            const total = myOwned.length;
-            const review = myOwned.filter(c => c.status === "En Revisión").length;
-            const published = myOwned.filter(c => c.status === "Publicado").length;
-
-            document.getElementById("panel-cnt-total").innerText = total;
-            document.getElementById("panel-cnt-review").innerText = review;
-            document.getElementById("panel-cnt-published").innerText = published;
-
-            if (myOwned.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No posees canales registrados.</td></tr>`;
-                container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee canales asociados.</div>`;
-                return;
-            }
-
-            // Renderizar la tabla de control operativo con las reglas solicitadas
-            tableBody.innerHTML = myOwned.map(c => {
-                const badgeClass = c.status === "En Revisión" ? "status-review" : "status-published";
-                return `
-                    <tr>
-                        <td><strong>${c.name}</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">${c.user}</span></td>
-                        <td><span class="badge-status-pill ${badgeClass}">${c.status}</span></td>
-                        <td>
-                            <div class="action-row-buttons">
-                                <button class="mini-action-btn" onclick="handleChannelEditAction(${c.id}, '${c.status}')">
-                                    <i data-lucide="edit-3" style="width:11px; height:11px;"></i> Editar
-                                </button>
-                                <button class="mini-action-btn" style="color:#ef4444;" onclick="handleChannelDeleteAction(${c.id}, '${c.name}', '${c.status}')">
-                                    <i data-lucide="trash-2" style="width:11px; height:11px;"></i> Borrar
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-
-            // Renderizar abajo las tarjetas de los canales ya publicados de forma estándar
-            const publishedOwned = myOwned.filter(c => c.status === "Publicado");
-            container.innerHTML = publishedOwned.map(c => buildChannelCardHtml(c)).join('');
-            lucide.createIcons();
+    // 1. VERIFICACIÓN DE SESIÓN / ESTADO CRÍTICO
+    // Si un canal tiene solicitud de baja activa (deleteRequested) pero pasa filtros de verificación o inicio
+    INITIAL_CHANNELS_DATASET.forEach(c => {
+        if (c.telegramUserId === state.user.idTelegram && c.deleteRequested && c.status === "Publicado") {
+            // Aquí puedes definir tu lógica de verificación de sesión: si deseas que cambie de estado inmediatamente
+            // pasamos de "Publicado" al estado "Sin Publicar" y limpiamos la alerta temporal
+            c.status = "Sin Publicar";
+            c.deleteRequested = false; 
         }
+    });
+
+    const myOwned = INITIAL_CHANNELS_DATASET.filter(c => c.telegramUserId === state.user.idTelegram);
+    
+    // Recalcular contadores del panel superior incluyendo el nuevo estado
+    const total = myOwned.length;
+    const review = myOwned.filter(c => c.status === "En Revisión").length;
+    const published = myOwned.filter(c => c.status === "Publicado").length;
+    const unpublished = myOwned.filter(c => c.status === "Sin Publicar").length;
+
+    document.getElementById("panel-cnt-total").innerText = total;
+    document.getElementById("panel-cnt-review").innerText = review;
+    document.getElementById("panel-cnt-published").innerText = published;
+    // Si tienes un elemento visual para "Sin Publicar" puedes actualizarlo aquí, ej:
+    // document.getElementById("panel-cnt-unpublished").innerText = unpublished;
+
+    if (myOwned.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No posees canales registrados.</td></tr>`;
+        container.innerHTML = `<div class="empty-state-notice">Tu Telegram ID (${state.user.idTelegram}) no posee canales asociados.</div>`;
+        return;
+    }
+
+    // Renderizar la tabla de control operativo con las reglas solicitadas
+    tableBody.innerHTML = myOwned.map(c => {
+        let badgeClass = "status-review";
+        if (c.status === "Publicado") badgeClass = "status-published";
+        if (c.status === "Sin Publicar") badgeClass = "status-free"; // O una clase gris que manejes
+
+        // Condicional para mostrar el botón de "Volver a enviar" si está sin publicar
+        const reSendButton = c.status === "Sin Publicar" ? `
+            <button class="mini-action-btn" style="color:var(--telegram-blue);" onclick="handleReSendChannel(${c.id})">
+                <i data-lucide="send" style="width:11px; height:11px;"></i> Re-Enviar
+            </button>
+        ` : '';
+
+        return `
+            <tr>
+                <td><strong>${c.name}</strong><br><span style="font-size:0.7rem; color:var(--text-muted);">${c.user}</span></td>
+                <td><span class="badge-status-pill ${badgeClass}">${c.status}</span></td>
+                <td>
+                    <div class="action-row-buttons">
+                        <button class="mini-action-btn" onclick="handleChannelEditAction(${c.id}, '${c.status}')">
+                            <i data-lucide="edit-3" style="width:11px; height:11px;"></i> Editar
+                        </button>
+                        ${reSendButton}
+                        <button class="mini-action-btn" style="color:#ef4444;" onclick="handleChannelDeleteAction(${c.id}, '${c.name}', '${c.status}')">
+                            <i data-lucide="trash-2" style="width:11px; height:11px;"></i> Borrar
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    // Renderizar abajo las tarjetas de los canales
+    container.innerHTML = myOwned.map(c => {
+        // Si el usuario envió la solicitud de borrado pero sigue en la vista, inyectamos el mensaje arriba de la tarjeta
+        if (c.deleteRequested) {
+            return `
+                <div class="delete-warning-box" style="background:#fffbeb; border:1px solid #fef3c7; color:#b45309; padding:10px; border-radius:8px; margin-bottom:8px; font-size:0.8rem; font-weight:bold;">
+                    ⚠️ Tu canal dejará de aparecer en el directo de canales públicamente en las próximas horas.
+                </div>
+                ${buildChannelCardHtml(c)}
+            `;
+        }
+        // Solo mostramos de forma estándar en el contenedor público si sigue "Publicado"
+        if (c.status === "Publicado") {
+            return buildChannelCardHtml(c);
+        }
+        return '';
+    }).join('');
+
+    lucide.createIcons();
+}
+
+// FUNCIÓN PARA EL BOTÓN DE VOLVER A ENVIAR EL CANAL
+function handleReSendChannel(id) {
+    const channel = INITIAL_CHANNELS_DATASET.find(c => c.id === id);
+    if (channel) {
+        channel.status = "En Revisión";
+        showToast("Canal enviado a revisión nuevamente", "success");
+        renderMyOwnedChannelsList();
+        if (typeof renderDirectoryList === "function") renderDirectoryList();
+    }
+}
 
         // LÓGICAS INTERNAS DE SEGURIDAD OPERATIVA PARA CANALES
         function openAddChannelModal() {

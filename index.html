@@ -2357,41 +2357,53 @@ function sendOrderToTelegram() {
         showToast("Pedido enviado a soporte privado", "success");
     }, 1500);
 } 
-        // OBJETO DE ALMACENAMIENTO TEMPORAL DE DATOS DEL CANAL ACTIVO A COMPARTIR
+        // OBJETO DE ALMACENAMIENTO TEMPORAL
 let activeShareData = { id: null, name: "", user: "" };
 
 function openShareModal(id, name, user) {
-    activeShareData = { id, name, user };
+    console.log("-> Ejecutando openShareModal para el ID:", id); // Control interno
     
+    // Guardamos los datos de forma segura
+    activeShareData.id = id;
+    activeShareData.name = name || "Canal Recomendado";
+    activeShareData.user = user || "@Telegram";
+    
+    // Localizamos los elementos en el documento
     const overlay = document.getElementById("share-modal-overlay");
     const subtitle = document.getElementById("share-modal-subtitle");
     
-    if (overlay && subtitle) {
-        subtitle.innerText = `${name} (${user})`;
-        overlay.style.display = "flex";
+    if (!overlay) {
+        console.error("❌ ERROR CRÍTICO: No se encontró el elemento con ID 'share-modal-overlay' en tu HTML.");
+        alert("Error: El contenedor del diseño de compartir no está colocado en el HTML.");
+        return;
     }
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    // Forzamos el renderizado del texto y la visualización directa en pantalla
+    if (subtitle) {
+        subtitle.innerText = `${activeShareData.name} (${activeShareData.user})`;
+    }
+    
+    // Cambiamos el estilo a flex de forma prioritaria usando JS nativo
+    overlay.style.setProperty("display", "flex", "important");
+    console.log("-> ¡Modal abierto con éxito!");
 }
 
 function closeShareModal() {
     const overlay = document.getElementById("share-modal-overlay");
-    if (overlay) overlay.style.display = "none";
+    if (overlay) {
+        overlay.style.setProperty("display", "none", "important");
+    }
 }
 
 function executeShareAction(network) {
-    // 1. Generamos la URL de la Mini App. Si estás local o en producción se ajusta de forma automatizada
     const webAppUrl = window.location.origin + window.location.pathname;
-    
-    // 2. Construimos el texto predefinido llamativo
     const messageText = `¡Mira este canal de Telegram en el Directorio! 🚀\n\n• Canal: ${activeShareData.name}\n• Alias: ${activeShareData.user}\n\nEncuentra más canales recomendados aquí 👇`;
     
     const textEncoded = encodeURIComponent(messageText);
     const urlEncoded = encodeURIComponent(webAppUrl);
 
-    // 3. Matriz de enrutadores según red elegida
     switch (network) {
         case 'telegram':
-            // Envío preferencial optimizado para la aplicación móvil o de escritorio
             window.open(`https://t.me/share/url?url=${urlEncoded}&text=${textEncoded}`, '_blank');
             break;
         case 'whatsapp':
@@ -2410,7 +2422,6 @@ function executeShareAction(network) {
             window.open(`mailto:?subject=${encodeURIComponent("Recomendación de Canal: " + activeShareData.name)}&body=${encodeURIComponent(messageText + "\n\n" + webAppUrl)}`, '_self');
             break;
         case 'copy':
-            // API Clipboard nativa moderna con fallback reactivo de seguridad
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(webAppUrl).then(() => {
                     showToast("¡Enlace copiado al portapapeles!", "success");
@@ -2418,7 +2429,6 @@ function executeShareAction(network) {
                     showToast("Error al copiar el enlace", "error");
                 });
             } else {
-                // Alternativa antigua para compatibilidad completa en navegadores de WebView limitados
                 const textArea = document.createElement("textarea");
                 textArea.value = webAppUrl;
                 document.body.appendChild(textArea);
@@ -2434,7 +2444,6 @@ function executeShareAction(network) {
             break;
     }
 
-    // Cerramos el panel flotante tras la redirección (salvo si es copiar enlace para que el usuario aprecie el toast)
     if (network !== 'copy') {
         closeShareModal();
     }

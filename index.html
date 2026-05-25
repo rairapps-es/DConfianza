@@ -1923,24 +1923,7 @@ function toggleFavoriteChannel(id, event) {
         function closeDeleteModal() { document.getElementById("modal-delete-request").style.display = "none"; }
         function openLogsModal() { document.getElementById("modal-logs-view").style.display = "flex"; }
         function closeLogsModal() { document.getElementById("modal-logs-view").style.display = "none"; }
-
-        function sendDeleteRequestToTelegram() {
-            const chId = document.getElementById("delete-channel-id").value;
-            const chName = document.getElementById("delete-channel-name").value;
-            const reason = document.getElementById("delete-channel-reason").value.trim();
-
-            if(!reason) {
-                showToast("Por favor ingresa una razón válida", "error");
-                return;
-            }
-
-            const messagePayload = `🚨 SOLICITUD DE BAJA DE CANAL 🚨\n\n• Canal ID: ${chId}\n• Nombre: ${chName}\n• Solicitante: ${state.user.username}\n• Motivo: ${reason}`;
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
-                window.Telegram.WebApp.sendData(messagePayload);
-            }
-            closeDeleteModal();
-            showToast("Solicitud enviada a soporte privado", "gold");
-        }
+        
     </script>
 </body>
 </html>

@@ -408,6 +408,89 @@
         .action-row-buttons { display: flex; gap: 6px; margin-top: 4px; }
         .mini-action-btn { background: var(--bg-tarjeta); border: 1px solid var(--border-color); color: var(--text-main); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.72rem; display: flex; align-items: center; gap: 4px; transition: var(--transition-smooth); }
         .mini-action-btn:hover { background: var(--bg-tarjeta-hover); }
+    /* CAPA OSCURA DE FONDO */
+.premium-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+/* TARJETA ANIMADA FLOTANTE */
+.premium-modal-card {
+    background: #1c2434; /* Se adapta a la estética oscura de Telegram */
+    border: 2px solid #eab308; /* Borde dorado VIP */
+    border-radius: 16px;
+    width: 100%;
+    max-width: 340px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 30px rgba(234, 179, 8, 0.2);
+    
+    /* Animación de entrada llamativa con efecto elástico */
+    animation: popupElastic 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popupElastic {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* BOTÓN DE CIERRE */
+.close-premium-btn {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    color: #a0aec0;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.close-premium-btn:hover { color: #fff; }
+
+/* ENCABEZADO */
+.premium-modal-header { text-align: center; margin-bottom: 15px; }
+.premium-badge-icon { font-size: 2rem; display: block; animation: pulseGold 2s infinite; }
+#benefits-box-title { color: #eab308; font-size: 1.1rem; font-weight: bold; margin-top: 5px; }
+
+@keyframes pulseGold {
+    0% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(234,179,8,0.4)); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 12px rgba(234,179,8,0.8)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 2px rgba(234,179,8,0.4)); }
+}
+
+/* ELEMENTOS DE BENEFICIOS */
+.benefit-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.85rem; color: #edf2f7; }
+
+/* FORMULARIO Y SELECT */
+.premium-modal-footer { margin-top: 15px; border-top: 1px solid #2d3748; padding-top: 15px; }
+.form-group-premium label { display: block; font-size: 0.7rem; color: #a0aec0; margin-bottom: 4px; }
+.form-control-premium { width: 100%; background: #2d3748; border: 1px solid #4a5568; color: #fff; padding: 8px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 12px; }
+
+/* BOTÓN PREMIUM CON SPINNER INTERNO */
+.btn-subscribe-trigger-premium { width: 100%; background: #22c55e; border: none; color: white; padding: 10px; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; }
+.btn-subscribe-trigger-premium:disabled { background: #166534; cursor: not-allowed; }
+
+/* SPINNER CSS NATIVO */
+.loading-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #ffffff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+}
+@keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -444,26 +527,36 @@
                     <i data-lucide="award" style="width:14px; height:14px;"></i> <span id="tag-label-text">GRATIS</span>
                 </div>
                 
-                <div id="hidden-benefits-box" class="hidden-benefits-panel">
-                    <h5 style="color: var(--vip-gold); margin-bottom: 8px; font-size: 0.85rem;" id="benefits-box-title">Beneficios Premium:</h5>
-                    <div class="benefit-item">✨ <span>Pago único para siempre</span></div>
-                    <div class="benefit-item">🚀 <span>Publica hasta 3 canales</span></div>
-                    <div class="benefit-item">🗂️ <span>Tus canales en 3 categorías</span></div>
-                    <div class="benefit-item">⭐ <span>Destacado prioritario en el directorio</span></div>
-                    
-                    <div id="premium-order-form" style="margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-                        <div class="form-group" style="margin-bottom: 8px;">
-                            <label style="font-size: 0.65rem;">Método de Pago</label>
-                            <select id="pay-method" class="form-control" style="padding: 6px; font-size: 0.8rem;">
-                                <option value="PayPal">PayPal</option>
-                                <option value="USDT">USDT (Crypto)</option>
-                            </select>
-                        </div>
-                        <button class="btn-subscribe-trigger" style="padding: 6px; font-size: 0.8rem; background: var(--success-green);" onclick="sendOrderToTelegram()">
-                            Hacer Pedido 🛒
-                        </button>
-                    </div>
-                </div>
+                <div id="hidden-benefits-box" class="premium-modal-overlay" style="display: none;">
+    <div class="premium-modal-card">
+        <button class="close-premium-btn" onclick="toggleBenefitsSection()">&times;</button>
+        
+        <div class="premium-modal-header">
+            <span class="premium-badge-icon">👑</span>
+            <h5 id="benefits-box-title">Beneficios Premium</h5>
+        </div>
+
+        <div class="premium-modal-body">
+            <div class="benefit-item">✨ <span>Pago único para siempre</span></div>
+            <div class="benefit-item">🚀 <span>Publica hasta 3 canales</span></div>
+            <div class="benefit-item">🗂️ <span>Tus canales en 3 categorías</span></div>
+            <div class="benefit-item">⭐ <span>Destacado prioritario en el directorio</span></div>
+        </div>
+        
+        <div id="premium-order-form" class="premium-modal-footer">
+            <div class="form-group-premium">
+                <label>Método de Pago</label>
+                <select id="pay-method" class="form-control-premium">
+                    <option value="PayPal">PayPal</option>
+                    <option value="USDT">USDT (Crypto)</option>
+                </select>
+            </div>
+            <button id="btn-submit-order" class="btn-subscribe-trigger-premium" onclick="sendOrderToTelegram()">
+                <span id="btn-text-content">Hacer Pedido 🛒</span>
+            </button>
+        </div>
+    </div>
+</div>
 
                 <span id="drawer-range" style="color: var(--vip-gold); font-size: 0.85rem; font-weight: 800; margin-top: 6px;">[ Rango ]</span>
             </div>
@@ -2044,6 +2137,81 @@ function toggleFavoriteChannel(id, event) {
     closeDeleteModal();
     showToast("Abriendo soporte privado...", "success");
 }
+       // CONTROLAR APERTURA Y CIERRE DEL MODAL CON DISPLAY FLEX
+function toggleBenefitsSection() {
+    const panel = document.getElementById("hidden-benefits-box");
+    if (!panel) return;
+    
+    if (panel.style.display === "flex") {
+        panel.style.display = "none";
+    } else {
+        panel.style.display = "flex";
+        
+        const title = document.getElementById("benefits-box-title");
+        const form = document.getElementById("premium-order-form");
+        
+        if (state.user.isVipMember) {
+            title.innerText = "Tus Beneficios VIP Activos:";
+            form.style.display = "none";
+        } else {
+            title.innerText = "Beneficios de la Suscripción VIP:";
+            form.style.display = "block";
+        }
+    }
+}
+
+// PROCESAR PEDIDO: CARGANDO -> CONFETI -> TELEGRAM
+function sendOrderToTelegram() {
+    const method = document.getElementById("pay-method").value;
+    const btn = document.getElementById("btn-submit-order");
+    const btnText = document.getElementById("btn-text-content");
+    
+    if(!btn || !btnText) return;
+
+    // 1. EXTRAER DATOS DEL USUARIO Y DE SUS CANALES ASOCIADOS
+    const userId = state.user.idTelegram || "No Detectado";
+    const username = state.user.username || "@Sin_Alias";
+    
+    // Buscamos si el usuario posee algún canal registrado en el dataset
+    const myChannel = INITIAL_CHANNELS_DATASET.find(c => c.telegramUserId === state.user.idTelegram);
+    const channelId = myChannel ? myChannel.id : "Ninguno Registrado";
+    const channelUser = myChannel ? myChannel.user : "@Sin_Asignar";
+
+    // 2. ACTIVAR EL ESTADO DE CARGA EN EL BOTÓN
+    btn.disabled = true;
+    btnText.innerHTML = `<span class="loading-spinner"></span> Procesando Pedido...`;
+
+    // 3. RETARDO CONTROLADO PARA EL EFECTO VISUAL (1.5 Segundos)
+    setTimeout(() => {
+        
+        // Ejecutar explosión de confeti original de tu app
+        if (typeof triggerConfettiExplosion === "function") {
+            triggerConfettiExplosion();
+        }
+
+        // Construcción del mensaje predefinido con los datos limpios extraídos
+        const msg = `🛒 NUEVO PEDIDO VIP 🛒\n\n• Usuario: ${username}\n• ID Telegram: ${userId}\n• Canal ID Ref: ${channelId}\n• Alias Canal: ${channelUser}\n• Método Elegido: ${method}\n• Estado: Esperando Pago`;
+        const textEncoded = encodeURIComponent(msg);
+        
+        // CONFIGURACIÓN DE DESTINO: Modifica con tu alias real de soporte
+        const SOPORTE_USER = "TuUsuarioO_Bot"; 
+        const telegramUrl = `https://t.me/${SOPORTE_USER}?text=${textEncoded}`;
+
+        // Abrir chat privado de forma nativa en Telegram
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+            window.Telegram.WebApp.openTelegramLink(telegramUrl);
+        } else {
+            window.open(telegramUrl, "_blank");
+        }
+
+        // Restaurar estado del botón y cerrar la ventana flotante
+        btn.disabled = false;
+        btnText.innerHTML = `Hacer Pedido 🛒`;
+        toggleBenefitsSection();
+        
+        showToast("Pedido enviado a soporte privado", "success");
+    }, 1500);
+} 
     </script>
 </body>
 </html>

@@ -71,7 +71,48 @@
         ::-webkit-scrollbar-track { background: var(--bg-principal); }
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
-        .app-header {
+        /* Tema Matrix */
+body.vip-theme-matrix {
+    --bg-main: #000a00;
+    --bg-card: #001500;
+    --text-main: #00ff00;
+    --text-muted: #008800;
+    background-color: #000a00 !important;
+}
+
+/* Tema Amatista (Morado Eléctrico) */
+body.vip-theme-amethyst {
+    --bg-main: #0b0014;
+    --bg-card: #160226;
+    --text-main: #f3e8ff;
+    --text-muted: #a78bfa;
+    background-color: #0b0014 !important;
+}/* Animación del Aura de Fuego Dorado para el Avatar del usuario VIP */
+.vip-aura-active {
+    position: relative;
+    border: 2px solid #ffd700 !important;
+    background: linear-gradient(135px, #2a2200 0%, #1c273a 100%) !important;
+    animation: vipGlowPulse 2.5s infinite alternate !important;
+    transition: all 0.3s ease;
+}
+
+/* Efecto hover extra si el VIP pasa el dedo por encima del botón */
+.vip-aura-active:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 25px #ffd700, inset 0 0 15px #ffaa00 !important;
+}
+
+/* El motor de la animación de destellos */
+@keyframes vipGlowPulse {
+    0% {
+        box-shadow: 0 0 6px rgba(255, 215, 0, 0.5), inset 0 0 4px rgba(255, 215, 0, 0.3);
+        filter: brightness(1);
+    }
+    100% {
+        box-shadow: 0 0 20px #ff8c00, inset 0 0 10px #ffd700 !important;
+        filter: brightness(1.2);
+    }
+}       .app-header {
             position: fixed; top: 0; left: 0; width: 100%; height: 65px;
             background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border); display: flex;
@@ -705,7 +746,12 @@
             <div class="switch-label">Modo Admin</div>
             <div id="role-toggle" class="toggle-btn" onclick="toggleAdminRole()"></div>
         </div>
-
+<div class="vip-theme-selector" style="display: flex; gap: 10px; padding: 10px; justify-content: center;">
+    <button onclick="applyGlobalVipTheme('default')" style="background:#182232; width:35px; height:35px; border-radius:50%; border:2px solid #fff;"></button>
+    <button onclick="applyGlobalVipTheme('matrix')" style="background:#001a00; width:35px; height:35px; border-radius:50%; border:2px solid #00ff00;"></button>
+    <button onclick="applyGlobalVipTheme('amethyst')" style="background:#1a002c; width:35px; height:35px; border-radius:50%; border:2px solid #9b51e0;"></button>
+    <button onclick="applyGlobalVipTheme('sunset')" style="background:#2c0000; width:35px; height:35px; border-radius:50%; border:2px solid #ff4500;"></button>
+</div>
         <div class="status-counters">
             <div class="counter-card" onclick="toggleProfileDrawer(); switchView('directory')">
                 <span id="cnt-channels">0</span>
@@ -1685,30 +1731,61 @@ function checkVipInternalRegistration() {
         }
 
         function updateBalanceAndRpgUi() {
-            document.getElementById("profile-balance").innerText = state.user.balance;
-            document.getElementById("drawer-range").innerText = `[ Rango RPG Nivel ${state.user.range} ]`;
-            document.getElementById("cnt-favs").innerText = state.favorites.length;
-            document.getElementById("rpg-current-pts").innerText = state.user.pointsProgress;
-            
-            const percentage = Math.min(100, state.user.pointsProgress);
-            document.getElementById("rpg-bar-fill").style.width = `${percentage}%`;
-            
-            const badge = document.getElementById("rpg-status-badge");
-            const lockText = document.getElementById("drawer-locked-text");
-            const lockIcon = document.getElementById("drawer-locked-icon");
-            const drawerBtn = document.getElementById("epic-avatar-link");
+    // 1. Actualización básica de marcadores y textos
+    document.getElementById("profile-balance").innerText = state.user.balance;
+    document.getElementById("drawer-range").innerText = `[ Rango RPG Nivel ${state.user.range} ]`;
+    document.getElementById("cnt-favs").innerText = state.favorites.length;
+    document.getElementById("rpg-current-pts").innerText = state.user.pointsProgress;
+    
+    // Calcular el porcentaje de la barra de nivel
+    const percentage = Math.min(100, state.user.pointsProgress);
+    document.getElementById("rpg-bar-fill").style.width = `${percentage}%`;
+    
+    // Elementos de control del Candado / Avatar
+    const badge = document.getElementById("rpg-status-badge");
+    const lockText = document.getElementById("drawer-locked-text");
+    const lockIcon = document.getElementById("drawer-locked-icon");
+    const drawerBtn = document.getElementById("epic-avatar-link");
 
-            if (state.user.range >= 5) {
-                badge.innerText = "Nivel Máximo (Rango 5)";
-                badge.style.color = "var(--vip-gold)";
-                lockText.innerText = "✨ Taller de Avatar IA (Desbloqueado)";
-                drawerBtn.classList.remove("locked");
-                if(lockIcon) lockIcon.style.display = "none";
-            } else {
-                badge.innerText = `Rango ${state.user.range}`;
-                badge.style.color = "var(--telegram-blue)";
-            }
+    // ====================================================================
+    // INTERSECCIÓN PREMIUM / VIP: CONTROL DE EFECTOS Y DESBLOQUEOS
+    // ====================================================================
+    if (drawerBtn) {
+        if (state.user.isVipMember) {
+            // Añadimos el aura de brillo neón dorada al botón del avatar
+            drawerBtn.classList.add("vip-aura-active");
+        } else {
+            drawerBtn.classList.remove("vip-aura-active");
         }
+    }
+
+    // Lógica de desbloqueo: Se abre si eres Rango >= 5 O si eres Miembro VIP directo ✨
+    if (state.user.range >= 5 || state.user.isVipMember) {
+        
+        if (state.user.isVipMember && state.user.range < 5) {
+            // Mensaje exclusivo para el usuario VIP que aún no tiene el nivel pero ya disfruta del beneficio
+            badge.innerText = "Acceso Premium Concedido";
+            badge.style.color = "var(--vip-gold)";
+            if (lockText) lockText.innerText = "👑 Taller de Avatar IA (Beneficio VIP)";
+        } else {
+            // Mensaje normal de nivel máximo alcanzado por juego
+            badge.innerText = "Nivel Máximo (Rango 5)";
+            badge.style.color = "var(--vip-gold)";
+            if (lockText) lockText.innerText = "✨ Taller de Avatar IA (Desbloqueado)";
+        }
+
+        // Quitamos las restricciones visuales y abrimos el botón
+        if (drawerBtn) drawerBtn.classList.remove("locked");
+        if (lockIcon) lockIcon.style.display = "none";
+
+    } else {
+        // Estado bloqueado normal para usuarios estándar que no tienen rango suficiente
+        badge.innerText = `Rango ${state.user.range}`;
+        badge.style.color = "var(--telegram-blue)";
+        if (drawerBtn) drawerBtn.classList.add("locked");
+        if (lockIcon) lockIcon.style.display = "inline-block"; // O "block" según tu maquetación
+    }
+}
 
         function renderVipSlider() {
             const container = document.getElementById("vip-slider");
@@ -2512,6 +2589,26 @@ function executeShareAction(network) {
     if (network !== 'copy') {
         closeShareModal();
     }
+}
+        function applyGlobalVipTheme(themeName) {
+    // Protección: Si no es VIP, no hace nada
+    if (!state.user.isVipMember) {
+        showToast("⚠️ Esta función requiere Membresía Premium", "error");
+        return;
+    }
+
+    const body = document.body;
+    // Eliminamos temas previos
+    body.classList.remove('vip-theme-matrix', 'vip-theme-amethyst', 'vip-theme-sunset');
+
+    if (themeName !== 'default') {
+        body.classList.add(`vip-theme-${themeName}`);
+    }
+    
+    // Guardamos la configuración del usuario
+    state.user.activeGlobalTheme = themeName;
+    if (typeof saveToLocalStorage === "function") saveToLocalStorage();
+    showToast(`¡Tema ${themeName.toUpperCase()} aplicado! ✨`, "success");
 }
     </script>
     

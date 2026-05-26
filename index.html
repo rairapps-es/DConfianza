@@ -2073,51 +2073,38 @@ function handleReSendChannel(id) {
 }
 
         function renderFavoritesList() {
-    // 1. Localizamos el contenedor de favoritos en tu HTML
-    const containerFavoritos = document.getElementById("favorites-list-container") || document.getElementById("favorites-container");
+    // 1. Localizamos tu contenedor real en el HTML
+    const containerFavoritos = document.getElementById("favorites-list");
     
     if (!containerFavoritos) {
-        alert("⚠️ Error de maquetación: No existe el contenedor 'favorites-list-container' o 'favorites-container' en tu archivo HTML.");
+        console.error("❌ ERROR: No se encontró el contenedor id='favorites-list' en el HTML.");
         return;
     }
 
-    // Limpiamos el contenedor
+    // Limpiamos el contenedor para evitar duplicados
     containerFavoritos.innerHTML = "";
 
     // 2. Si el usuario no tiene favoritos, mostramos el mensaje de lista vacía
     if (!state.favorites || state.favorites.length === 0) {
-        containerFavoritos.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">No tienes canales guardados en favoritos.</p>`;
+        containerFavoritos.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; grid-column: 1 / -1;">No tienes canales guardados en favoritos.</p>`;
         return;
     }
 
-    console.log("IDs guardados en tus favoritos actualmente:", state.favorites);
-    console.log("Total de canales disponibles en tu DATASET:", INITIAL_CHANNELS_DATASET.length);
-
-    let tarjetasPintadas = 0;
-
     // 3. Recorremos los IDs de los favoritos guardados
     state.favorites.forEach(favId => {
-        // Convertimos ambos IDs a String (.toString()) para romper la barrera de texto/número
+        // Buscamos el canal en tu dataset (INITIAL_CHANNELS_DATASET) asegurando que coincidan como texto
         const channelObj = INITIAL_CHANNELS_DATASET.find(c => {
             if (!c.id) return false;
             return c.id.toString().trim() === favId.toString().trim();
         });
         
         if (channelObj) {
-            // Pasamos 'true' para activar el prefijo 'fav-'
+            // Pasamos 'true' para activar el prefijo 'fav-' y que el acordeón sea independiente
             containerFavoritos.innerHTML += buildChannelCardHtml(channelObj, true);
-            tarjetasPintadas++;
-        } else {
-            console.error(`❌ El ID ${favId} está en tus favoritos, pero no existe ningún canal con ese ID dentro de tu INITIAL_CHANNELS_DATASET.`);
         }
     });
 
-    // 4. Si el array tenía IDs pero no se pintó nada, notificamos la causa exacta
-    if (tarjetasPintadas === 0 && state.favorites.length > 0) {
-        alert(`Alerta: Tienes ${state.favorites.length} canales guardados, pero ninguno coincide con los IDs de tu INITIAL_CHANNELS_DATASET. Revisa si los IDs de tus canales empiezan desde 1 o si son idénticos.`);
-    }
-
-    // 5. Forzamos a Lucide a renderizar las estrellas
+    // 4. Forzamos a Lucide a renderizar las estrellas e iconos en la nueva lista
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }

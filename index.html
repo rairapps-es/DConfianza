@@ -2153,13 +2153,22 @@ function handleReSendChannel(id) {
         function collapseHistoryView() { showFullHistory = false; renderHistoryList(); }
 
         function toggleAccordionEffect(id, prefix = '') {
-    // Busca id="accordion-123" o id="accordion-fav-123"
-    const accordion = document.getElementById(`accordion-${prefix}${id}`);
+    // Forzamos la búsqueda exacta combinando el prefijo dinámico
+    const accordionId = `accordion-${prefix}${id}`;
+    const accordion = document.getElementById(accordionId);
     
     if (!accordion) {
-        console.error(`❌ No se encontró el acordeón con ID: accordion-${prefix}${id}`);
+        console.error(`❌ No se encontró el acordeón con ID: ${accordionId}`);
         return;
     }
+
+    // Opcional: Cierra todos los demás acordeones abiertos de la misma sección para mantener la interfaz limpia
+    document.querySelectorAll(`.card-accordion-content`).forEach(el => {
+        if (el.id !== accordionId && el.style.maxHeight && el.style.maxHeight !== "0px") {
+            el.style.maxHeight = "0px";
+            el.classList.remove('open-accordion');
+        }
+    });
 
     // Verificamos si ya está abierto calculando su altura actual
     const isOpen = accordion.style.maxHeight && accordion.style.maxHeight !== "0px";
@@ -2172,6 +2181,14 @@ function handleReSendChannel(id) {
         // Si está cerrado, calculamos su altura real exacta en píxeles y la forzamos
         accordion.style.maxHeight = accordion.scrollHeight + "px";
         accordion.classList.add('open-accordion');
+        
+        // 🔥 TRUCO DE CONTEXTO: Si estamos dentro de la ruleta, expandimos el contenedor padre 
+        // para asegurarnos de que el navegador no esconda la tarjeta recién creada
+        const rouletteDisplay = document.getElementById("roulette-display");
+        if (prefix === 'roulette-' && rouletteDisplay) {
+            rouletteDisplay.style.height = "auto";
+            rouletteDisplay.style.overflow = "visible";
+        }
     }
 }
         // BUSCA EN TU CÓDIGO la función que se ejecuta al pulsar la estrella. 

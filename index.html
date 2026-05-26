@@ -631,7 +631,7 @@
     </div>
 
     <header class="app-header">
-        <div class="header-logo">CANALES TOP</div>
+        <div class="header-logo">LISTA GOLDEN 🚀</div>
         <div class="header-center-icon" onclick="switchView('shop')">
             <i data-lucide="shopping-bag"></i>
         </div>
@@ -688,7 +688,7 @@
 
         <div class="rpg-progress-container">
             <div class="rpg-labels">
-                <span>Progreso RPG: <strong id="rpg-current-pts">0</strong>/100 Pts</span>
+                <span>Progreso: <strong id="rpg-current-pts">0</strong>/100 Pts</span>
                 <span id="rpg-status-badge">Nivel Inicial</span>
             </div>
             <div style="width:100%; height:6px; background:var(--border-color); border-radius:10px; overflow:hidden;">
@@ -702,7 +702,7 @@
         </div>
 
         <div class="role-switch-container">
-            <div class="switch-label">Modo Vista Administrador</div>
+            <div class="switch-label">Modo Admin</div>
             <div id="role-toggle" class="toggle-btn" onclick="toggleAdminRole()"></div>
         </div>
 
@@ -723,13 +723,13 @@
 
         <div class="admin-only" style="margin-bottom: 12px;">
             <button class="drawer-btn" style="border-color: var(--telegram-blue); background: rgba(36,161,222,0.05);" onclick="toggleProfileDrawer(); switchView('my-channels');">
-                <span>🗂️ Ver Mis Canales Creados (<strong id="cnt-my-owned-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
+                <span>🗂️ Mis Canales (<strong id="cnt-my-owned-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
             </button>
         </div>
 
         <div class="drawer-links">
             <button class="drawer-btn" onclick="toggleProfileDrawer(); switchView('shop')">
-                <span>🛍️ Tienda de Recompensas e IA</span> <i data-lucide="chevron-right"></i>
+                <span>🛍️ Tienda de Recompensas</span> <i data-lucide="chevron-right"></i>
             </button>
             <button class="drawer-btn" onclick="toggleProfileDrawer(); switchView('energy')">
                 <span>⚡ Cómo Ganar Puntos</span> <i data-lucide="chevron-right"></i>
@@ -751,7 +751,7 @@
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="color:var(--success-green); background:rgba(46,204,113,0.1);"><i data-lucide="users"></i></div>
-                <div class="stat-info"><h4>1,240</h4><p>Usuarios Online</p></div>
+                <div class="stat-info"><h4>79</h4><p>Usuarios Online</p></div>
             </div>
         </div>
 
@@ -921,7 +921,7 @@
 
     <main id="view-energy" class="app-view">
         <h2 class="view-title"><i data-lucide="zap" style="color:var(--vip-gold)"></i> Tabla Informativa de Energía</h2>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Acumula puntos de energía para subir tu nivel RPG hasta el Rango 5 y desbloquear la personalización avanzada por IA.</p>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Acumula puntos de energía para subir tu nivel hasta el Rango 5 y desbloquear la personalización avanzada por IA.</p>
         
         <table class="energy-table">
             <thead>
@@ -1035,11 +1035,11 @@
         // DATASET EXTENDIDO CON SOPORTE PARA ESTADOS OPERATIVOS
         const INITIAL_CHANNELS_DATASET = [
             { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Publicado", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 },
-            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "En Revisión", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
-            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Publicado", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 11112222 },
+            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Publicado", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
+            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Publicado", isVip: false, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 11112222 },
             { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Publicado", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, telegramUserId: 33334444 },
-            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Publicado", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, telegramUserId: 99999999 },
-            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "En Revisión", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 55556666 },
+            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Publicado", isVip: false, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, telegramUserId: 99999999 },
+            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Publicado", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 55556666 },
             { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Publicado", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 1320417199 }
         ];
 
@@ -1158,7 +1158,7 @@
         // SISTEMA AUTOMÁTICO DE VERIFICACIÓN PREMIUM REQUERIDO
 function checkVipInternalRegistration() {
     // Lista de IDs de Telegram autorizados como VIP
-    const vipTelegramIds = [12345678, 87654321, 55442211]; 
+    const vipTelegramIds = [1320417199, 87654321, 55442211]; 
     
     // Si el id del usuario coincide con alguno de la lista, se activa VIP
     if(vipTelegramIds.includes(state.user.idTelegram)) {

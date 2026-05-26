@@ -180,6 +180,27 @@ body.vip-theme-amethyst {
     box-shadow: 0 0 25px #ffd700, inset 0 0 15px #ffaa00 !important;
 }
 
+        /* Animación de pulso eléctrico para la fase de escaneo rápido */
+@keyframes pulseLoading {
+    0% {
+        transform: scale(0.96);
+        opacity: 0.7;
+        filter: drop-shadow(0 0 2px var(--vip-gold));
+    }
+    100% {
+        transform: scale(1.02);
+        opacity: 1;
+        filter: drop-shadow(0 0 10px var(--vip-gold));
+        color: #fff;
+    }
+}
+
+/* Evitamos que el botón desactivado parpadee o confunda mientras carga */
+button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+}
 /* El motor de la animación de destellos */
 @keyframes vipGlowPulse {
     0% {
@@ -2430,49 +2451,78 @@ function toggleFavoriteChannel(id, event) {
 }
 
         function spinRoulette() {
-    // 1. Verificación de saldo de energía
+    // 1. Verificación de saldo de energía básica
     if (state.user.balance < 5) {
         showToast("Saldo de energía insuficiente", "error");
         return;
     }
     
-    // 2. Descontamos la energía y elegimos el canal aleatorio
+    // 2. Descontamos los 5 puntos de energía al instante
     state.user.balance -= 5;
-    const randomChannel = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
-    
-    // 3. Localizamos el contenedor de la pantalla de la ruleta
-    const display = document.getElementById("roulette-display");
-    
-    if (!display) {
-        console.error("❌ No se encontró el contenedor con ID 'roulette-display'");
-        return;
-    }
+    updateBalanceAndRpgUi();
 
-    // Limpiamos lo que hubiera antes
-    display.innerHTML = "";
+    const display = document.getElementById("roulette-display");
+    if (!display) return;
+
+    // Desactivamos temporalmente el botón de la ruleta para evitar que el usuario pulse mil veces durante la carga
+    const spinBtn = document.querySelector(".btn-spin-roulette") || document.getElementById("btn-spin");
+    if (spinBtn) spinBtn.disabled = true;
+
+    // 3. FASE DE SUSPENSE: Bucle de simulación veloz (Efecto de carga/escaneo)
+    let totalTicks = 0;
+    const maxTicks = 20; // Cuántos cambios de canal hará antes de frenar (20 ticks x 100ms = 2 segundos de espera)
     
-    // 4. GENERAMOS LA TARJETA COMPLETA
-    // Usamos un prefijo único 'roulette-' pasándole 'true' de forma trucada (o adaptada)
-    // Para no alterar tu buildChannelCardHtml, le inyectamos manualmente el prefijo 'roulette-' en el truco:
-    const cardHtml = buildChannelCardHtml(randomChannel, false)
-        .replace('id="accordion-', 'id="accordion-roulette-')
-        .replace('toggleAccordionEffect(', 'toggleAccordionEffect(')
-        .replace("toggleAccordionEffect(${randomChannel.id}, '')", `toggleAccordionEffect(${randomChannel.id}, 'roulette-')`);
-    
-    // Alternativa limpia si actualizaste toggleAccordionEffect antes: 
-    // Como buildChannelCardHtml acepta un booleano (isFavoritePage), si le pasamos una cadena personalizada como 'roulette-', 
-    // tu código anterior generará 'id="accordion-roulette-123"'. Vamos a hacerlo de la forma más segura posible:
-    
-    // Inyectamos el HTML de la tarjeta directamente dentro del display de la ruleta
-    display.innerHTML = buildChannelCardHtml(randomChannel, false); 
-    
-    // Ajuste quirúrgico rápido para que el acordeón de la ruleta no choque con la pestaña principal:
-    const mainRow = display.querySelector('.card-main-row');
-    const accordionDiv = display.querySelector('.card-accordion-content');
-    if (mainRow && accordionDiv) {
-        mainRow.setAttribute('onclick', `toggleAccordionEffect(${randomChannel.id}, 'roulette-')`);
-        accordionDiv.setAttribute('id', `accordion-roulette-${randomChannel.id}`);
-    }
+    const loadingInterval = setInterval(() => {
+        // Elegimos un canal aleatorio falso momentáneo para el parpadeo
+        const tempChannel = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
+        
+        // Estilo visual de carga ultra-emocionante
+        display.innerHTML = `
+            <div style="text-align: center; color: var(--vip-gold); font-weight: bold; letter-spacing: 2px; padding: 20px; animation: pulseLoading 0.1s infinite alternate;">
+                ⚡ ESCANEANDO: ${tempChannel.name.toUpperCase()} ⚡
+            </div>
+        `;
+        
+        totalTicks++;
+
+        // 4. FASE FINAL: Cuando se acaba el tiempo, detenemos el bucle y damos el premio real
+        if (totalTicks >= maxTicks) {
+            clearInterval(loadingInterval); // Frenamos el bucle de carga
+            
+            // Volvemos a activar el botón para la siguiente tirada
+            if (spinBtn) spinBtn.disabled = false;
+
+            // Elegimos de forma matemática el ganador definitivo
+            const finalChannel = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
+            
+            // Inyectamos la tarjeta completa oficial en el visor
+            display.innerHTML = buildChannelCardHtml(finalChannel, false); 
+            
+            // Re-mapeo quirúrgico para que el acordeón responda con el ID único 'roulette-'
+            const mainRow = display.querySelector('.card-main-row');
+            const accordionDiv = display.querySelector('.card-accordion-content');
+            if (mainRow && accordionDiv) {
+                mainRow.setAttribute('onclick', `toggleAccordionEffect(${finalChannel.id}, 'roulette-')`);
+                accordionDiv.setAttribute('id', `accordion-roulette-${finalChannel.id}`);
+            }
+
+            // Aplicamos animación de estallido al premio
+            display.classList.add("shake-anim");
+            setTimeout(() => display.classList.remove("shake-anim"), 500);
+            
+            // Re-renderizamos los iconos de Lucide (estrellas, ojos, etc.)
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            
+            // Guardamos logs en el historial y mostramos felicitaciones
+            showToast(`🎯 ¡Premio: ${finalChannel.name}!`, "gold");
+            if (typeof registerActionToHistory === "function") {
+                registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${finalChannel.name}`, "info");
+            }
+        }
+    }, 100); // Velocidad de refresco (un cambio cada 100 milisegundos)
+}
 
     // 5. Animación visual de impacto
     display.classList.add("shake-anim");

@@ -72,21 +72,41 @@
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
 
         /* Tema Matrix */
+/* ==========================================================================
+   CORRECCIÓN DE TEMAS VIP PERSISTENTES
+   ========================================================================== */
+
+/* Tema Matrix */
 body.vip-theme-matrix {
-    --bg-main: #000a00;
-    --bg-card: #001500;
-    --text-main: #00ff00;
-    --text-muted: #008800;
+    --bg-principal: #000a00 !important;
+    --bg-tarjeta: #001500 !important;
+    --bg-tarjeta-hover: #002200 !important;
+    --text-main: #00ff00 !important;
+    --text-muted: #008800 !important;
+    --border-color: #003300 !important;
     background-color: #000a00 !important;
 }
 
 /* Tema Amatista (Morado Eléctrico) */
 body.vip-theme-amethyst {
-    --bg-main: #0b0014;
-    --bg-card: #160226;
-    --text-main: #f3e8ff;
-    --text-muted: #a78bfa;
+    --bg-principal: #0b0014 !important;
+    --bg-tarjeta: #160226 !important;
+    --bg-tarjeta-hover: #24043d !important;
+    --text-main: #f3e8ff !important;
+    --text-muted: #a78bfa !important;
+    --border-color: #3b0764 !important;
     background-color: #0b0014 !important;
+}
+
+/* Tema Sunset (Atardecer) */
+body.vip-theme-sunset {
+    --bg-principal: #150000 !important;
+    --bg-tarjeta: #2c0000 !important;
+    --bg-tarjeta-hover: #420000 !important;
+    --text-main: #fff5f5 !important;
+    --text-muted: #fca5a5 !important;
+    --border-color: #7f1d1d !important;
+    background-color: #150000 !important;
 }
         
   /* Contenedor del panel */
@@ -506,16 +526,6 @@ button:disabled {
             padding: 4px; display: flex; align-items: center; justify-content: center;
         }
 
-        @keyframes popIn {
-    from { 
-        transform: scale(0.8); 
-        opacity: 0; 
-    }
-    to { 
-        transform: scale(1); 
-        opacity: 1; 
-    }
-}
         .confetti-particle { position: fixed; width: 10px; height: 10px; border-radius: 30%; pointer-events: none; animation: explodeConfetti 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999; }
         @keyframes explodeConfetti {
             0% { transform: translate(0, 0) scale(1.5) rotate(0deg); opacity: 1; }
@@ -783,6 +793,11 @@ button:disabled {
     transition: background 0.2s;
 }
 .share-copy-link-btn:hover { background: #3a4a63; color: #fff; } 
+
+ @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }       
     </style>
 </head>
 <body>

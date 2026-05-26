@@ -2688,24 +2688,37 @@ function executeShareAction(network) {
     }
 }
         function applyGlobalVipTheme(themeName) {
-    // Protección: Si no es VIP, no hace nada
+    // 1. Verificación obligatoria de rango VIP
     if (!state.user.isVipMember) {
-        showToast("⚠️ Esta función requiere Membresía Premium", "error");
+        if (typeof showToast === "function") showToast("⚠️ Esta función requiere Membresía Premium", "error");
         return;
     }
 
     const body = document.body;
-    // Eliminamos temas previos
+    
+    // 2. Eliminamos todas las clases de temas existentes en el body
     body.classList.remove('vip-theme-matrix', 'vip-theme-amethyst', 'vip-theme-sunset');
 
+    // 3. Si no es el por defecto, inyectamos la clase correspondiente
     if (themeName !== 'default') {
         body.classList.add(`vip-theme-${themeName}`);
     }
     
-    // Guardamos la configuración del usuario
-    state.user.activeGlobalTheme = themeName;
+    // 4. GUARDADO PERSISTENTE DIRECTO EN LOCALSTORAGE
+    state.user.activeGlobalTheme = themeName; 
+    localStorage.setItem('vip_saved_theme', themeName); // Guarda el string ('matrix', 'sunset', etc.)
+    
     if (typeof saveToLocalStorage === "function") saveToLocalStorage();
-    showToast(`¡Tema ${themeName.toUpperCase()} aplicado! ✨`, "success");
+
+    // 5. Gestión visual de estados dinámicos en el selector
+    document.querySelectorAll('.theme-card').forEach(card => card.classList.remove('active'));
+    
+    const activeCard = document.getElementById(`theme-btn-${themeName}`);
+    if (activeCard) {
+        activeCard.classList.add('active');
+    }
+
+    if (typeof showToast === "function") showToast(`Tema configurado con éxito ✨`, "success");
 }
     </script>
     

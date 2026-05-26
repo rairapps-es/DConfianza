@@ -2081,45 +2081,33 @@ function handleReSendChannel(id) {
         return;
     }
 
-    // Limpiamos el contenedor
+    // Limpiamos el contenedor para evitar duplicados visuales
     containerFavoritos.innerHTML = "";
 
-    // 2. Si no hay favoritos, mostramos el mensaje de lista vacía
+    // 2. Si el usuario no tiene favoritos, mostramos el mensaje de lista vacía
     if (!state.favorites || state.favorites.length === 0) {
         containerFavoritos.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">No tienes canales guardados en favoritos.</p>`;
         return;
     }
 
-    // 3. Intentamos detectar cuál es tu array global de canales dinámicamente
-    // Buscamos nombres comunes que sueles usar en tu app: channelsData, channels, state.channels...
-    const globalChannels = (typeof channelsData !== 'undefined') ? channelsData : 
-                           (typeof channels !== 'undefined') ? channels : 
-                           (state && state.channels) ? state.channels : null;
-
-    if (!globalChannels) {
-        console.error("❌ ERROR: No se pudo encontrar el array global con los datos de los canales. Revisa cómo se llama en tu script.");
-        return;
-    }
-
-    // 4. Recorremos los IDs guardados en favoritos y los pintamos
+    // 3. Recorremos los IDs de los favoritos guardados
     state.favorites.forEach(favId => {
-        // Buscamos el canal en el array global que hemos detectado
-        const channelObj = globalChannels.find(c => Number(c.id) === Number(favId));
+        // 🟢 BUSCAMOS EN TU DATASET REAL: INITIAL_CHANNELS_DATASET
+        const channelObj = INITIAL_CHANNELS_DATASET.find(c => Number(c.id) === Number(favId));
         
         if (channelObj) {
-            // Pasamos 'true' para activar el prefijo 'fav-' y evitar que se rompa el acordeón
+            // Pasamos 'true' para activar el prefijo 'fav-' y que el acordeón se expanda de forma independiente
             containerFavoritos.innerHTML += buildChannelCardHtml(channelObj, true);
         } else {
-            console.warn(`No se encontraron los datos para el canal con ID: ${favId}`);
+            console.warn(`No se encontraron los datos en el DATASET para el canal con ID: ${favId}`);
         }
     });
 
-    // 5. Refrescamos los iconos de Lucide para que se vean las estrellas iluminadas
+    // 4. Forzamos a Lucide a renderizar las estrellas e iconos de la nueva lista
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
 }
-
         function renderHistoryList() {
             const container = document.getElementById("history-list");
             const paginationContainer = document.getElementById("history-pagination-container");

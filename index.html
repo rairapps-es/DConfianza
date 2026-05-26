@@ -2152,20 +2152,23 @@ function handleReSendChannel(id) {
         function collapseHistoryView() { showFullHistory = false; renderHistoryList(); }
 
         function toggleAccordionEffect(id, prefix = '') {
-    // Detecta automáticamente si viene de la pestaña general o de favoritos ('fav-')
+    // Busca id="accordion-123" o id="accordion-fav-123"
     const accordion = document.getElementById(`accordion-${prefix}${id}`);
-    if (!accordion) return;
+    
+    if (!accordion) {
+        console.error(`❌ No se encontró el acordeón con ID: accordion-${prefix}${id}`);
+        return;
+    }
 
-    // Evaluamos el estado actual del despliegue
-    const isOpen = accordion.classList.contains('open-accordion') || accordion.style.maxHeight;
+    // Verificamos si ya está abierto calculando su altura actual
+    const isOpen = accordion.style.maxHeight && accordion.style.maxHeight !== "0px";
 
     if (isOpen) {
-        // LÓGICA PARA CERRAR
-        accordion.style.maxHeight = null;
+        // Si está abierto, lo cerramos volviendo su altura a 0
+        accordion.style.maxHeight = "0px";
         accordion.classList.remove('open-accordion');
     } else {
-        // LÓGICA PARA ABRIR
-        // Si usas transiciones por CSS con max-height, scrollHeight le da la altura exacta
+        // Si está cerrado, calculamos su altura real exacta en píxeles y la forzamos
         accordion.style.maxHeight = accordion.scrollHeight + "px";
         accordion.classList.add('open-accordion');
     }

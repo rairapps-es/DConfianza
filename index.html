@@ -2233,22 +2233,62 @@ function toggleFavoriteChannel(id, event) {
 }
 
         function spinRoulette() {
-            if (state.user.balance < 5) {
-                showToast("Saldo de energía insuficiente", "error");
-                return;
-            }
-            state.user.balance -= 5;
+    // 1. Verificación básica de energía (Balanace original)
+    if (state.user.balance < 5) {
+        showToast("Saldo de energía insuficiente", "error");
+        return;
+    }
+    
+    // 2. Restamos la energía y actualizamos la interfaz del usuario
+    state.user.balance -= 5;
+    updateBalanceAndRpgUi();
+
+    const display = document.getElementById("roulette-display");
+    const spinBtn = document.getElementById("btn-spin") || document.querySelector(".roulette-btn");
+    if (!display) return;
+    
+    // Desactivamos el botón temporalmente para evitar bugs de clicks masivos
+    if (spinBtn) spinBtn.disabled = true;
+
+    let ticks = 0;
+    
+    // 3. Efecto visual de escaneo rápido (reutiliza tus canales para crear suspense)
+    const interval = setInterval(() => {
+        const mockChan = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
+        display.innerHTML = `
+            <div style="text-align:center; padding:20px; font-weight:800; animation: pulseLoading 0.1s infinite alternate; color: var(--vip-gold);">
+                ⚡ ESCANEANDO: ${mockChan.name.toUpperCase()} ⚡
+            </div>
+        `;
+        ticks++;
+
+        // 4. Cuando termina el escaneo (después de 1.5 segundos)
+        if (ticks >= 15) {
+            clearInterval(interval);
+            if (spinBtn) spinBtn.disabled = false; // Reactivamos el botón
+
+            // Elegimos el canal ganador real aleatorio
             const randomChannel = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
             
-            const display = document.getElementById("roulette-display");
-            display.innerText = randomChannel.name;
+            // 🔥 AQUÍ ESTÁ EL TRUCO: Inyectamos el HTML usando tu función original 
+            // pero le pasamos el prefijo 'roulette-' para que el ID del acordeón no se pise con el directorio
+            display.innerHTML = buildChannelCardHtml(randomChannel, false, "roulette-");
+            
+            // Añadimos tu animación de impacto original
             display.classList.add("shake-anim");
             setTimeout(() => display.classList.remove("shake-anim"), 500);
-            
-            updateBalanceAndRpgUi();
+
+            // Refrescamos los iconos de Lucide para que se vean los iconos de la nueva tarjeta
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // 5. Registros y alertas de tu sistema original
             showToast(`¡Canal asignado: ${randomChannel.name}!`, "gold");
-            registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
+            if (typeof registerActionToHistory === "function") {
+                registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
+            }
         }
+    }, 100);
+}
 
         function triggerConfettiExplosion() {
             const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];

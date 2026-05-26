@@ -2081,27 +2081,40 @@ function handleReSendChannel(id) {
         return;
     }
 
-    // Limpiamos el contenedor para evitar duplicados
+    // Limpiamos el contenedor
     containerFavoritos.innerHTML = "";
 
-    // 2. Comprobamos si hay favoritos guardados en el estado
+    // 2. Si no hay favoritos, mostramos el mensaje de lista vacía
     if (!state.favorites || state.favorites.length === 0) {
         containerFavoritos.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px;">No tienes canales guardados en favoritos.</p>`;
         return;
     }
 
-    // 3. Recorremos y pintamos los canales favoritos
+    // 3. Intentamos detectar cuál es tu array global de canales dinámicamente
+    // Buscamos nombres comunes que sueles usar en tu app: channelsData, channels, state.channels...
+    const globalChannels = (typeof channelsData !== 'undefined') ? channelsData : 
+                           (typeof channels !== 'undefined') ? channels : 
+                           (state && state.channels) ? state.channels : null;
+
+    if (!globalChannels) {
+        console.error("❌ ERROR: No se pudo encontrar el array global con los datos de los canales. Revisa cómo se llama en tu script.");
+        return;
+    }
+
+    // 4. Recorremos los IDs guardados en favoritos y los pintamos
     state.favorites.forEach(favId => {
-        // Buscamos el objeto del canal correspondiente en tu base de datos global (ej. channelsData)
-        const channelObj = channelsData.find(c => c.id === Number(favId));
+        // Buscamos el canal en el array global que hemos detectado
+        const channelObj = globalChannels.find(c => Number(c.id) === Number(favId));
         
         if (channelObj) {
-            // 🌟 CRÍTICO: Pasamos 'true' como segundo parámetro para activar el prefijo 'fav-'
+            // Pasamos 'true' para activar el prefijo 'fav-' y evitar que se rompa el acordeón
             containerFavoritos.innerHTML += buildChannelCardHtml(channelObj, true);
+        } else {
+            console.warn(`No se encontraron los datos para el canal con ID: ${favId}`);
         }
     });
 
-    // 4. Forzamos a Lucide a pintar los iconos dinámicos (estrellas, ojos, etc.)
+    // 5. Refrescamos los iconos de Lucide para que se vean las estrellas iluminadas
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }

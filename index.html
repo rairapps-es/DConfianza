@@ -2077,11 +2077,11 @@ function handleReSendChannel(id) {
     const containerFavoritos = document.getElementById("favorites-list-container") || document.getElementById("favorites-container");
     
     if (!containerFavoritos) {
-        console.warn("⚠️ No se encontró el contenedor de la lista de favoritos en el HTML.");
+        alert("⚠️ Error de maquetación: No existe el contenedor 'favorites-list-container' o 'favorites-container' en tu archivo HTML.");
         return;
     }
 
-    // Limpiamos el contenedor para evitar duplicados visuales
+    // Limpiamos el contenedor
     containerFavoritos.innerHTML = "";
 
     // 2. Si el usuario no tiene favoritos, mostramos el mensaje de lista vacía
@@ -2090,20 +2090,34 @@ function handleReSendChannel(id) {
         return;
     }
 
+    console.log("IDs guardados en tus favoritos actualmente:", state.favorites);
+    console.log("Total de canales disponibles en tu DATASET:", INITIAL_CHANNELS_DATASET.length);
+
+    let tarjetasPintadas = 0;
+
     // 3. Recorremos los IDs de los favoritos guardados
     state.favorites.forEach(favId => {
-        // 🟢 BUSCAMOS EN TU DATASET REAL: INITIAL_CHANNELS_DATASET
-        const channelObj = INITIAL_CHANNELS_DATASET.find(c => Number(c.id) === Number(favId));
+        // Convertimos ambos IDs a String (.toString()) para romper la barrera de texto/número
+        const channelObj = INITIAL_CHANNELS_DATASET.find(c => {
+            if (!c.id) return false;
+            return c.id.toString().trim() === favId.toString().trim();
+        });
         
         if (channelObj) {
-            // Pasamos 'true' para activar el prefijo 'fav-' y que el acordeón se expanda de forma independiente
+            // Pasamos 'true' para activar el prefijo 'fav-'
             containerFavoritos.innerHTML += buildChannelCardHtml(channelObj, true);
+            tarjetasPintadas++;
         } else {
-            console.warn(`No se encontraron los datos en el DATASET para el canal con ID: ${favId}`);
+            console.error(`❌ El ID ${favId} está en tus favoritos, pero no existe ningún canal con ese ID dentro de tu INITIAL_CHANNELS_DATASET.`);
         }
     });
 
-    // 4. Forzamos a Lucide a renderizar las estrellas e iconos de la nueva lista
+    // 4. Si el array tenía IDs pero no se pintó nada, notificamos la causa exacta
+    if (tarjetasPintadas === 0 && state.favorites.length > 0) {
+        alert(`Alerta: Tienes ${state.favorites.length} canales guardados, pero ninguno coincide con los IDs de tu INITIAL_CHANNELS_DATASET. Revisa si los IDs de tus canales empiezan desde 1 o si son idénticos.`);
+    }
+
+    // 5. Forzamos a Lucide a renderizar las estrellas
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }

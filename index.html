@@ -87,7 +87,85 @@ body.vip-theme-amethyst {
     --text-main: #f3e8ff;
     --text-muted: #a78bfa;
     background-color: #0b0014 !important;
-}/* Animación del Aura de Fuego Dorado para el Avatar del usuario VIP */
+}
+        
+  /* Contenedor del panel */
+.vip-theme-selector-container {
+    background: rgba(24, 34, 50, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 16px;
+    padding: 16px;
+    margin: 15px 10px;
+}
+
+.vip-selector-title {
+    color: #ffd700;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Rejilla de tarjetas */
+.vip-theme-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+/* Tarjeta individual */
+.theme-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.theme-card span {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Círculos con gradientes interiores de previsualización */
+.theme-preview {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+}
+
+/* Estilos de gradientes para cada botón */
+.style-default { background: linear-gradient(135deg, #182232, #0f172a); }
+.style-matrix { background: linear-gradient(135deg, #001a00, #000a00); border-color: #00ff0033; }
+.style-amethyst { background: linear-gradient(135deg, #160226, #0b0014); border-color: #a78bfa33; }
+.style-sunset { background: linear-gradient(135deg, #2c0000, #150000); border-color: #ff450033; }
+
+/* Estado Activo / Seleccionado */
+.theme-card.active .theme-preview {
+    border-color: #ffd700 !important;
+    transform: scale(1.08);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+}
+
+.theme-card.active span {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.theme-card:not(.active):hover {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+}
+        /* Animación del Aura de Fuego Dorado para el Avatar del usuario VIP */
 .vip-aura-active {
     position: relative;
     border: 2px solid #ffd700 !important;
@@ -746,11 +824,30 @@ body.vip-theme-amethyst {
             <div class="switch-label">Modo Admin</div>
             <div id="role-toggle" class="toggle-btn" onclick="toggleAdminRole()"></div>
         </div>
-<div class="vip-theme-selector" style="display: flex; gap: 10px; padding: 10px; justify-content: center;">
-    <button onclick="applyGlobalVipTheme('default')" style="background:#182232; width:35px; height:35px; border-radius:50%; border:2px solid #fff;"></button>
-    <button onclick="applyGlobalVipTheme('matrix')" style="background:#001a00; width:35px; height:35px; border-radius:50%; border:2px solid #00ff00;"></button>
-    <button onclick="applyGlobalVipTheme('amethyst')" style="background:#1a002c; width:35px; height:35px; border-radius:50%; border:2px solid #9b51e0;"></button>
-    <button onclick="applyGlobalVipTheme('sunset')" style="background:#2c0000; width:35px; height:35px; border-radius:50%; border:2px solid #ff4500;"></button>
+<div class="vip-theme-selector-container">
+    <p class="vip-selector-title">🎨 Temas de Interfaz Prémium</p>
+    
+    <div class="vip-theme-grid">
+        <div class="theme-card active" id="theme-btn-default" onclick="applyGlobalVipTheme('default')">
+            <div class="theme-preview style-default"></div>
+            <span>Estándar</span>
+        </div>
+
+        <div class="theme-card" id="theme-btn-matrix" onclick="applyGlobalVipTheme('matrix')">
+            <div class="theme-preview style-matrix"></div>
+            <span>Matrix Neon</span>
+        </div>
+
+        <div class="theme-card" id="theme-btn-amethyst" onclick="applyGlobalVipTheme('amethyst')">
+            <div class="theme-preview style-amethyst"></div>
+            <span>Cyber Amatista</span>
+        </div>
+
+        <div class="theme-card" id="theme-btn-sunset" onclick="applyGlobalVipTheme('sunset')">
+            <div class="theme-preview style-sunset"></div>
+            <span>Atardecer</span>
+        </div>
+    </div>
 </div>
         <div class="status-counters">
             <div class="counter-card" onclick="toggleProfileDrawer(); switchView('directory')">

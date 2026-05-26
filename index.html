@@ -590,6 +590,29 @@ body.vip-theme-amethyst {
 /* ELEMENTOS DE BENEFICIOS */
 .benefit-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.85rem; color: #edf2f7; }
 
+   /* Asegura que el display de la ruleta sea un escenario digno para la tarjeta */
+        #roulette-display {
+    width: 100%;
+    max-width: 400px;
+    margin: 15px auto;
+    padding: 10px;
+    min-height: 120px; /* Evita saltos bruscos de pantalla al aparecer la tarjeta */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* Animación Shake mejorada para la presentación del premio */
+.shake-anim {
+    animation: roulettePrizePop 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes roulettePrizePop {
+    0% { transform: scale(0.8) translateY(20px); filter: brightness(2); }
+    50% { transform: scale(1.05) translateY(-5px); }
+    100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}     
 /* FORMULARIO Y SELECT */
 .premium-modal-footer { margin-top: 15px; border-top: 1px solid #2d3748; padding-top: 15px; }
 .form-group-premium label { display: block; font-size: 0.7rem; color: #a0aec0; margin-bottom: 4px; }
@@ -2407,22 +2430,66 @@ function toggleFavoriteChannel(id, event) {
 }
 
         function spinRoulette() {
-            if (state.user.balance < 5) {
-                showToast("Saldo de energía insuficiente", "error");
-                return;
-            }
-            state.user.balance -= 5;
-            const randomChannel = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
-            
-            const display = document.getElementById("roulette-display");
-            display.innerText = randomChannel.name;
-            display.classList.add("shake-anim");
-            setTimeout(() => display.classList.remove("shake-anim"), 500);
-            
-            updateBalanceAndRpgUi();
-            showToast(`¡Canal asignado: ${randomChannel.name}!`, "gold");
-            registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
-        }
+    // 1. Verificación de saldo de energía
+    if (state.user.balance < 5) {
+        showToast("Saldo de energía insuficiente", "error");
+        return;
+    }
+    
+    // 2. Descontamos la energía y elegimos el canal aleatorio
+    state.user.balance -= 5;
+    const randomChannel = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
+    
+    // 3. Localizamos el contenedor de la pantalla de la ruleta
+    const display = document.getElementById("roulette-display");
+    
+    if (!display) {
+        console.error("❌ No se encontró el contenedor con ID 'roulette-display'");
+        return;
+    }
+
+    // Limpiamos lo que hubiera antes
+    display.innerHTML = "";
+    
+    // 4. GENERAMOS LA TARJETA COMPLETA
+    // Usamos un prefijo único 'roulette-' pasándole 'true' de forma trucada (o adaptada)
+    // Para no alterar tu buildChannelCardHtml, le inyectamos manualmente el prefijo 'roulette-' en el truco:
+    const cardHtml = buildChannelCardHtml(randomChannel, false)
+        .replace('id="accordion-', 'id="accordion-roulette-')
+        .replace('toggleAccordionEffect(', 'toggleAccordionEffect(')
+        .replace("toggleAccordionEffect(${randomChannel.id}, '')", `toggleAccordionEffect(${randomChannel.id}, 'roulette-')`);
+    
+    // Alternativa limpia si actualizaste toggleAccordionEffect antes: 
+    // Como buildChannelCardHtml acepta un booleano (isFavoritePage), si le pasamos una cadena personalizada como 'roulette-', 
+    // tu código anterior generará 'id="accordion-roulette-123"'. Vamos a hacerlo de la forma más segura posible:
+    
+    // Inyectamos el HTML de la tarjeta directamente dentro del display de la ruleta
+    display.innerHTML = buildChannelCardHtml(randomChannel, false); 
+    
+    // Ajuste quirúrgico rápido para que el acordeón de la ruleta no choque con la pestaña principal:
+    const mainRow = display.querySelector('.card-main-row');
+    const accordionDiv = display.querySelector('.card-accordion-content');
+    if (mainRow && accordionDiv) {
+        mainRow.setAttribute('onclick', `toggleAccordionEffect(${randomChannel.id}, 'roulette-')`);
+        accordionDiv.setAttribute('id', `accordion-roulette-${randomChannel.id}`);
+    }
+
+    // 5. Animación visual de impacto
+    display.classList.add("shake-anim");
+    setTimeout(() => display.classList.remove("shake-anim"), 500);
+    
+    // 6. Recarga crítica de iconos (para que la estrella y el ojo de Lucide se transformen en SVG)
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
+    // 7. Actualización de sistemas y logs
+    updateBalanceAndRpgUi();
+    showToast(`¡Canal asignado: ${randomChannel.name}!`, "gold");
+    if (typeof registerActionToHistory === "function") {
+        registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
+    }
+}
 
         function triggerConfettiExplosion() {
             const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];

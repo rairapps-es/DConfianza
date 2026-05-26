@@ -70,163 +70,8 @@
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-principal); }
         ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        
-/* Tema Matrix */
-body.vip-theme-matrix {
-    --bg-principal: #000a00 !important;
-    --bg-tarjeta: #001500 !important;
-    --bg-tarjeta-hover: #002200 !important;
-    --text-main: #00ff00 !important;
-    --text-muted: #008800 !important;
-    --border-color: #003300 !important;
-    background-color: #000a00 !important;
-}
 
-/* Tema Amatista (Morado Eléctrico) */
-body.vip-theme-amethyst {
-    --bg-principal: #0b0014 !important;
-    --bg-tarjeta: #160226 !important;
-    --bg-tarjeta-hover: #24043d !important;
-    --text-main: #f3e8ff !important;
-    --text-muted: #a78bfa !important;
-    --border-color: #3b0764 !important;
-    background-color: #0b0014 !important;
-}
-
-/* Tema Sunset (Atardecer) */
-body.vip-theme-sunset {
-    --bg-principal: #150000 !important;
-    --bg-tarjeta: #2c0000 !important;
-    --bg-tarjeta-hover: #420000 !important;
-    --text-main: #fff5f5 !important;
-    --text-muted: #fca5a5 !important;
-    --border-color: #7f1d1d !important;
-    background-color: #150000 !important;
-}
-        
-  /* Contenedor del panel */
-.vip-theme-selector-container {
-    background: rgba(24, 34, 50, 0.4);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 215, 0, 0.15);
-    border-radius: 16px;
-    padding: 16px;
-    margin: 15px 10px;
-}
-
-.vip-selector-title {
-    color: #ffd700;
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-bottom: 12px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Rejilla de tarjetas */
-.vip-theme-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-
-/* Tarjeta individual */
-.theme-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.theme-card span {
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 6px;
-    text-align: center;
-    white-space: nowrap;
-}
-
-/* Círculos con gradientes interiores de previsualización */
-.theme-preview {
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: all 0.2s ease;
-}
-
-/* Estilos de gradientes para cada botón */
-.style-default { background: linear-gradient(135deg, #182232, #0f172a); }
-.style-matrix { background: linear-gradient(135deg, #001a00, #000a00); border-color: #00ff0033; }
-.style-amethyst { background: linear-gradient(135deg, #160226, #0b0014); border-color: #a78bfa33; }
-.style-sunset { background: linear-gradient(135deg, #2c0000, #150000); border-color: #ff450033; }
-
-/* Estado Activo / Seleccionado */
-.theme-card.active .theme-preview {
-    border-color: #ffd700 !important;
-    transform: scale(1.08);
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
-}
-
-.theme-card.active span {
-    color: #ffd700;
-    font-weight: bold;
-}
-
-.theme-card:not(.active):hover {
-    transform: translateY(-2px);
-    filter: brightness(1.2);
-}
-        /* Animación del Aura de Fuego Dorado para el Avatar del usuario VIP */
-.vip-aura-active {
-    position: relative;
-    border: 2px solid #ffd700 !important;
-    background: linear-gradient(135px, #2a2200 0%, #1c273a 100%) !important;
-    animation: vipGlowPulse 2.5s infinite alternate !important;
-    transition: all 0.3s ease;
-}
-
-/* Efecto hover extra si el VIP pasa el dedo por encima del botón */
-.vip-aura-active:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 25px #ffd700, inset 0 0 15px #ffaa00 !important;
-}
-
-        /* Animación de pulso eléctrico para la fase de escaneo rápido */
-@keyframes pulseLoading {
-    0% {
-        transform: scale(0.96);
-        opacity: 0.7;
-        filter: drop-shadow(0 0 2px var(--vip-gold));
-    }
-    100% {
-        transform: scale(1.02);
-        opacity: 1;
-        filter: drop-shadow(0 0 10px var(--vip-gold));
-        color: #fff;
-    }
-}
-
-/* Evitamos que el botón desactivado parpadee o confunda mientras carga */
-button:disabled {
-    opacity: 0.5 !important;
-    cursor: not-allowed !important;
-    box-shadow: none !important;
-}
-/* El motor de la animación de destellos */
-@keyframes vipGlowPulse {
-    0% {
-        box-shadow: 0 0 6px rgba(255, 215, 0, 0.5), inset 0 0 4px rgba(255, 215, 0, 0.3);
-        filter: brightness(1);
-    }
-    100% {
-        box-shadow: 0 0 20px #ff8c00, inset 0 0 10px #ffd700 !important;
-        filter: brightness(1.2);
-    }
-}       .app-header {
+        .app-header {
             position: fixed; top: 0; left: 0; width: 100%; height: 65px;
             background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border); display: flex;
@@ -521,6 +366,11 @@ button:disabled {
             padding: 4px; display: flex; align-items: center; justify-content: center;
         }
 
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         .confetti-particle { position: fixed; width: 10px; height: 10px; border-radius: 30%; pointer-events: none; animation: explodeConfetti 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 9999; }
         @keyframes explodeConfetti {
             0% { transform: translate(0, 0) scale(1.5) rotate(0deg); opacity: 1; }
@@ -621,29 +471,6 @@ button:disabled {
 /* ELEMENTOS DE BENEFICIOS */
 .benefit-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.85rem; color: #edf2f7; }
 
-   /* Asegura que el display de la ruleta sea un escenario digno para la tarjeta */
-        #roulette-display {
-    width: 100%;
-    max-width: 400px;
-    margin: 15px auto;
-    padding: 10px;
-    min-height: 120px; /* Evita saltos bruscos de pantalla al aparecer la tarjeta */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-/* Animación Shake mejorada para la presentación del premio */
-.shake-anim {
-    animation: roulettePrizePop 0.5s cubic-bezier(.36,.07,.19,.97) both;
-}
-
-@keyframes roulettePrizePop {
-    0% { transform: scale(0.8) translateY(20px); filter: brightness(2); }
-    50% { transform: scale(1.05) translateY(-5px); }
-    100% { transform: scale(1) translateY(0); filter: brightness(1); }
-}     
 /* FORMULARIO Y SELECT */
 .premium-modal-footer { margin-top: 15px; border-top: 1px solid #2d3748; padding-top: 15px; }
 .form-group-premium label { display: block; font-size: 0.7rem; color: #a0aec0; margin-bottom: 4px; }
@@ -788,11 +615,6 @@ button:disabled {
     transition: background 0.2s;
 }
 .share-copy-link-btn:hover { background: #3a4a63; color: #fff; } 
-
- @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }       
     </style>
 </head>
 <body>
@@ -809,7 +631,7 @@ button:disabled {
     </div>
 
     <header class="app-header">
-        <div class="header-logo">LISTA GOLDEN 🚀</div>
+        <div class="header-logo">CANALES TOP</div>
         <div class="header-center-icon" onclick="switchView('shop')">
             <i data-lucide="shopping-bag"></i>
         </div>
@@ -866,7 +688,7 @@ button:disabled {
 
         <div class="rpg-progress-container">
             <div class="rpg-labels">
-                <span>Progreso: <strong id="rpg-current-pts">0</strong>/100 Pts</span>
+                <span>Progreso RPG: <strong id="rpg-current-pts">0</strong>/100 Pts</span>
                 <span id="rpg-status-badge">Nivel Inicial</span>
             </div>
             <div style="width:100%; height:6px; background:var(--border-color); border-radius:10px; overflow:hidden;">
@@ -880,34 +702,10 @@ button:disabled {
         </div>
 
         <div class="role-switch-container">
-            <div class="switch-label">Modo Admin</div>
+            <div class="switch-label">Modo Vista Administrador</div>
             <div id="role-toggle" class="toggle-btn" onclick="toggleAdminRole()"></div>
         </div>
-<div class="vip-theme-selector-container">
-    <p class="vip-selector-title">🎨 Temas de Interfaz Prémium</p>
-    
-    <div class="vip-theme-grid">
-        <div class="theme-card active" id="theme-btn-default" onclick="applyGlobalVipTheme('default')">
-            <div class="theme-preview style-default"></div>
-            <span>Estándar</span>
-        </div>
 
-        <div class="theme-card" id="theme-btn-matrix" onclick="applyGlobalVipTheme('matrix')">
-            <div class="theme-preview style-matrix"></div>
-            <span>Matrix Neon</span>
-        </div>
-
-        <div class="theme-card" id="theme-btn-amethyst" onclick="applyGlobalVipTheme('amethyst')">
-            <div class="theme-preview style-amethyst"></div>
-            <span>Cyber Amatista</span>
-        </div>
-
-        <div class="theme-card" id="theme-btn-sunset" onclick="applyGlobalVipTheme('sunset')">
-            <div class="theme-preview style-sunset"></div>
-            <span>Atardecer</span>
-        </div>
-    </div>
-</div>
         <div class="status-counters">
             <div class="counter-card" onclick="toggleProfileDrawer(); switchView('directory')">
                 <span id="cnt-channels">0</span>
@@ -925,13 +723,13 @@ button:disabled {
 
         <div class="admin-only" style="margin-bottom: 12px;">
             <button class="drawer-btn" style="border-color: var(--telegram-blue); background: rgba(36,161,222,0.05);" onclick="toggleProfileDrawer(); switchView('my-channels');">
-                <span>🗂️ Mis Canales (<strong id="cnt-my-owned-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
+                <span>🗂️ Ver Mis Canales Creados (<strong id="cnt-my-owned-channels">0</strong>)</span> <i data-lucide="arrow-right"></i>
             </button>
         </div>
 
         <div class="drawer-links">
             <button class="drawer-btn" onclick="toggleProfileDrawer(); switchView('shop')">
-                <span>🛍️ Tienda de Recompensas</span> <i data-lucide="chevron-right"></i>
+                <span>🛍️ Tienda de Recompensas e IA</span> <i data-lucide="chevron-right"></i>
             </button>
             <button class="drawer-btn" onclick="toggleProfileDrawer(); switchView('energy')">
                 <span>⚡ Cómo Ganar Puntos</span> <i data-lucide="chevron-right"></i>
@@ -953,7 +751,7 @@ button:disabled {
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="color:var(--success-green); background:rgba(46,204,113,0.1);"><i data-lucide="users"></i></div>
-                <div class="stat-info"><h4>79</h4><p>Usuarios Online</p></div>
+                <div class="stat-info"><h4>1,240</h4><p>Usuarios Online</p></div>
             </div>
         </div>
 
@@ -1123,7 +921,7 @@ button:disabled {
 
     <main id="view-energy" class="app-view">
         <h2 class="view-title"><i data-lucide="zap" style="color:var(--vip-gold)"></i> Tabla Informativa de Energía</h2>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Acumula puntos de energía para subir tu nivel hasta el Rango 5 y desbloquear la personalización avanzada por IA.</p>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Acumula puntos de energía para subir tu nivel RPG hasta el Rango 5 y desbloquear la personalización avanzada por IA.</p>
         
         <table class="energy-table">
             <thead>
@@ -1237,11 +1035,11 @@ button:disabled {
         // DATASET EXTENDIDO CON SOPORTE PARA ESTADOS OPERATIVOS
         const INITIAL_CHANNELS_DATASET = [
             { id: 1, name: "BetMasters VIP", user: "@BetMastersVIP", category: "apuestas", subs: 45200, lang: "Español", status: "Publicado", isVip: true, logo: "🎯", description: "Pronósticos de alta fidelidad deportivos analizados por expertos.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 12345678 },
-            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "Publicado", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
-            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Publicado", isVip: false, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 11112222 },
+            { id: 2, name: "Green Pickers", user: "@GreenPickers", category: "apuestas", subs: 18400, lang: "Español", status: "En Revisión", isVip: false, logo: "⚽", description: "Estadísticas y picks de fútbol hispano en vivo.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 12345678 },
+            { id: 3, name: "Emprende Academy", user: "@EmprendeAcademy", category: "marketing", subs: 89600, lang: "Español", status: "Publicado", isVip: true, logo: "💼", description: "Estrategias de monetización digital y negocios escalables.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 11112222 },
             { id: 4, name: "CryptoWhales Alert", user: "@CryptoWhalesAlert", category: "cripto", subs: 112000, lang: "Inglés", status: "Publicado", isVip: true, logo: "🐋", description: "Alertas institucionales del mercado blockchain en tiempo real.", isPopular: true, isNew: false, isTrending: false, telegramUserId: 33334444 },
-            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Publicado", isVip: false, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, telegramUserId: 99999999 },
-            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "Publicado", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 55556666 },
+            { id: 5, name: "IA Revolucionaria", user: "@IaRevolucionaria", category: "tecnologia", subs: 67400, lang: "Español", status: "Publicado", isVip: true, logo: "🧠", description: "Aprende prompts avanzados y automatizaciones con Inteligencia Artificial.", isPopular: false, isNew: true, isTrending: true, telegramUserId: 99999999 },
+            { id: 6, name: "Coloring Books PDF", user: "@ColoringBooksPDF", category: "tecnologia", subs: 32100, lang: "Español", status: "En Revisión", isVip: false, logo: "🎨", description: "Libros artísticos listos para descargar e imprimir en alta resolución.", isPopular: false, isNew: true, isTrending: false, telegramUserId: 55556666 },
             { id: 7, name: "Lista Golden Official", user: "@ListaGolden", category: "marketing", subs: 68400, lang: "Español", status: "Publicado", isVip: true, logo: "👑", description: "El canal publicitario oficial de nuestra MiniApp de Telegram.", isPopular: true, isNew: false, isTrending: true, telegramUserId: 1320417199 }
         ];
 
@@ -1360,7 +1158,7 @@ button:disabled {
         // SISTEMA AUTOMÁTICO DE VERIFICACIÓN PREMIUM REQUERIDO
 function checkVipInternalRegistration() {
     // Lista de IDs de Telegram autorizados como VIP
-    const vipTelegramIds = [1320417199, 87654321, 55442211]; 
+    const vipTelegramIds = [12345678, 87654321, 55442211]; 
     
     // Si el id del usuario coincide con alguno de la lista, se activa VIP
     if(vipTelegramIds.includes(state.user.idTelegram)) {
@@ -1887,61 +1685,30 @@ function checkVipInternalRegistration() {
         }
 
         function updateBalanceAndRpgUi() {
-    // 1. Actualización básica de marcadores y textos
-    document.getElementById("profile-balance").innerText = state.user.balance;
-    document.getElementById("drawer-range").innerText = `[ Rango RPG Nivel ${state.user.range} ]`;
-    document.getElementById("cnt-favs").innerText = state.favorites.length;
-    document.getElementById("rpg-current-pts").innerText = state.user.pointsProgress;
-    
-    // Calcular el porcentaje de la barra de nivel
-    const percentage = Math.min(100, state.user.pointsProgress);
-    document.getElementById("rpg-bar-fill").style.width = `${percentage}%`;
-    
-    // Elementos de control del Candado / Avatar
-    const badge = document.getElementById("rpg-status-badge");
-    const lockText = document.getElementById("drawer-locked-text");
-    const lockIcon = document.getElementById("drawer-locked-icon");
-    const drawerBtn = document.getElementById("epic-avatar-link");
+            document.getElementById("profile-balance").innerText = state.user.balance;
+            document.getElementById("drawer-range").innerText = `[ Rango RPG Nivel ${state.user.range} ]`;
+            document.getElementById("cnt-favs").innerText = state.favorites.length;
+            document.getElementById("rpg-current-pts").innerText = state.user.pointsProgress;
+            
+            const percentage = Math.min(100, state.user.pointsProgress);
+            document.getElementById("rpg-bar-fill").style.width = `${percentage}%`;
+            
+            const badge = document.getElementById("rpg-status-badge");
+            const lockText = document.getElementById("drawer-locked-text");
+            const lockIcon = document.getElementById("drawer-locked-icon");
+            const drawerBtn = document.getElementById("epic-avatar-link");
 
-    // ====================================================================
-    // INTERSECCIÓN PREMIUM / VIP: CONTROL DE EFECTOS Y DESBLOQUEOS
-    // ====================================================================
-    if (drawerBtn) {
-        if (state.user.isVipMember) {
-            // Añadimos el aura de brillo neón dorada al botón del avatar
-            drawerBtn.classList.add("vip-aura-active");
-        } else {
-            drawerBtn.classList.remove("vip-aura-active");
+            if (state.user.range >= 5) {
+                badge.innerText = "Nivel Máximo (Rango 5)";
+                badge.style.color = "var(--vip-gold)";
+                lockText.innerText = "✨ Taller de Avatar IA (Desbloqueado)";
+                drawerBtn.classList.remove("locked");
+                if(lockIcon) lockIcon.style.display = "none";
+            } else {
+                badge.innerText = `Rango ${state.user.range}`;
+                badge.style.color = "var(--telegram-blue)";
+            }
         }
-    }
-
-    // Lógica de desbloqueo: Se abre si eres Rango >= 5 O si eres Miembro VIP directo ✨
-    if (state.user.range >= 5 || state.user.isVipMember) {
-        
-        if (state.user.isVipMember && state.user.range < 5) {
-            // Mensaje exclusivo para el usuario VIP que aún no tiene el nivel pero ya disfruta del beneficio
-            badge.innerText = "Acceso Premium Concedido";
-            badge.style.color = "var(--vip-gold)";
-            if (lockText) lockText.innerText = "👑 Taller de Avatar IA (Beneficio VIP)";
-        } else {
-            // Mensaje normal de nivel máximo alcanzado por juego
-            badge.innerText = "Nivel Máximo (Rango 5)";
-            badge.style.color = "var(--vip-gold)";
-            if (lockText) lockText.innerText = "✨ Taller de Avatar IA (Desbloqueado)";
-        }
-
-        // Quitamos las restricciones visuales y abrimos el botón
-        if (drawerBtn) drawerBtn.classList.remove("locked");
-        if (lockIcon) lockIcon.style.display = "none";
-
-    } else {
-        // Estado bloqueado normal para usuarios estándar que no tienen rango suficiente
-        badge.innerText = `Rango ${state.user.range}`;
-        badge.style.color = "var(--telegram-blue)";
-        if (drawerBtn) drawerBtn.classList.add("locked");
-        if (lockIcon) lockIcon.style.display = "inline-block"; // O "block" según tu maquetación
-    }
-}
 
         function renderVipSlider() {
             const container = document.getElementById("vip-slider");
@@ -2465,22 +2232,23 @@ function toggleFavoriteChannel(id, event) {
     if (typeof registerActionToHistory === "function") registerActionToHistory("ACCIÓN", `Visitaste el canal ${channel.name}`, "info");
 }
 
-    // 5. Animación visual de impacto
-    display.classList.add("shake-anim");
-    setTimeout(() => display.classList.remove("shake-anim"), 500);
-    
-    // 6. Recarga crítica de iconos (para que la estrella y el ojo de Lucide se transformen en SVG)
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
-    
-    // 7. Actualización de sistemas y logs
-    updateBalanceAndRpgUi();
-    showToast(`¡Canal asignado: ${randomChannel.name}!`, "gold");
-    if (typeof registerActionToHistory === "function") {
-        registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
-    }
-}
+        function spinRoulette() {
+            if (state.user.balance < 5) {
+                showToast("Saldo de energía insuficiente", "error");
+                return;
+            }
+            state.user.balance -= 5;
+            const randomChannel = INITIAL_CHANNELS_DATASET[Math.floor(Math.random() * INITIAL_CHANNELS_DATASET.length)];
+            
+            const display = document.getElementById("roulette-display");
+            display.innerText = randomChannel.name;
+            display.classList.add("shake-anim");
+            setTimeout(() => display.classList.remove("shake-anim"), 500);
+            
+            updateBalanceAndRpgUi();
+            showToast(`¡Canal asignado: ${randomChannel.name}!`, "gold");
+            registerActionToHistory("Tirada de Ruleta", `Descubriste el canal ${randomChannel.name}`, "info");
+        }
 
         function triggerConfettiExplosion() {
             const colors = ['#f59e0b', '#24A1DE', '#a855f7', '#2ecc71', '#ef4444', '#f43f5e'];
@@ -2744,39 +2512,6 @@ function executeShareAction(network) {
     if (network !== 'copy') {
         closeShareModal();
     }
-}
-        function applyGlobalVipTheme(themeName) {
-    // 1. Verificación obligatoria de rango VIP
-    if (!state.user.isVipMember) {
-        if (typeof showToast === "function") showToast("⚠️ Esta función requiere Membresía Premium", "error");
-        return;
-    }
-
-    const body = document.body;
-    
-    // 2. Eliminamos todas las clases de temas existentes en el body
-    body.classList.remove('vip-theme-matrix', 'vip-theme-amethyst', 'vip-theme-sunset');
-
-    // 3. Si no es el por defecto, inyectamos la clase correspondiente
-    if (themeName !== 'default') {
-        body.classList.add(`vip-theme-${themeName}`);
-    }
-    
-    // 4. GUARDADO PERSISTENTE DIRECTO EN LOCALSTORAGE
-    state.user.activeGlobalTheme = themeName; 
-    localStorage.setItem('vip_saved_theme', themeName); // Guarda el string ('matrix', 'sunset', etc.)
-    
-    if (typeof saveToLocalStorage === "function") saveToLocalStorage();
-
-    // 5. Gestión visual de estados dinámicos en el selector
-    document.querySelectorAll('.theme-card').forEach(card => card.classList.remove('active'));
-    
-    const activeCard = document.getElementById(`theme-btn-${themeName}`);
-    if (activeCard) {
-        activeCard.classList.add('active');
-    }
-
-    if (typeof showToast === "function") showToast(`Tema configurado con éxito ✨`, "success");
 }
     </script>
     
